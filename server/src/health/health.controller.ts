@@ -20,7 +20,7 @@ export class HealthController {
 
     return {
       status: 'ok',
-      app: 'anchor',
+      app: 'notara',
       version,
       timestamp: new Date().toISOString(),
     };

@@ -2,7 +2,7 @@
 set -eu
 
 # =============================================================================
-# Anchor Docker Entrypoint
+# Notara Docker Entrypoint
 # =============================================================================
 # Initializes environment, starts embedded Postgres (if enabled), runs
 # database migrations, then hands off to supervisord for process management.
@@ -13,9 +13,9 @@ set -eu
 # -----------------------------------------------------------------------------
 : "${PG_HOST:=}"
 : "${PG_PORT:=5432}"
-: "${PG_USER:=anchor}"
+: "${PG_USER:=notara}"
 : "${PG_PASSWORD:=password}"
-: "${PG_DATABASE:=anchor}"
+: "${PG_DATABASE:=notara}"
 
 # Decide embedded vs external based on PG_HOST
 if [ -z "$PG_HOST" ]; then
@@ -36,7 +36,7 @@ if [ -z "${JWT_SECRET:-}" ]; then
     mkdir -p /data
     echo "$JWT_SECRET" > "$JWT_SECRET_FILE"
     chmod 600 "$JWT_SECRET_FILE"
-    echo "[anchor] Generated new JWT_SECRET"
+    echo "[notara] Generated new JWT_SECRET"
   fi
 fi
 
@@ -44,53 +44,53 @@ fi
 export DATABASE_URL JWT_SECRET
 
 if [ "$USE_EMBEDDED_POSTGRES" = "1" ]; then
-  echo "[anchor] Using embedded Postgres"
+  echo "[notara] Using embedded Postgres"
 else
-  echo "[anchor] Using external Postgres: ${PG_HOST}:${PG_PORT}"
+  echo "[notara] Using external Postgres: ${PG_HOST}:${PG_PORT}"
 fi
 
 # -----------------------------------------------------------------------------
 # Start embedded Postgres (if no PG_HOST provided)
 # -----------------------------------------------------------------------------
 if [ "$USE_EMBEDDED_POSTGRES" = "1" ]; then
-  echo "[anchor] Starting embedded Postgres..."
-  
+  echo "[notara] Starting embedded Postgres..."
+
   # Ensure data directory permissions
   mkdir -p "$PGDATA"
   chown -R postgres:postgres "$PGDATA"
   chmod 700 "$PGDATA"
-  
+
   # Set postgres environment
   export POSTGRES_USER="$PG_USER"
   export POSTGRES_PASSWORD="$PG_PASSWORD"
   export POSTGRES_DB="$PG_DATABASE"
-  
+
   /usr/local/bin/docker-entrypoint.sh postgres \
     -c listen_addresses=127.0.0.1 \
     -p "${PG_PORT}" &
 
-  echo "[anchor] Waiting for Postgres..."
+  echo "[notara] Waiting for Postgres..."
   for i in $(seq 1 60); do
     pg_isready -h 127.0.0.1 -p "${PG_PORT}" -U "${PG_USER}" -d "${PG_DATABASE}" >/dev/null 2>&1 && break
     sleep 1
   done
 
   if ! pg_isready -h 127.0.0.1 -p "${PG_PORT}" -U "${PG_USER}" -d "${PG_DATABASE}" >/dev/null 2>&1; then
-    echo "[anchor] ERROR: Postgres did not become ready"
+    echo "[notara] ERROR: Postgres did not become ready"
     exit 1
   fi
-  echo "[anchor] Postgres ready"
+  echo "[notara] Postgres ready"
 fi
 
 # -----------------------------------------------------------------------------
 # Run database migrations
 # -----------------------------------------------------------------------------
-echo "[anchor] Running migrations..."
+echo "[notara] Running migrations..."
 cd /app/server
 ./node_modules/.bin/prisma migrate deploy
 
 # -----------------------------------------------------------------------------
 # Start supervisord (manages API + Web processes)
 # -----------------------------------------------------------------------------
-echo "[anchor] Starting services..."
+echo "[notara] Starting services..."
 exec /usr/bin/supervisord -c /etc/supervisord.conf

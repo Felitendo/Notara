@@ -4,12 +4,12 @@ import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:anchor/features/notes/domain/note.dart';
-import 'package:anchor/core/widgets/quill_preview.dart';
-import 'package:anchor/core/network/server_config_provider.dart';
-import 'package:anchor/features/tags/presentation/tags_controller.dart';
-import 'package:anchor/features/tags/presentation/widgets/tag_chip.dart';
-import 'package:anchor/features/notes/presentation/widgets/note_background.dart';
+import 'package:notara/features/notes/domain/note.dart';
+import 'package:notara/core/widgets/quill_preview.dart';
+import 'package:notara/core/network/server_config_provider.dart';
+import 'package:notara/features/tags/presentation/tags_controller.dart';
+import 'package:notara/features/tags/presentation/widgets/tag_chip.dart';
+import 'package:notara/features/notes/presentation/widgets/note_background.dart';
 
 class NoteCard extends ConsumerWidget {
   final Note note;

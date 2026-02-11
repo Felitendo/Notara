@@ -1,4 +1,4 @@
-package com.zhfahim.anchor
+package de.felitendo.notara
 
 import io.flutter.embedding.android.FlutterActivity
 

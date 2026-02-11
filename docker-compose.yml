@@ -1,19 +1,19 @@
 services:
-  anchor:
+  notara:
     build:
       context: .
       dockerfile: Dockerfile
-    image: anchor
-    container_name: anchor
+    image: notara
+    container_name: notara
     restart: unless-stopped
     ports:
       - "3000:3000"
     environment:
-      - PG_USER=anchor
+      - PG_USER=notara
       - PG_PASSWORD=password
-      - PG_DATABASE=anchor
+      - PG_DATABASE=notara
     volumes:
-      - anchor_data:/data
+      - notara_data:/data
 
 volumes:
-  anchor_data:
+  notara_data:

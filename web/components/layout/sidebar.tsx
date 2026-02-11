@@ -207,14 +207,14 @@ export function Sidebar({
             )}
           >
             <Image
-              src="/icons/anchor_icon.png"
-              alt="Anchor"
+              src="/icons/notara_icon.png"
+              alt="Notara"
               width={36}
               height={36}
             />
             {!isCollapsed && (
               <span className="font-serif text-xl font-bold text-sidebar-foreground">
-                Anchor
+                Notara
               </span>
             )}
           </Link>

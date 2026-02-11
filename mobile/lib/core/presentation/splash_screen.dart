@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../widgets/anchor_icon.dart';
+import '../widgets/notara_icon.dart';
 
 class SplashScreen extends ConsumerWidget {
   const SplashScreen({super.key});
@@ -24,7 +24,7 @@ class SplashScreen extends ConsumerWidget {
               builder: (context, value, child) {
                 return Transform.scale(scale: value, child: child);
               },
-              child: const AnchorIcon(size: 120),
+              child: const NotaraIcon(size: 120),
             ),
             const SizedBox(height: 48),
 
@@ -45,7 +45,7 @@ class SplashScreen extends ConsumerWidget {
               child: Column(
                 children: [
                   Text(
-                    'Anchor',
+                    'Notara',
                     style: GoogleFonts.playfairDisplay(
                       fontSize: 42,
                       fontWeight: FontWeight.bold,

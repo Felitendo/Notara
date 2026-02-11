@@ -3,13 +3,13 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:anchor/features/notes/domain/note.dart';
-import 'package:anchor/core/widgets/confirm_dialog.dart';
-import 'package:anchor/core/widgets/quill_preview.dart';
-import 'package:anchor/features/tags/presentation/tags_controller.dart';
-import 'package:anchor/features/tags/presentation/widgets/tag_chip.dart';
-import 'package:anchor/features/notes/presentation/widgets/note_background.dart';
-import 'package:anchor/core/widgets/app_snackbar.dart';
+import 'package:notara/features/notes/domain/note.dart';
+import 'package:notara/core/widgets/confirm_dialog.dart';
+import 'package:notara/core/widgets/quill_preview.dart';
+import 'package:notara/features/tags/presentation/tags_controller.dart';
+import 'package:notara/features/tags/presentation/widgets/tag_chip.dart';
+import 'package:notara/features/notes/presentation/widgets/note_background.dart';
+import 'package:notara/core/widgets/app_snackbar.dart';
 import 'notes_controller.dart';
 
 class ArchiveScreen extends ConsumerWidget {

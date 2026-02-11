@@ -8,12 +8,12 @@ import 'package:go_router/go_router.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:anchor/core/widgets/app_snackbar.dart';
-import 'package:anchor/core/widgets/settings_card.dart';
-import 'package:anchor/core/network/server_config_provider.dart';
-import 'package:anchor/features/auth/presentation/auth_controller.dart';
-import 'package:anchor/features/auth/data/repository/auth_repository.dart';
-import 'package:anchor/features/auth/domain/user.dart';
+import 'package:notara/core/widgets/app_snackbar.dart';
+import 'package:notara/core/widgets/settings_card.dart';
+import 'package:notara/core/network/server_config_provider.dart';
+import 'package:notara/features/auth/presentation/auth_controller.dart';
+import 'package:notara/features/auth/data/repository/auth_repository.dart';
+import 'package:notara/features/auth/domain/user.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   const EditProfileScreen({super.key});

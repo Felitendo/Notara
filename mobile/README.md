@@ -1,6 +1,6 @@
-# Anchor Mobile App
+# Notara Mobile App
 
-This is the Flutter mobile application for Anchor, a self-hosted note-taking platform.
+This is the Flutter mobile application for Notara, a self-hosted note-taking platform.
 
 ## Features
 
@@ -26,7 +26,7 @@ This is the Flutter mobile application for Anchor, a self-hosted note-taking pla
 
 -   [Flutter SDK](https://flutter.dev/docs/get-started/install) installed and configured.
 -   An Android or iOS device/emulator.
--   A running instance of the Anchor Server (see root README).
+-   A running instance of the Notara Server (see root README).
 
 ### Installation
 
@@ -55,7 +55,7 @@ This is the Flutter mobile application for Anchor, a self-hosted note-taking pla
 On the first launch, the app will ask for your **Server URL**.
 -   If running locally on Android Emulator, use `http://10.0.2.2:3000`
 -   If running locally on iOS Simulator, use `http://localhost:3000`
--   If self-hosted, use your deployed URL (e.g., `https://anchor.yourdomain.com`)
+-   If self-hosted, use your deployed URL (e.g., `https://notara.yourdomain.com`)
 
 ## Building for Production
 

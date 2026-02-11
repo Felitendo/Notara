@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:anchor/features/notes/presentation/widgets/note_background.dart';
+import 'package:notara/features/notes/presentation/widgets/note_background.dart';
 
 class NoteBackgroundPicker extends StatefulWidget {
   final String? selectedColor;

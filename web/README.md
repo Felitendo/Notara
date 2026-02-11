@@ -1,6 +1,6 @@
-# Anchor Web
+# Notara Web
 
-A modern, feature-rich note-taking web application built with Next.js, React, and TypeScript. Anchor provides a clean and intuitive interface for creating, organizing, and managing notes with rich text editing, tags, backgrounds, and more.
+A modern, feature-rich note-taking web application built with Next.js, React, and TypeScript. Notara provides a clean and intuitive interface for creating, organizing, and managing notes with rich text editing, tags, backgrounds, and more.
 
 ## Features
 
@@ -41,7 +41,7 @@ A modern, feature-rich note-taking web application built with Next.js, React, an
 1. Clone the repository:
 ```bash
 git clone <repository-url>
-cd anchor/web
+cd Notara/web
 ```
 
 2. Start the backend (required):

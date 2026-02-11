@@ -1,4 +1,4 @@
-import 'package:anchor/core/router/app_routes.dart';
+import 'package:notara/core/router/app_routes.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +7,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import '../network/server_config_provider.dart';
 import '../widgets/app_snackbar.dart';
-import '../widgets/anchor_icon.dart';
+import '../widgets/notara_icon.dart';
 
 class ServerConfigScreen extends ConsumerStatefulWidget {
   final String? initialUrl;
@@ -90,7 +90,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
       final dio = _getDio();
       final response = await dio.get('$url/api/health');
 
-      if (response.statusCode == 200 && response.data['app'] == 'anchor') {
+      if (response.statusCode == 200 && response.data['app'] == 'notara') {
         final version = response.data['version'] ?? 'Unknown';
         if (mounted) {
           AppSnackbar.showSuccess(
@@ -100,7 +100,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
         }
       } else {
         setState(() {
-          _error = 'Invalid server response. Is this an Anchor server?';
+          _error = 'Invalid server response. Is this a Notara server?';
         });
       }
     } catch (e) {
@@ -127,7 +127,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
       final dio = _getDio();
       final response = await dio.get('$url/api/health');
 
-      if (response.statusCode == 200 && response.data['app'] == 'anchor') {
+      if (response.statusCode == 200 && response.data['app'] == 'notara') {
         final shouldPop = widget.initialUrl != null;
         final notifier = ref.read(serverConfigProvider.notifier);
 
@@ -142,7 +142,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
         await notifier.setServerUrl(url);
       } else {
         setState(() {
-          _error = 'Invalid server response. Is this an Anchor server?';
+          _error = 'Invalid server response. Is this a Notara server?';
         });
       }
     } catch (e) {
@@ -193,7 +193,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const Center(child: AnchorIcon(size: 100)),
+                  const Center(child: NotaraIcon(size: 100)),
                   const SizedBox(height: 48),
 
                   // Title
@@ -210,7 +210,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
 
                   // Subtitle
                   Text(
-                    'Enter your Anchor server URL to get started',
+                    'Enter your Notara server URL to get started',
                     style: GoogleFonts.dmSans(
                       fontSize: 16,
                       color: theme.colorScheme.onSurface.withValues(alpha: 0.7),
@@ -229,7 +229,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(16),
                       ),
-                      helperText: 'Example: https://anchor.example.com',
+                      helperText: 'Example: https://notara.example.com',
                     ),
                     keyboardType: TextInputType.url,
                     autocorrect: false,
@@ -320,7 +320,7 @@ class _ServerConfigScreenState extends ConsumerState<ServerConfigScreen> {
                         const SizedBox(width: 12),
                         Expanded(
                           child: Text(
-                            'Anchor is self-hosted. You need to run your own server to use this app.',
+                            'Notara is self-hosted. You need to run your own server to use this app.',
                             style: GoogleFonts.dmSans(
                               fontSize: 13,
                               color: theme.colorScheme.onSurface.withValues(

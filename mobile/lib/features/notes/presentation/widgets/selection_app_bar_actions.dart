@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:anchor/features/notes/domain/note.dart';
-import 'package:anchor/core/widgets/confirm_dialog.dart';
-import 'package:anchor/core/widgets/quill_preview.dart'
+import 'package:notara/features/notes/domain/note.dart';
+import 'package:notara/core/widgets/confirm_dialog.dart';
+import 'package:notara/core/widgets/quill_preview.dart'
     show extractPlainTextFromQuillContent;
-import 'package:anchor/core/widgets/app_snackbar.dart';
+import 'package:notara/core/widgets/app_snackbar.dart';
 import '../notes_controller.dart';
 
 class SelectionAppBarActions extends ConsumerWidget {

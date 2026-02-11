@@ -6,14 +6,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 import 'package:go_router/go_router.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:anchor/core/widgets/quill_preview.dart';
-import 'package:anchor/core/widgets/app_drawer.dart';
-import 'package:anchor/features/tags/presentation/tags_controller.dart';
-import 'package:anchor/features/tags/domain/tag.dart';
-import 'package:anchor/features/notes/presentation/widgets/note_card.dart';
-import 'package:anchor/features/notes/presentation/widgets/selection_app_bar_actions.dart';
-import 'package:anchor/features/notes/presentation/widgets/empty_states.dart';
-import 'package:anchor/features/notes/domain/note.dart';
+import 'package:notara/core/widgets/quill_preview.dart';
+import 'package:notara/core/widgets/app_drawer.dart';
+import 'package:notara/features/tags/presentation/tags_controller.dart';
+import 'package:notara/features/tags/domain/tag.dart';
+import 'package:notara/features/notes/presentation/widgets/note_card.dart';
+import 'package:notara/features/notes/presentation/widgets/selection_app_bar_actions.dart';
+import 'package:notara/features/notes/presentation/widgets/empty_states.dart';
+import 'package:notara/features/notes/domain/note.dart';
 import '../data/repository/notes_repository.dart';
 import 'notes_controller.dart';
 import 'notes_view_options.dart';
@@ -206,7 +206,7 @@ class _NotesListScreenState extends ConsumerState<NotesListScreen> {
                             bottom: 12,
                           ),
                           title: Text(
-                            'Anchor',
+                            'Notara',
                             style: theme.textTheme.headlineMedium?.copyWith(
                               color: theme.colorScheme.primary,
                               fontWeight: FontWeight.bold,

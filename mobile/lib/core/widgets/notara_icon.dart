@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 
-/// A reusable anchor icon widget with decorative container styling.
+/// A reusable notara icon widget with decorative container styling.
 ///
-/// Displays the anchor icon from assets with a styled container background
+/// Displays the notara icon from assets with a styled container background
 /// featuring rotated layers and gradient effects.
-class AnchorIcon extends StatelessWidget {
+class NotaraIcon extends StatelessWidget {
   /// The size of the container. The icon will be half this size.
   final double size;
 
-  const AnchorIcon({super.key, this.size = 48});
+  const NotaraIcon({super.key, this.size = 48});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class AnchorIcon extends StatelessWidget {
             ],
           ),
           child: Image.asset(
-            'assets/icons/anchor_icon.png',
+            'assets/icons/notara_icon.png',
             width: iconSize,
             height: iconSize,
             fit: BoxFit.contain,

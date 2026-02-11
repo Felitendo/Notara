@@ -22,10 +22,10 @@ const jetBrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Anchor",
+  title: "Notara",
   description: "Your thoughts, secured",
   other: {
-    "apple-mobile-web-app-title": "Anchor",
+    "apple-mobile-web-app-title": "Notara",
   },
 };
 

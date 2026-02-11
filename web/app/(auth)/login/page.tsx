@@ -25,8 +25,8 @@ export default function LoginPage() {
       <CardHeader className="space-y-4 text-center pb-2">
         <div className="mx-auto flex items-center justify-center">
           <Image
-            src="/icons/anchor_icon.png"
-            alt="Anchor"
+            src="/icons/notara_icon.png"
+            alt="Notara"
             width={64}
             height={64}
           />
@@ -34,7 +34,7 @@ export default function LoginPage() {
         <div className="space-y-1">
           <CardTitle className="text-3xl font-serif">Welcome Back</CardTitle>
           <CardDescription className="text-muted-foreground">
-            Sign in to continue to Anchor
+            Sign in to continue to Notara
           </CardDescription>
         </div>
       </CardHeader>

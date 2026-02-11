@@ -1,16 +1,16 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/zhfahim/anchor/main/web/public/icons/anchor_icon.png" alt="Anchor" width="120" height="120">
+<img src="https://raw.githubusercontent.com/Felitendo/Notara/main/web/public/icons/notara_icon.png" alt="Notara" width="120" height="120">
 
-# Anchor
+# Notara
 
 **An offline first, self hostable note taking application**
 
-[![Version](https://img.shields.io/github/v/release/zhfahim/anchor?label=version)](https://github.com/zhfahim/anchor/releases)
+[![Version](https://img.shields.io/github/v/release/Felitendo/Notara?label=version)](https://github.com/Felitendo/Notara/releases)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
-[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](https://github.com/zhfahim/anchor)
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](https://github.com/Felitendo/Notara)
 
-Anchor focuses on speed, privacy, simplicity, and reliability across mobile and web. Notes are stored locally, editable offline, and synced across devices when online.
+Notara focuses on speed, privacy, simplicity, and reliability across mobile and web. Notes are stored locally, editable offline, and synced across devices when online.
 
 </div>
 
@@ -35,15 +35,15 @@ Anchor focuses on speed, privacy, simplicity, and reliability across mobile and 
 ### Web App
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/zhfahim/anchor/main/.github/assets/screenshot-web-light.png" alt="Web Light Mode" width="45%">
-  <img src="https://raw.githubusercontent.com/zhfahim/anchor/main/.github/assets/screenshot-web-dark.png" alt="Web Dark Mode" width="45%">
+  <img src="https://raw.githubusercontent.com/Felitendo/Notara/main/.github/assets/screenshot-web-light.png" alt="Web Light Mode" width="45%">
+  <img src="https://raw.githubusercontent.com/Felitendo/Notara/main/.github/assets/screenshot-web-dark.png" alt="Web Dark Mode" width="45%">
 </div>
 
 ### Mobile App
 
 <div align="center">
-  <img src="https://raw.githubusercontent.com/zhfahim/anchor/main/.github/assets/screenshot-mobile-light.jpg" alt="Mobile Light Mode" width="20%">
-  <img src="https://raw.githubusercontent.com/zhfahim/anchor/main/.github/assets/screenshot-mobile-dark.jpg" alt="Mobile Dark Mode" width="20%">
+  <img src="https://raw.githubusercontent.com/Felitendo/Notara/main/.github/assets/screenshot-mobile-light.jpg" alt="Mobile Light Mode" width="20%">
+  <img src="https://raw.githubusercontent.com/Felitendo/Notara/main/.github/assets/screenshot-mobile-dark.jpg" alt="Mobile Dark Mode" width="20%">
 </div>
 
 
@@ -54,17 +54,17 @@ Anchor focuses on speed, privacy, simplicity, and reliability across mobile and 
 1. **Create a `docker-compose.yml` file:**
    ```yaml
    services:
-     anchor:
-       image: ghcr.io/zhfahim/anchor:latest
-       container_name: anchor
+     notara:
+       image: ghcr.io/felitendo/notara:latest
+       container_name: notara
        restart: unless-stopped
        ports:
          - "3000:3000"
        volumes:
-         - anchor_data:/data
+         - notara_data:/data
 
    volumes:
-     anchor_data:
+     notara_data:
    ```
 
 2. **(Optional) Configure environment:**
@@ -76,9 +76,9 @@ Anchor focuses on speed, privacy, simplicity, and reliability across mobile and 
    | `JWT_SECRET` | (auto-generated) | Auth token secret (persisted in `/data`) |
    | `PG_HOST` | (empty) | External Postgres host (leave empty for embedded) |
    | `PG_PORT` | `5432` | Postgres port |
-   | `PG_USER` | `anchor` | Postgres username |
+   | `PG_USER` | `notara` | Postgres username |
    | `PG_PASSWORD` | `password` | Postgres password |
-   | `PG_DATABASE` | `anchor` | Database name |
+   | `PG_DATABASE` | `notara` | Database name |
    | `USER_SIGNUP` | (not set) | Sign up mode: `disabled`, `enabled`, or `review`. If not set, admins can control it via the admin panel |
 
 3. **Start the container:**
@@ -95,8 +95,8 @@ If you want to build from source or customize the image:
 
 1. **Clone the project:**
    ```bash
-   git clone https://github.com/zhfahim/anchor.git
-   cd anchor
+   git clone https://github.com/Felitendo/Notara.git
+   cd Notara
    ```
 
 2. **Start the container:**
@@ -112,11 +112,11 @@ If you want to build from source or customize the image:
 Download the Android mobile app.
 
 1. **Visit the releases page:**
-   Go to [GitHub Releases](https://github.com/zhfahim/anchor/releases).
+   Go to [GitHub Releases](https://github.com/Felitendo/Notara/releases).
 
 2. **Download the latest release:**
    Multiple APK files are available:
-   - **Universal APK** (`anchor-{version}.apk`) - Recommended for most users, works on all devices
+   - **Universal APK** (`notara-{version}.apk`) - Recommended for most users, works on all devices
    - **Architecture-specific APKs** - Smaller file sizes for specific CPU architectures
 
 

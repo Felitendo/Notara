@@ -66,8 +66,8 @@ export default function RegisterPage() {
         <CardHeader className="space-y-4 text-center pb-2">
           <div className="mx-auto flex items-center justify-center">
             <Image
-              src="/icons/anchor_icon.png"
-              alt="Anchor"
+              src="/icons/notara_icon.png"
+              alt="Notara"
               width={64}
               height={64}
             />
@@ -109,8 +109,8 @@ export default function RegisterPage() {
       <CardHeader className="space-y-4 text-center pb-2">
         <div className="mx-auto flex items-center justify-center">
           <Image
-            src="/icons/anchor_icon.png"
-            alt="Anchor"
+            src="/icons/notara_icon.png"
+            alt="Notara"
             width={64}
             height={64}
           />

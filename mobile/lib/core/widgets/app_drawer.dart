@@ -8,7 +8,7 @@ import '../../features/auth/presentation/auth_controller.dart';
 import '../../features/tags/domain/tag.dart';
 import '../../features/tags/presentation/tags_controller.dart';
 import '../../core/network/server_config_provider.dart';
-import 'anchor_icon.dart';
+import 'notara_icon.dart';
 
 class AppDrawer extends ConsumerStatefulWidget {
   const AppDrawer({super.key});
@@ -113,14 +113,14 @@ class _AppDrawerState extends ConsumerState<AppDrawer> {
       padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
       child: Row(
         children: [
-          const SizedBox(width: 52, height: 52, child: AnchorIcon(size: 48)),
+          const SizedBox(width: 52, height: 52, child: NotaraIcon(size: 48)),
           const SizedBox(width: 14),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Anchor',
+                  'Notara',
                   style: GoogleFonts.playfairDisplay(
                     fontSize: 22,
                     fontWeight: FontWeight.bold,

@@ -1,6 +1,6 @@
-# Anchor Server
+# Notara Server
 
-Nest.js backend for Anchor application.
+Nest.js backend for Notara application.
 
 ## Prerequisites
 
@@ -17,7 +17,7 @@ Nest.js backend for Anchor application.
 2.  Set up environment variables:
     Copy `.env.example` to `.env` (if it exists) or ensure `.env` has:
     ```env
-    DATABASE_URL="postgresql://anchor:password@localhost:5432/anchor?schema=public"
+    DATABASE_URL="postgresql://notara:password@localhost:5432/notara?schema=public"
     JWT_SECRET="supersecretkey"
     PORT=3001
     ```

@@ -155,7 +155,7 @@ export function RichTextEditor({
           />
         </div>
       )}
-      <div className="anchor-quill">
+      <div className="notara-quill">
         <ReactQuill
           ref={quillRef}
           theme="snow"

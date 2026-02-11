@@ -97,16 +97,16 @@ jobs:
       - name: Rename APKs
         run: |
           VERSION=${GITHUB_REF#refs/tags/v}
-          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/anchor-${VERSION}.apk
-          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk build/app/outputs/flutter-apk/anchor-${VERSION}-armeabi-v7a.apk
-          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/anchor-${VERSION}-arm64-v8a.apk
-          mv build/app/outputs/flutter-apk/app-x86_64-release.apk build/app/outputs/flutter-apk/anchor-${VERSION}-x86_64.apk
+          mv build/app/outputs/flutter-apk/app-release.apk build/app/outputs/flutter-apk/notara-${VERSION}.apk
+          mv build/app/outputs/flutter-apk/app-armeabi-v7a-release.apk build/app/outputs/flutter-apk/notara-${VERSION}-armeabi-v7a.apk
+          mv build/app/outputs/flutter-apk/app-arm64-v8a-release.apk build/app/outputs/flutter-apk/notara-${VERSION}-arm64-v8a.apk
+          mv build/app/outputs/flutter-apk/app-x86_64-release.apk build/app/outputs/flutter-apk/notara-${VERSION}-x86_64.apk
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: android-apk
-          path: mobile/build/app/outputs/flutter-apk/anchor-*.apk
+          path: mobile/build/app/outputs/flutter-apk/notara-*.apk
 
   create-release:
     runs-on: ubuntu-latest
@@ -138,6 +138,6 @@ jobs:
         with:
           body_path: release-notes.md
           files: |
-            artifacts/anchor-*.apk
+            artifacts/notara-*.apk
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
