@@ -1,4 +1,7 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
@@ -54,12 +57,17 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: _bgLight,
       textTheme: _buildTextTheme(base.textTheme),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: Platform.isIOS,
         scrolledUnderElevation: 0,
-        iconTheme: IconThemeData(color: _primaryLight),
+        iconTheme: const IconThemeData(color: _primaryLight),
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.light, // iOS: light background
+          statusBarIconBrightness: Brightness.dark, // Android: dark icons
+          statusBarColor: Colors.transparent,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 0,
@@ -105,12 +113,17 @@ class AppTheme {
       ),
       scaffoldBackgroundColor: _bgDark,
       textTheme: _buildTextTheme(base.textTheme),
-      appBarTheme: const AppBarTheme(
+      appBarTheme: AppBarTheme(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        centerTitle: false,
+        centerTitle: Platform.isIOS,
         scrolledUnderElevation: 0,
-        iconTheme: IconThemeData(color: _primaryDark),
+        iconTheme: const IconThemeData(color: _primaryDark),
+        systemOverlayStyle: const SystemUiOverlayStyle(
+          statusBarBrightness: Brightness.dark, // iOS: dark background
+          statusBarIconBrightness: Brightness.light, // Android: light icons
+          statusBarColor: Colors.transparent,
+        ),
       ),
       cardTheme: CardThemeData(
         elevation: 0,

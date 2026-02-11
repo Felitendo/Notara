@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -99,7 +101,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
                 onPressed: () => context.pop(),
               ),
               flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+                centerTitle: Platform.isIOS,
+                titlePadding: EdgeInsets.only(
+                  left: 56,
+                  right: Platform.isIOS ? 56 : 0,
+                  bottom: 12,
+                ),
                 title: Text(
                   'Settings',
                   style: GoogleFonts.playfairDisplay(

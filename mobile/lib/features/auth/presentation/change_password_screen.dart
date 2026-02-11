@@ -1,3 +1,5 @@
+import 'dart:io' show Platform;
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
@@ -54,7 +56,6 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     final state = ref.watch(authControllerProvider);
@@ -105,7 +106,12 @@ class _ChangePasswordScreenState extends ConsumerState<ChangePasswordScreen> {
                 onPressed: () => context.pop(),
               ),
               flexibleSpace: FlexibleSpaceBar(
-                titlePadding: const EdgeInsets.only(left: 20, bottom: 16),
+                centerTitle: Platform.isIOS,
+                titlePadding: EdgeInsets.only(
+                  left: 56,
+                  right: Platform.isIOS ? 56 : 0,
+                  bottom: 12,
+                ),
                 title: Text(
                   'Change Password',
                   style: GoogleFonts.playfairDisplay(
