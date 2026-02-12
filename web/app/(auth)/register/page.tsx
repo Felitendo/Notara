@@ -72,6 +72,7 @@ export default function RegisterPage() {
               alt="Notara"
               width={64}
               height={64}
+              className="rounded-[20%]"
             />
           </div>
           <div className="space-y-1">
@@ -115,6 +116,7 @@ export default function RegisterPage() {
             alt="Notara"
             width={64}
             height={64}
+            className="rounded-[20%]"
           />
         </div>
         <div className="space-y-1">

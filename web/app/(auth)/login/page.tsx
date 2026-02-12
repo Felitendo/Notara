@@ -31,6 +31,7 @@ export default function LoginPage() {
             alt="Notara"
             width={64}
             height={64}
+            className="rounded-[20%]"
           />
         </div>
         <div className="space-y-1">
