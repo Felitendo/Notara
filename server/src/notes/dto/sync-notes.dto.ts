@@ -53,6 +53,10 @@ export class SyncNoteDto {
   position?: number | null;
 
   @IsDateString()
+  @IsOptional()
+  reminderAt?: string | null;
+
+  @IsDateString()
   updatedAt: string;
 }
 

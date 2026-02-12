@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:notara/core/notifications/notification_service.dart';
 
 const _themeModeKey = 'theme_mode';
 const _storage = FlutterSecureStorage();
@@ -28,4 +29,7 @@ Future<void> initializeApp() async {
 
   // Load saved user ID for per-user database selection
   initialUserId = await _storage.read(key: 'user_id');
+
+  // Initialize notification service
+  await NotificationService.instance.initialize();
 }

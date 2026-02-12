@@ -175,6 +175,33 @@ class NoteCard extends ConsumerWidget {
                             error: (_, _) => const SizedBox.shrink(),
                           ),
                         ],
+                        // Reminder badge
+                        if (note.hasReminder) ...[
+                          const SizedBox(height: 10),
+                          Row(
+                            children: [
+                              Icon(
+                                note.isReminderOverdue
+                                    ? LucideIcons.bellRing
+                                    : LucideIcons.bell,
+                                size: 14,
+                                color: note.isReminderOverdue
+                                    ? theme.colorScheme.error
+                                    : theme.colorScheme.primary,
+                              ),
+                              const SizedBox(width: 4),
+                              Text(
+                                _formatReminder(note.reminderAt!),
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  fontWeight: FontWeight.w600,
+                                  color: note.isReminderOverdue
+                                      ? theme.colorScheme.error
+                                      : theme.colorScheme.primary,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
                         const SizedBox(height: 16),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -221,6 +248,21 @@ class NoteCard extends ConsumerWidget {
       ),
     );
   }
+}
+
+String _formatReminder(DateTime dt) {
+  final now = DateTime.now();
+  final tomorrow = DateTime(now.year, now.month, now.day + 1);
+
+  if (dt.year == now.year && dt.month == now.month && dt.day == now.day) {
+    return 'Today, ${DateFormat.jm().format(dt)}';
+  }
+  if (dt.year == tomorrow.year &&
+      dt.month == tomorrow.month &&
+      dt.day == tomorrow.day) {
+    return 'Tomorrow, ${DateFormat.jm().format(dt)}';
+  }
+  return '${DateFormat.MMMd().format(dt)}, ${DateFormat.jm().format(dt)}';
 }
 
 /// Avatar widget to display the profile image of the user who shared the note

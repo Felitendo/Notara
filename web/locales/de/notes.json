@@ -26,7 +26,8 @@
     "moveToTrash": "In den Papierkorb verschieben",
     "restoreNote": "Notiz wiederherstellen",
     "deleteForever": "Endgültig löschen",
-    "changeBackground": "Hintergrund ändern"
+    "changeBackground": "Hintergrund ändern",
+    "reminder": "Erinnerung setzen"
   },
 
   "readOnlyBanner": {
@@ -121,6 +122,23 @@
     "restoreFailed": "Notiz konnte nicht wiederhergestellt werden",
     "permanentlyDeleted": "Notiz endgültig gelöscht",
     "permanentDeleteFailed": "Notiz konnte nicht gelöscht werden"
+  },
+
+  "reminder": {
+    "title": "Erinnerung",
+    "subtitle": "Lass dich zur richtigen Zeit benachrichtigen",
+    "laterToday": "Später heute",
+    "tomorrowMorning": "Morgen früh",
+    "tomorrowEvening": "Morgen Abend",
+    "nextMonday": "Nächsten Montag",
+    "pickDateTime": "Datum & Uhrzeit wählen",
+    "remove": "Erinnerung entfernen",
+    "overdue": "Überfällig",
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "time": "Uhrzeit",
+    "today": "Heute",
+    "tomorrow": "Morgen"
   },
 
   "background": {

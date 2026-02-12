@@ -39,6 +39,7 @@ import {
   bulkArchiveNotes,
   reorderNotes,
   useSelectionMode,
+  useReminderNotifications,
 } from "@/features/notes";
 import { getTags } from "@/features/tags";
 import { Header } from "@/components/layout";
@@ -101,6 +102,9 @@ export default function NotesPage() {
     queryKey: ["tags"],
     queryFn: getTags,
   });
+
+  // Browser reminder notifications
+  useReminderNotifications(notes);
 
   // Join tags with notes based on tagIds
   const notesWithTags = useMemo(() => {

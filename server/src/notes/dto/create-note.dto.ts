@@ -1,5 +1,6 @@
 import {
   IsBoolean,
+  IsDateString,
   IsOptional,
   IsString,
   IsNotEmpty,
@@ -31,6 +32,10 @@ export class CreateNoteDto {
   @IsInt()
   @IsOptional()
   position?: number;
+
+  @IsDateString()
+  @IsOptional()
+  reminderAt?: string;
 
   @IsArray()
   @IsString({ each: true })

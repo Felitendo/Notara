@@ -24,6 +24,7 @@ export interface Note {
   isPinned: boolean;
   isArchived: boolean;
   background?: string | null;
+  reminderAt?: string | null;
   position?: number | null;
   state: NoteState;
   createdAt: string;
@@ -54,6 +55,7 @@ export interface CreateNoteDto {
   isPinned?: boolean;
   isArchived?: boolean;
   background?: string | null;
+  reminderAt?: string | null;
   tagIds?: string[];
 }
 
@@ -63,6 +65,7 @@ export interface UpdateNoteDto {
   isPinned?: boolean;
   isArchived?: boolean;
   background?: string | null;
+  reminderAt?: string | null;
   position?: number | null;
   tagIds?: string[];
 }

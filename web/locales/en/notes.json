@@ -26,7 +26,8 @@
     "moveToTrash": "Move to trash",
     "restoreNote": "Restore note",
     "deleteForever": "Delete forever",
-    "changeBackground": "Change background"
+    "changeBackground": "Change background",
+    "reminder": "Set reminder"
   },
 
   "readOnlyBanner": {
@@ -121,6 +122,23 @@
     "restoreFailed": "Failed to restore note",
     "permanentlyDeleted": "Note permanently deleted",
     "permanentDeleteFailed": "Failed to delete note"
+  },
+
+  "reminder": {
+    "title": "Reminder",
+    "subtitle": "Get notified at the right time",
+    "laterToday": "Later today",
+    "tomorrowMorning": "Tomorrow morning",
+    "tomorrowEvening": "Tomorrow evening",
+    "nextMonday": "Next Monday",
+    "pickDateTime": "Pick date & time",
+    "remove": "Remove reminder",
+    "overdue": "Overdue",
+    "save": "Save",
+    "cancel": "Cancel",
+    "time": "Time",
+    "today": "Today",
+    "tomorrow": "Tomorrow"
   },
 
   "background": {

@@ -44,6 +44,7 @@ export default function NoteEditorPage() {
   const [isArchived, setIsArchived] = useState(false);
   const [selectedTagIds, setSelectedTagIds] = useState<string[]>([]);
   const [background, setBackground] = useState<string | null>(null);
+  const [reminderAt, setReminderAt] = useState<string | null>(null);
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [archiveDialogOpen, setArchiveDialogOpen] = useState(false);
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
@@ -58,6 +59,7 @@ export default function NoteEditorPage() {
     isPinned: boolean;
     tagIds: string[];
     background: string | null;
+    reminderAt: string | null;
   } | null>(null);
 
   // Try to get note from sessionStorage first (passed from note card)
@@ -109,12 +111,14 @@ export default function NoteEditorPage() {
       const tagIds = note.tagIds || note.tags?.map((t) => t.id) || [];
       setSelectedTagIds(tagIds);
       setBackground(note.background || null);
+      setReminderAt(note.reminderAt || null);
       lastSavedRef.current = {
         title: note.title,
         content: note.content || "",
         isPinned: note.isPinned,
         tagIds,
         background: note.background || null,
+        reminderAt: note.reminderAt || null,
       };
     } else if (isNew && tagIdFromUrl) {
       // Initialize with tag from URL when creating a new note
@@ -153,6 +157,7 @@ export default function NoteEditorPage() {
         isPinned,
         tagIds: selectedTagIds,
         background,
+        reminderAt,
       };
     },
     onError: () => {
@@ -257,10 +262,11 @@ export default function NoteEditorPage() {
       content !== lastSavedRef.current.content ||
       isPinned !== lastSavedRef.current.isPinned ||
       background !== lastSavedRef.current.background ||
+      reminderAt !== lastSavedRef.current.reminderAt ||
       JSON.stringify(selectedTagIds.sort()) !==
       JSON.stringify(lastSavedRef.current.tagIds.sort())
     );
-  }, [title, content, isPinned, selectedTagIds, background, isNew]);
+  }, [title, content, isPinned, selectedTagIds, background, reminderAt, isNew]);
 
   useEffect(() => {
     setHasUnsavedChanges(checkUnsavedChanges());
@@ -277,6 +283,7 @@ export default function NoteEditorPage() {
         content: content || undefined,
         isPinned,
         background: background,
+        reminderAt: reminderAt,
         tagIds: selectedTagIds,
       });
     } else {
@@ -285,10 +292,11 @@ export default function NoteEditorPage() {
         content: content || undefined,
         isPinned,
         background: background,
+        reminderAt: reminderAt,
         tagIds: selectedTagIds,
       });
     }
-  }, [title, content, isPinned, selectedTagIds, background, isNew, isReadOnly, createMutation, updateMutation]);
+  }, [title, content, isPinned, selectedTagIds, background, reminderAt, isNew, isReadOnly, createMutation, updateMutation]);
 
   // Debounced auto-save (disabled when read-only)
   useEffect(() => {
@@ -368,6 +376,8 @@ export default function NoteEditorPage() {
         onBack={handleBack}
         onTogglePin={togglePin}
         onBackgroundChange={setBackground}
+        reminderAt={reminderAt}
+        onReminderChange={setReminderAt}
         onArchiveClick={() => setArchiveDialogOpen(true)}
         onDeleteClick={() => setDeleteDialogOpen(true)}
         onRestoreClick={() => setRestoreDialogOpen(true)}

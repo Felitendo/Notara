@@ -15,6 +15,8 @@ import 'package:notara/features/tags/presentation/widgets/tag_selector.dart';
 import 'package:notara/features/notes/presentation/widgets/note_background.dart';
 import 'package:notara/features/notes/presentation/widgets/note_background_picker.dart';
 import 'package:notara/features/notes/presentation/widgets/share_note_sheet.dart';
+import 'package:notara/features/notes/presentation/widgets/reminder_picker.dart';
+import 'package:notara/core/notifications/notification_service.dart';
 import '../data/repository/notes_repository.dart';
 
 class NoteEditScreen extends ConsumerStatefulWidget {
@@ -41,6 +43,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
   String? _initialContent;
   List<String> _selectedTagIds = [];
   String? _selectedBackground;
+  DateTime? _selectedReminderAt;
 
   // Auto-save state
   Timer? _autoSaveTimer;
@@ -49,6 +52,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
   String? _lastSavedContent;
   Set<String>? _lastSavedTagIds;
   String? _lastSavedBackground;
+  DateTime? _lastSavedReminderAt;
   bool? _lastSavedPinned;
 
   @override
@@ -66,6 +70,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
       _initialContent = widget.note!.content;
       _selectedTagIds = List.from(widget.note!.tagIds);
       _selectedBackground = widget.note!.background;
+      _selectedReminderAt = widget.note!.reminderAt;
       _isLoaded = true;
       // Trashed notes or viewer notes are read-only
       if (widget.note!.isTrashed || !widget.note!.canEdit) {
@@ -94,6 +99,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
     _lastSavedContent = note.content;
     _lastSavedTagIds = note.tagIds.toSet();
     _lastSavedBackground = note.background;
+    _lastSavedReminderAt = note.reminderAt;
     _lastSavedPinned = note.isPinned;
   }
 
@@ -135,6 +141,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
         _initialContent = note.content;
         _selectedTagIds = List.from(note.tagIds);
         _selectedBackground = note.background;
+        _selectedReminderAt = note.reminderAt;
         _isLoaded = true;
         // Trashed notes or viewer notes are read-only
         if (note.isTrashed || !note.canEdit) {
@@ -172,6 +179,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
           plainText.isNotEmpty ||
           _isPinned ||
           _selectedBackground != null ||
+          _selectedReminderAt != null ||
           currentTagIds.isNotEmpty;
     }
 
@@ -186,6 +194,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
         currentContent != (_lastSavedContent ?? '') ||
         !_setEquals(currentTagIds, _lastSavedTagIds ?? {}) ||
         _selectedBackground != _lastSavedBackground ||
+        _selectedReminderAt != _lastSavedReminderAt ||
         _isPinned != (_lastSavedPinned ?? false);
   }
 
@@ -213,6 +222,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
     _lastSavedContent = editorState?.getContent() ?? '';
     _lastSavedTagIds = _selectedTagIds.toSet();
     _lastSavedBackground = _selectedBackground;
+    _lastSavedReminderAt = _selectedReminderAt;
     _lastSavedPinned = _isPinned;
 
     if (mounted) {
@@ -349,6 +359,24 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
     });
   }
 
+  void _showReminderPicker() {
+    if (_existingNote?.isTrashed == true) return;
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (context) => ReminderPicker(
+        currentReminder: _selectedReminderAt,
+        onReminderChanged: (reminder) {
+          setState(() {
+            _selectedReminderAt = reminder;
+          });
+          _onContentChanged();
+        },
+      ),
+    );
+  }
+
   Future<void> _reloadNoteShareInfo() async {
     final noteId = widget.noteId ?? _existingNote?.id;
     if (noteId == null) return;
@@ -400,6 +428,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
         isPinned: _isPinned,
         tagIds: _selectedTagIds,
         background: _selectedBackground,
+        reminderAt: _selectedReminderAt,
         updatedAt: DateTime.now(),
         isSynced: false,
       );
@@ -431,6 +460,7 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
         isArchived: _isArchived,
         tagIds: _selectedTagIds,
         background: _selectedBackground,
+        reminderAt: _selectedReminderAt,
         updatedAt: DateTime.now(),
         isSynced: false,
       );
@@ -439,6 +469,22 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
         setState(() {
           _existingNote = updatedNote;
         });
+      }
+    }
+
+    // Schedule or cancel notification
+    final noteId = _existingNote?.id;
+    if (noteId != null) {
+      if (_selectedReminderAt != null) {
+        await NotificationService.instance.scheduleReminder(
+          noteId: noteId,
+          title: _titleController.text.trim().isNotEmpty
+              ? _titleController.text.trim()
+              : 'Untitled',
+          reminderAt: _selectedReminderAt!,
+        );
+      } else {
+        await NotificationService.instance.cancelReminder(noteId);
       }
     }
   }
@@ -640,8 +686,26 @@ class _NoteEditScreenState extends ConsumerState<NoteEditScreen>
                       ),
                     ),
                   ),
-                // Background and Pin - shown for non-read-only (owners and editors)
+                // Background, Reminder, and Pin - shown for non-read-only (owners and editors)
                 if (!isReadOnly) ...[
+                  // Reminder button (owner only)
+                  if (_existingNote?.isOwner ?? true)
+                    IconButton(
+                      icon: Icon(
+                        _selectedReminderAt != null
+                            ? LucideIcons.bellRing
+                            : LucideIcons.bell,
+                        color: _selectedReminderAt != null
+                            ? (_selectedReminderAt!.isBefore(DateTime.now())
+                                ? theme.colorScheme.error
+                                : theme.colorScheme.primary)
+                            : theme.colorScheme.onSurface,
+                      ),
+                      onPressed: _isLoaded && !isTrashed
+                          ? _showReminderPicker
+                          : null,
+                      tooltip: 'Set Reminder',
+                    ),
                   IconButton(
                     icon: Stack(
                       clipBehavior: Clip.none,

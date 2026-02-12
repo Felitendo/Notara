@@ -59,6 +59,7 @@ abstract class Note with _$Note {
     @Default(false) bool isPinned,
     @Default(false) bool isArchived,
     String? background,
+    DateTime? reminderAt,
     int? position,
     @Default(NoteState.active) NoteState state,
     DateTime? updatedAt,
@@ -81,4 +82,6 @@ abstract class Note with _$Note {
   bool get canEdit => permission.canEdit;
   bool get isShared => sharedBy != null;
   bool get hasShares => shareIds != null && shareIds!.isNotEmpty;
+  bool get hasReminder => reminderAt != null;
+  bool get isReminderOverdue => reminderAt != null && reminderAt!.isBefore(DateTime.now());
 }

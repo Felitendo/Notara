@@ -17,6 +17,7 @@ export interface TransformedNote {
   isPinned: boolean;
   isArchived: boolean;
   background: string | null;
+  reminderAt: string | null;
   position: number | null;
   state: string;
   updatedAt: string;
@@ -36,6 +37,7 @@ interface NoteWithIncludes {
   isPinned: boolean;
   isArchived: boolean;
   background: string | null;
+  reminderAt: Date | null;
   position: number | null;
   state: string;
   createdAt: Date;
@@ -86,6 +88,7 @@ export function transformNote(
   const transformed: TransformedNote = {
     ...rest,
     tagIds: filteredTags.map((t) => t.id),
+    reminderAt: rest.reminderAt ? toISOString(rest.reminderAt) : null,
     createdAt: toISOString(rest.createdAt),
     updatedAt: toISOString(rest.updatedAt),
     permission,

@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/tooltip";
 import {
   NoteBackgroundPicker,
+  ReminderPicker,
 } from "@/features/notes";
 import { cn } from "@/lib/utils";
 
@@ -32,6 +33,7 @@ interface NoteEditorHeaderProps {
   isPinned: boolean;
   isArchived: boolean;
   background: string | null;
+  reminderAt?: string | null;
   isSaving: boolean;
   hasUnsavedChanges: boolean;
   isSaved: boolean;
@@ -42,6 +44,7 @@ interface NoteEditorHeaderProps {
   onBack: () => void;
   onTogglePin: () => void;
   onBackgroundChange: (background: string | null) => void;
+  onReminderChange?: (reminderAt: string | null) => void;
   onArchiveClick: () => void;
   onDeleteClick: () => void;
   onRestoreClick: () => void;
@@ -57,6 +60,7 @@ export function NoteEditorHeader({
   isPinned,
   isArchived,
   background,
+  reminderAt,
   isSaving,
   hasUnsavedChanges,
   isSaved,
@@ -67,6 +71,7 @@ export function NoteEditorHeader({
   onBack,
   onTogglePin,
   onBackgroundChange,
+  onReminderChange,
   onArchiveClick,
   onDeleteClick,
   onRestoreClick,
@@ -154,6 +159,14 @@ export function NoteEditorHeader({
                 onBackgroundChange={onBackgroundChange}
                 disabled={isReadOnly}
               />
+
+              {isOwner && onReminderChange && (
+                <ReminderPicker
+                  reminderAt={reminderAt ?? null}
+                  onReminderChange={onReminderChange}
+                  disabled={isReadOnly}
+                />
+              )}
 
               <Tooltip>
                 <TooltipTrigger asChild>

@@ -363,6 +363,9 @@ export class NotesService {
             isPinned: change.isPinned ?? false,
             isArchived: change.isArchived ?? false,
             background: change.background,
+            reminderAt: change.reminderAt
+              ? new Date(change.reminderAt)
+              : undefined,
             position: change.position,
             state: (change.state as NoteState) ?? NoteState.active,
             userId,
@@ -402,11 +405,16 @@ export class NotesService {
             position: change.position,
           };
 
-          // Only owner can update state and isArchived
+          // Only owner can update state, isArchived, and reminderAt
           if (access.isOwner) {
             updateData.isArchived = change.isArchived;
             updateData.state =
               (change.state as NoteState) ?? existingNote.state;
+            if (change.reminderAt !== undefined) {
+              updateData.reminderAt = change.reminderAt
+                ? new Date(change.reminderAt)
+                : null;
+            }
           }
 
           // Update tags if provided (editors can update tags)

@@ -11,6 +11,7 @@ import type { Note } from "@/features/notes";
 import { QuillPreview } from "@/features/notes";
 import { NoteBackground } from "./backgrounds";
 import { SharedNoteIndicator } from "./shared-note-indicator";
+import { ReminderBadge } from "../reminder";
 
 type ViewMode = "masonry" | "grid" | "list";
 
@@ -133,7 +134,7 @@ export function NoteCard({
                     className="mb-2"
                   />
 
-                  {/* Tags, Shared Indicator, and Date */}
+                  {/* Tags, Shared Indicator, Reminder, and Date */}
                   <div className="flex items-center gap-3 flex-wrap">
                     {note.tags && note.tags.length > 0 && (
                       <div className="flex flex-wrap gap-1.5">
@@ -163,6 +164,9 @@ export function NoteCard({
                       </div>
                     )}
                     <SharedNoteIndicator note={note} />
+                    {note.reminderAt && (
+                      <ReminderBadge reminderAt={note.reminderAt} />
+                    )}
                     <span className="text-xs text-muted-foreground font-medium">
                       {format.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" })}
                     </span>
@@ -280,6 +284,9 @@ export function NoteCard({
             <div className="flex items-center justify-between text-xs text-muted-foreground mt-auto">
               <div className="flex items-center gap-2 flex-wrap">
                 <SharedNoteIndicator note={note} />
+                {note.reminderAt && (
+                  <ReminderBadge reminderAt={note.reminderAt} />
+                )}
                 <span className="font-medium">
                   {format.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" })}
                 </span>

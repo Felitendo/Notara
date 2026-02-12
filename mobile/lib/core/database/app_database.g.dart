@@ -78,6 +78,17 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     type: DriftSqlType.string,
     requiredDuringInsert: false,
   );
+  static const VerificationMeta _reminderAtMeta = const VerificationMeta(
+    'reminderAt',
+  );
+  @override
+  late final GeneratedColumn<DateTime> reminderAt = GeneratedColumn<DateTime>(
+    'reminder_at',
+    aliasedName,
+    true,
+    type: DriftSqlType.dateTime,
+    requiredDuringInsert: false,
+  );
   static const VerificationMeta _positionMeta = const VerificationMeta(
     'position',
   );
@@ -200,6 +211,7 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
     isPinned,
     isArchived,
     background,
+    reminderAt,
     position,
     state,
     updatedAt,
@@ -258,6 +270,12 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
       context.handle(
         _backgroundMeta,
         background.isAcceptableOrUnknown(data['background']!, _backgroundMeta),
+      );
+    }
+    if (data.containsKey('reminder_at')) {
+      context.handle(
+        _reminderAtMeta,
+        reminderAt.isAcceptableOrUnknown(data['reminder_at']!, _reminderAtMeta),
       );
     }
     if (data.containsKey('position')) {
@@ -365,6 +383,10 @@ class $NotesTable extends Notes with TableInfo<$NotesTable, Note> {
         DriftSqlType.string,
         data['${effectivePrefix}background'],
       ),
+      reminderAt: attachedDatabase.typeMapping.read(
+        DriftSqlType.dateTime,
+        data['${effectivePrefix}reminder_at'],
+      ),
       position: attachedDatabase.typeMapping.read(
         DriftSqlType.int,
         data['${effectivePrefix}position'],
@@ -421,6 +443,7 @@ class Note extends DataClass implements Insertable<Note> {
   final bool isPinned;
   final bool isArchived;
   final String? background;
+  final DateTime? reminderAt;
   final int? position;
   final String state;
   final DateTime? updatedAt;
@@ -438,6 +461,7 @@ class Note extends DataClass implements Insertable<Note> {
     required this.isPinned,
     required this.isArchived,
     this.background,
+    this.reminderAt,
     this.position,
     required this.state,
     this.updatedAt,
@@ -461,6 +485,9 @@ class Note extends DataClass implements Insertable<Note> {
     map['is_archived'] = Variable<bool>(isArchived);
     if (!nullToAbsent || background != null) {
       map['background'] = Variable<String>(background);
+    }
+    if (!nullToAbsent || reminderAt != null) {
+      map['reminder_at'] = Variable<DateTime>(reminderAt);
     }
     if (!nullToAbsent || position != null) {
       map['position'] = Variable<int>(position);
@@ -501,6 +528,9 @@ class Note extends DataClass implements Insertable<Note> {
       background: background == null && nullToAbsent
           ? const Value.absent()
           : Value(background),
+      reminderAt: reminderAt == null && nullToAbsent
+          ? const Value.absent()
+          : Value(reminderAt),
       position: position == null && nullToAbsent
           ? const Value.absent()
           : Value(position),
@@ -540,6 +570,7 @@ class Note extends DataClass implements Insertable<Note> {
       isPinned: serializer.fromJson<bool>(json['isPinned']),
       isArchived: serializer.fromJson<bool>(json['isArchived']),
       background: serializer.fromJson<String?>(json['background']),
+      reminderAt: serializer.fromJson<DateTime?>(json['reminderAt']),
       position: serializer.fromJson<int?>(json['position']),
       state: serializer.fromJson<String>(json['state']),
       updatedAt: serializer.fromJson<DateTime?>(json['updatedAt']),
@@ -564,6 +595,7 @@ class Note extends DataClass implements Insertable<Note> {
       'isPinned': serializer.toJson<bool>(isPinned),
       'isArchived': serializer.toJson<bool>(isArchived),
       'background': serializer.toJson<String?>(background),
+      'reminderAt': serializer.toJson<DateTime?>(reminderAt),
       'position': serializer.toJson<int?>(position),
       'state': serializer.toJson<String>(state),
       'updatedAt': serializer.toJson<DateTime?>(updatedAt),
@@ -584,6 +616,7 @@ class Note extends DataClass implements Insertable<Note> {
     bool? isPinned,
     bool? isArchived,
     Value<String?> background = const Value.absent(),
+    Value<DateTime?> reminderAt = const Value.absent(),
     Value<int?> position = const Value.absent(),
     String? state,
     Value<DateTime?> updatedAt = const Value.absent(),
@@ -601,6 +634,7 @@ class Note extends DataClass implements Insertable<Note> {
     isPinned: isPinned ?? this.isPinned,
     isArchived: isArchived ?? this.isArchived,
     background: background.present ? background.value : this.background,
+    reminderAt: reminderAt.present ? reminderAt.value : this.reminderAt,
     position: position.present ? position.value : this.position,
     state: state ?? this.state,
     updatedAt: updatedAt.present ? updatedAt.value : this.updatedAt,
@@ -628,6 +662,9 @@ class Note extends DataClass implements Insertable<Note> {
       background: data.background.present
           ? data.background.value
           : this.background,
+      reminderAt: data.reminderAt.present
+          ? data.reminderAt.value
+          : this.reminderAt,
       position: data.position.present ? data.position.value : this.position,
       state: data.state.present ? data.state.value : this.state,
       updatedAt: data.updatedAt.present ? data.updatedAt.value : this.updatedAt,
@@ -660,6 +697,7 @@ class Note extends DataClass implements Insertable<Note> {
           ..write('isPinned: $isPinned, ')
           ..write('isArchived: $isArchived, ')
           ..write('background: $background, ')
+          ..write('reminderAt: $reminderAt, ')
           ..write('position: $position, ')
           ..write('state: $state, ')
           ..write('updatedAt: $updatedAt, ')
@@ -682,6 +720,7 @@ class Note extends DataClass implements Insertable<Note> {
     isPinned,
     isArchived,
     background,
+    reminderAt,
     position,
     state,
     updatedAt,
@@ -703,6 +742,7 @@ class Note extends DataClass implements Insertable<Note> {
           other.isPinned == this.isPinned &&
           other.isArchived == this.isArchived &&
           other.background == this.background &&
+          other.reminderAt == this.reminderAt &&
           other.position == this.position &&
           other.state == this.state &&
           other.updatedAt == this.updatedAt &&
@@ -722,6 +762,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
   final Value<bool> isPinned;
   final Value<bool> isArchived;
   final Value<String?> background;
+  final Value<DateTime?> reminderAt;
   final Value<int?> position;
   final Value<String> state;
   final Value<DateTime?> updatedAt;
@@ -740,6 +781,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.isPinned = const Value.absent(),
     this.isArchived = const Value.absent(),
     this.background = const Value.absent(),
+    this.reminderAt = const Value.absent(),
     this.position = const Value.absent(),
     this.state = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -759,6 +801,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     this.isPinned = const Value.absent(),
     this.isArchived = const Value.absent(),
     this.background = const Value.absent(),
+    this.reminderAt = const Value.absent(),
     this.position = const Value.absent(),
     this.state = const Value.absent(),
     this.updatedAt = const Value.absent(),
@@ -779,6 +822,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     Expression<bool>? isPinned,
     Expression<bool>? isArchived,
     Expression<String>? background,
+    Expression<DateTime>? reminderAt,
     Expression<int>? position,
     Expression<String>? state,
     Expression<DateTime>? updatedAt,
@@ -798,6 +842,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
       if (isPinned != null) 'is_pinned': isPinned,
       if (isArchived != null) 'is_archived': isArchived,
       if (background != null) 'background': background,
+      if (reminderAt != null) 'reminder_at': reminderAt,
       if (position != null) 'position': position,
       if (state != null) 'state': state,
       if (updatedAt != null) 'updated_at': updatedAt,
@@ -820,6 +865,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
     Value<bool>? isPinned,
     Value<bool>? isArchived,
     Value<String?>? background,
+    Value<DateTime?>? reminderAt,
     Value<int?>? position,
     Value<String>? state,
     Value<DateTime?>? updatedAt,
@@ -839,6 +885,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
       isPinned: isPinned ?? this.isPinned,
       isArchived: isArchived ?? this.isArchived,
       background: background ?? this.background,
+      reminderAt: reminderAt ?? this.reminderAt,
       position: position ?? this.position,
       state: state ?? this.state,
       updatedAt: updatedAt ?? this.updatedAt,
@@ -873,6 +920,9 @@ class NotesCompanion extends UpdateCompanion<Note> {
     }
     if (background.present) {
       map['background'] = Variable<String>(background.value);
+    }
+    if (reminderAt.present) {
+      map['reminder_at'] = Variable<DateTime>(reminderAt.value);
     }
     if (position.present) {
       map['position'] = Variable<int>(position.value);
@@ -921,6 +971,7 @@ class NotesCompanion extends UpdateCompanion<Note> {
           ..write('isPinned: $isPinned, ')
           ..write('isArchived: $isArchived, ')
           ..write('background: $background, ')
+          ..write('reminderAt: $reminderAt, ')
           ..write('position: $position, ')
           ..write('state: $state, ')
           ..write('updatedAt: $updatedAt, ')
@@ -1574,6 +1625,7 @@ typedef $$NotesTableCreateCompanionBuilder =
       Value<bool> isPinned,
       Value<bool> isArchived,
       Value<String?> background,
+      Value<DateTime?> reminderAt,
       Value<int?> position,
       Value<String> state,
       Value<DateTime?> updatedAt,
@@ -1594,6 +1646,7 @@ typedef $$NotesTableUpdateCompanionBuilder =
       Value<bool> isPinned,
       Value<bool> isArchived,
       Value<String?> background,
+      Value<DateTime?> reminderAt,
       Value<int?> position,
       Value<String> state,
       Value<DateTime?> updatedAt,
@@ -1642,6 +1695,11 @@ class $$NotesTableFilterComposer extends Composer<_$AppDatabase, $NotesTable> {
 
   ColumnFilters<String> get background => $composableBuilder(
     column: $table.background,
+    builder: (column) => ColumnFilters(column),
+  );
+
+  ColumnFilters<DateTime> get reminderAt => $composableBuilder(
+    column: $table.reminderAt,
     builder: (column) => ColumnFilters(column),
   );
 
@@ -1735,6 +1793,11 @@ class $$NotesTableOrderingComposer
     builder: (column) => ColumnOrderings(column),
   );
 
+  ColumnOrderings<DateTime> get reminderAt => $composableBuilder(
+    column: $table.reminderAt,
+    builder: (column) => ColumnOrderings(column),
+  );
+
   ColumnOrderings<int> get position => $composableBuilder(
     column: $table.position,
     builder: (column) => ColumnOrderings(column),
@@ -1817,6 +1880,11 @@ class $$NotesTableAnnotationComposer
     builder: (column) => column,
   );
 
+  GeneratedColumn<DateTime> get reminderAt => $composableBuilder(
+    column: $table.reminderAt,
+    builder: (column) => column,
+  );
+
   GeneratedColumn<int> get position =>
       $composableBuilder(column: $table.position, builder: (column) => column);
 
@@ -1892,6 +1960,7 @@ class $$NotesTableTableManager
                 Value<bool> isPinned = const Value.absent(),
                 Value<bool> isArchived = const Value.absent(),
                 Value<String?> background = const Value.absent(),
+                Value<DateTime?> reminderAt = const Value.absent(),
                 Value<int?> position = const Value.absent(),
                 Value<String> state = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -1910,6 +1979,7 @@ class $$NotesTableTableManager
                 isPinned: isPinned,
                 isArchived: isArchived,
                 background: background,
+                reminderAt: reminderAt,
                 position: position,
                 state: state,
                 updatedAt: updatedAt,
@@ -1930,6 +2000,7 @@ class $$NotesTableTableManager
                 Value<bool> isPinned = const Value.absent(),
                 Value<bool> isArchived = const Value.absent(),
                 Value<String?> background = const Value.absent(),
+                Value<DateTime?> reminderAt = const Value.absent(),
                 Value<int?> position = const Value.absent(),
                 Value<String> state = const Value.absent(),
                 Value<DateTime?> updatedAt = const Value.absent(),
@@ -1948,6 +2019,7 @@ class $$NotesTableTableManager
                 isPinned: isPinned,
                 isArchived: isArchived,
                 background: background,
+                reminderAt: reminderAt,
                 position: position,
                 state: state,
                 updatedAt: updatedAt,
