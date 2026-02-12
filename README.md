@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/Felitendo/Notara/main/web/public/icons/notara_icon.png" alt="Notara" width="120" height="120">
+<img src="https://raw.githubusercontent.com/Felitendo/Notara/main/web/public/icons/notara_icon_rounded.png" alt="Notara" width="120" height="120">
 
 # Notara
 
