@@ -7,8 +7,10 @@ import { useAuthStore, hasAccessToken } from "../store";
 import { login as loginApi, register as registerApi, getMe } from "../api";
 import type { LoginCredentials, RegisterCredentials } from "../types";
 import { toast } from "sonner";
+import { useTranslations } from "next-intl";
 
 export function useAuth() {
+  const t = useTranslations("auth");
   const router = useRouter();
   const {
     user,
@@ -55,12 +57,12 @@ export function useAuth() {
     onSuccess: (data) => {
       if (data.access_token && data.refresh_token) {
         setAuth(data.user, data.access_token, data.refresh_token);
-        toast.success("Welcome back!");
+        toast.success(t("login.welcomeBack"));
         router.push("/");
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to login");
+      toast.error(error.message || t("login.failed"));
     },
   });
 
@@ -70,16 +72,16 @@ export function useAuth() {
       if (data.access_token && data.refresh_token) {
         // User is active, log them in
         setAuth(data.user, data.access_token, data.refresh_token);
-        toast.success("Account created successfully!");
+        toast.success(t("register.success"));
         router.push("/");
       } else {
         // User is pending approval
-        toast.success(data.message || "Registration successful. Your account is pending approval.");
+        toast.success(data.message || t("register.pendingApproval"));
         router.push("/login");
       }
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to create account");
+      toast.error(error.message || t("register.failed"));
     },
   });
 

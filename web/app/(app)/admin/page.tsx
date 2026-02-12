@@ -63,9 +63,12 @@ import {
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { toast } from "sonner";
-import { format } from "date-fns";
+import { useTranslations, useFormatter } from "next-intl";
 
 export default function AdminPage() {
+  const t = useTranslations("admin");
+  const tc = useTranslations("common");
+  const formatter = useFormatter();
   const queryClient = useQueryClient();
   const [userDialogOpen, setUserDialogOpen] = useState(false);
   const [resetPasswordDialogOpen, setResetPasswordDialogOpen] = useState(false);
@@ -105,10 +108,10 @@ export default function AdminPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["admin", "settings"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "users", "pending"] });
-      toast.success("Registration mode updated successfully");
+      toast.success(t("registration.modeUpdated"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update registration mode");
+      toast.error(error.message || t("registration.modeFailed"));
     },
   });
 
@@ -118,10 +121,10 @@ export default function AdminPage() {
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "users", "pending"] });
       queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
-      toast.success("User approved successfully");
+      toast.success(t("pending.approved"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to approve user");
+      toast.error(error.message || t("pending.approveFailed"));
     },
   });
 
@@ -133,10 +136,10 @@ export default function AdminPage() {
       queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
       setRejectUserDialogOpen(false);
       setSelectedUser(null);
-      toast.success("User rejected successfully");
+      toast.success(t("pending.rejected"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to reject user");
+      toast.error(error.message || t("pending.rejectFailed"));
     },
   });
 
@@ -149,10 +152,10 @@ export default function AdminPage() {
       setUserDialogOpen(false);
       setFormData({ email: "", password: "", name: "" });
       setIsEditing(false);
-      toast.success("User created successfully");
+      toast.success(t("userDialog.createSuccess"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to create user");
+      toast.error(error.message || t("userDialog.createFailed"));
     },
   });
 
@@ -165,10 +168,10 @@ export default function AdminPage() {
       setSelectedUser(null);
       setFormData({ email: "", password: "", name: "" });
       setIsEditing(false);
-      toast.success("User updated successfully");
+      toast.success(t("userDialog.updateSuccess"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update user");
+      toast.error(error.message || t("userDialog.updateFailed"));
     },
   });
 
@@ -179,10 +182,10 @@ export default function AdminPage() {
       queryClient.invalidateQueries({ queryKey: ["admin", "stats"] });
       setDeleteUserDialogOpen(false);
       setSelectedUser(null);
-      toast.success("User deleted successfully");
+      toast.success(t("deleteDialog.success"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to delete user");
+      toast.error(error.message || t("deleteDialog.failed"));
     },
   });
 
@@ -191,10 +194,10 @@ export default function AdminPage() {
     onSuccess: (data) => {
       setResetPasswordResult(data.newPassword || null);
       queryClient.invalidateQueries({ queryKey: ["admin", "users"] });
-      toast.success("Password reset successfully");
+      toast.success(t("resetDialog.success"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to reset password");
+      toast.error(error.message || t("resetDialog.failed"));
     },
   });
 
@@ -248,7 +251,7 @@ export default function AdminPage() {
       });
     } else {
       if (!formData.password) {
-        toast.error("Password is required");
+        toast.error(t("userDialog.passwordRequired"));
         return;
       }
       createUserMutation.mutate(formData);
@@ -264,7 +267,7 @@ export default function AdminPage() {
   const copyPassword = () => {
     if (resetPasswordResult) {
       navigator.clipboard.writeText(resetPasswordResult);
-      toast.success("Password copied to clipboard");
+      toast.success(t("resetDialog.copied"));
     }
   };
 
@@ -273,9 +276,9 @@ export default function AdminPage() {
       <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-3xl font-serif font-bold">Admin Settings</h1>
+            <h1 className="text-3xl font-serif font-bold">{t("title")}</h1>
             <p className="text-muted-foreground mt-1">
-              Manage users and view statistics
+              {t("subtitle")}
             </p>
           </div>
         </div>
@@ -284,7 +287,7 @@ export default function AdminPage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Users</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("stats.totalUsers")}</CardTitle>
               <Users className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -296,7 +299,7 @@ export default function AdminPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Notes</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("stats.totalNotes")}</CardTitle>
               <FileText className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -308,7 +311,7 @@ export default function AdminPage() {
 
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">Total Tags</CardTitle>
+              <CardTitle className="text-sm font-medium">{t("stats.totalTags")}</CardTitle>
               <Tag className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
@@ -325,7 +328,7 @@ export default function AdminPage() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-2">
                 <Settings className="h-5 w-5" />
-                <CardTitle>Registration Settings</CardTitle>
+                <CardTitle>{t("registration.title")}</CardTitle>
               </div>
             </div>
           </CardHeader>
@@ -340,13 +343,13 @@ export default function AdminPage() {
                   <div className="flex items-start gap-2 p-3 border rounded-lg bg-muted/50">
                     <Lock className="h-3.5 w-3.5 mt-0.5 text-muted-foreground shrink-0" />
                     <p className="text-xs text-muted-foreground">
-                      Controlled by <code className="px-1 py-0.5 bg-background rounded text-[10px] font-mono">USER_SIGNUP</code> env variable. Remove it to manage from UI.
+                      {t("registration.envHint", { code: t("registration.envCode") })}
                     </p>
                   </div>
                 )}
                 <div className="space-y-2">
                   <div className="flex flex-col md:flex-row md:items-center gap-2 md:gap-4">
-                    <Label className="whitespace-nowrap">Registration Mode</Label>
+                    <Label className="whitespace-nowrap">{t("registration.mode")}</Label>
                     <ToggleGroup
                       type="single"
                       value={registrationSettings.mode}
@@ -358,21 +361,21 @@ export default function AdminPage() {
                       disabled={registrationSettings.isLocked || updateRegistrationModeMutation.isPending}
                       className="justify-start border rounded-md"
                     >
-                      <ToggleGroupItem value="enabled" aria-label="Enabled">
-                        Enabled
+                      <ToggleGroupItem value="enabled" aria-label={t("registration.enabled")}>
+                        {t("registration.enabled")}
                       </ToggleGroupItem>
-                      <ToggleGroupItem value="review" aria-label="Require Review">
-                        Require Review
+                      <ToggleGroupItem value="review" aria-label={t("registration.review")}>
+                        {t("registration.review")}
                       </ToggleGroupItem>
-                      <ToggleGroupItem value="disabled" aria-label="Disabled">
-                        Disabled
+                      <ToggleGroupItem value="disabled" aria-label={t("registration.disabled")}>
+                        {t("registration.disabled")}
                       </ToggleGroupItem>
                     </ToggleGroup>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    {registrationSettings.mode === "disabled" && "Registration is disabled. Only admins can create users."}
-                    {registrationSettings.mode === "enabled" && "Users can register immediately without approval."}
-                    {registrationSettings.mode === "review" && "Users can register but require admin approval before they can log in."}
+                    {registrationSettings.mode === "disabled" && t("registration.disabledDescription")}
+                    {registrationSettings.mode === "enabled" && t("registration.enabledDescription")}
+                    {registrationSettings.mode === "review" && t("registration.reviewDescription")}
                   </p>
                 </div>
               </>
@@ -386,13 +389,13 @@ export default function AdminPage() {
             <CardHeader>
               <div className="flex items-center justify-between">
                 <div>
-                  <CardTitle>Pending User Approvals</CardTitle>
+                  <CardTitle>{t("pending.title")}</CardTitle>
                   <p className="text-sm text-muted-foreground mt-1">
-                    Users awaiting approval to access the system
+                    {t("pending.description")}
                   </p>
                 </div>
                 <Badge variant="outline" className="text-sm">
-                  {pendingUsersLoading ? "..." : pendingUsers.length} pending
+                  {pendingUsersLoading ? "..." : t("pending.count", { count: pendingUsers.length })}
                 </Badge>
               </div>
             </CardHeader>
@@ -405,10 +408,10 @@ export default function AdminPage() {
                 <Table>
                   <TableHeader>
                     <TableRow>
-                      <TableHead>Name</TableHead>
-                      <TableHead>Email</TableHead>
-                      <TableHead>Registered</TableHead>
-                      <TableHead className="text-right">Actions</TableHead>
+                      <TableHead>{t("users.name")}</TableHead>
+                      <TableHead>{t("users.email")}</TableHead>
+                      <TableHead>{t("users.created")}</TableHead>
+                      <TableHead className="text-right">{t("users.actions")}</TableHead>
                     </TableRow>
                   </TableHeader>
                   <TableBody>
@@ -417,7 +420,7 @@ export default function AdminPage() {
                         <TableCell className="font-medium">{user.name}</TableCell>
                         <TableCell className="font-medium">{user.email}</TableCell>
                         <TableCell>
-                          {format(new Date(user.createdAt), "MMM d, yyyy")}
+                          {formatter.dateTime(new Date(user.createdAt), { month: "short", day: "numeric", year: "numeric" })}
                         </TableCell>
                         <TableCell className="text-right">
                           <div className="flex justify-end gap-2">
@@ -428,7 +431,7 @@ export default function AdminPage() {
                               disabled={approveUserMutation.isPending}
                             >
                               <CheckCircle className="h-4 w-4 mr-1" />
-                              Approve
+                              {t("pending.approve")}
                             </Button>
                             <Button
                               size="sm"
@@ -437,7 +440,7 @@ export default function AdminPage() {
                               disabled={rejectUserMutation.isPending}
                             >
                               <XCircle className="h-4 w-4 mr-1" />
-                              Reject
+                              {t("pending.reject")}
                             </Button>
                           </div>
                         </TableCell>
@@ -455,14 +458,14 @@ export default function AdminPage() {
           <CardHeader>
             <div className="flex items-center justify-between">
               <div>
-                <CardTitle>Users</CardTitle>
+                <CardTitle>{t("users.title")}</CardTitle>
                 <p className="text-sm text-muted-foreground mt-1">
-                  Manage all users in the system
+                  {t("users.description")}
                 </p>
               </div>
               <Button onClick={handleCreateUser}>
                 <Plus className="h-4 w-4" />
-                Create User
+                {t("users.createUser")}
               </Button>
             </div>
           </CardHeader>
@@ -475,14 +478,14 @@ export default function AdminPage() {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Name</TableHead>
-                    <TableHead>Email</TableHead>
-                    <TableHead>Role</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Notes</TableHead>
-                    <TableHead>Tags</TableHead>
-                    <TableHead>Created</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
+                    <TableHead>{t("users.name")}</TableHead>
+                    <TableHead>{t("users.email")}</TableHead>
+                    <TableHead>{t("users.role")}</TableHead>
+                    <TableHead>{t("users.status")}</TableHead>
+                    <TableHead>{t("users.notes")}</TableHead>
+                    <TableHead>{t("users.tags")}</TableHead>
+                    <TableHead>{t("users.created")}</TableHead>
+                    <TableHead className="text-right">{t("users.actions")}</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -492,22 +495,22 @@ export default function AdminPage() {
                       <TableCell className="font-medium">{user.email}</TableCell>
                       <TableCell>
                         {user.isAdmin ? (
-                          <Badge variant="default">Admin</Badge>
+                          <Badge variant="default">{t("users.admin")}</Badge>
                         ) : (
-                          <Badge variant="outline">User</Badge>
+                          <Badge variant="outline">{t("users.user")}</Badge>
                         )}
                       </TableCell>
                       <TableCell>
                         {user.status === "pending" ? (
-                          <Badge variant="secondary">Pending</Badge>
+                          <Badge variant="secondary">{t("users.pending")}</Badge>
                         ) : (
-                          <Badge variant="outline">Active</Badge>
+                          <Badge variant="outline">{t("users.active")}</Badge>
                         )}
                       </TableCell>
                       <TableCell>{user._count?.notes || 0}</TableCell>
                       <TableCell>{user._count?.tags || 0}</TableCell>
                       <TableCell>
-                        {format(new Date(user.createdAt), "MMM d, yyyy")}
+                        {formatter.dateTime(new Date(user.createdAt), { month: "short", day: "numeric", year: "numeric" })}
                       </TableCell>
                       <TableCell className="text-right">
                         <DropdownMenu>
@@ -520,18 +523,18 @@ export default function AdminPage() {
                             <DropdownMenuItem
                               onClick={() => handleEditUser(user)}
                             >
-                              Edit
+                              {t("users.edit")}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleResetPassword(user)}
                             >
-                              Reset Password
+                              {t("users.resetPassword")}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleDeleteUser(user)}
                               className="text-destructive"
                             >
-                              Delete
+                              {t("users.delete")}
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
@@ -549,17 +552,17 @@ export default function AdminPage() {
           <DialogContent>
             <DialogHeader>
               <DialogTitle>
-                {isEditing ? "Edit User" : "Create User"}
+                {isEditing ? t("userDialog.editTitle") : t("userDialog.createTitle")}
               </DialogTitle>
               <DialogDescription>
                 {isEditing
-                  ? "Update user information"
-                  : "Create a new user account"}
+                  ? t("userDialog.editDescription")
+                  : t("userDialog.createDescription")}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               <div className="space-y-2">
-                <Label htmlFor="name">Name</Label>
+                <Label htmlFor="name">{t("userDialog.name")}</Label>
                 <Input
                   id="name"
                   type="text"
@@ -567,13 +570,13 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, name: e.target.value })
                   }
-                  placeholder="User name"
+                  placeholder={t("userDialog.namePlaceholder")}
                   maxLength={100}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
+                <Label htmlFor="email">{t("userDialog.email")}</Label>
                 <Input
                   id="email"
                   type="email"
@@ -581,12 +584,12 @@ export default function AdminPage() {
                   onChange={(e) =>
                     setFormData({ ...formData, email: e.target.value })
                   }
-                  placeholder="user@example.com"
+                  placeholder={t("userDialog.emailPlaceholder")}
                 />
               </div>
               {!isEditing && (
                 <div className="space-y-2">
-                  <Label htmlFor="password">Password</Label>
+                  <Label htmlFor="password">{t("userDialog.password")}</Label>
                   <Input
                     id="password"
                     type="password"
@@ -594,7 +597,7 @@ export default function AdminPage() {
                     onChange={(e) =>
                       setFormData({ ...formData, password: e.target.value })
                     }
-                    placeholder="Minimum 8 characters"
+                    placeholder={t("userDialog.passwordPlaceholder")}
                     minLength={8}
                   />
                 </div>
@@ -610,7 +613,7 @@ export default function AdminPage() {
                   setSelectedUser(null);
                 }}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 onClick={handleSubmitUser}
@@ -622,7 +625,7 @@ export default function AdminPage() {
                   (!isEditing && !formData.password)
                 }
               >
-                {isEditing ? "Update" : "Create"}
+                {isEditing ? t("userDialog.update") : t("userDialog.create")}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -635,29 +638,28 @@ export default function AdminPage() {
         >
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Reset Password</DialogTitle>
+              <DialogTitle>{t("resetDialog.title")}</DialogTitle>
               <DialogDescription>
-                Reset password for {selectedUser?.email}
+                {t("resetDialog.description", { email: selectedUser?.email ?? "" })}
               </DialogDescription>
             </DialogHeader>
             <div className="space-y-4 py-4">
               {resetPasswordResult ? (
                 <div className="space-y-2">
-                  <Label>New Password</Label>
+                  <Label>{t("resetDialog.newPassword")}</Label>
                   <div className="flex gap-2">
                     <Input value={resetPasswordResult} readOnly />
                     <Button onClick={copyPassword} variant="outline">
-                      Copy
+                      {t("resetDialog.copy")}
                     </Button>
                   </div>
                   <p className="text-sm text-muted-foreground">
-                    Please copy this password and share it securely with the
-                    user.
+                    {t("resetDialog.hint")}
                   </p>
                 </div>
               ) : (
                 <p className="text-sm text-muted-foreground">
-                  A new random password will be generated for this user.
+                  {t("resetDialog.generateHint")}
                 </p>
               )}
             </div>
@@ -670,7 +672,7 @@ export default function AdminPage() {
                   setSelectedUser(null);
                 }}
               >
-                {resetPasswordResult ? "Close" : "Cancel"}
+                {resetPasswordResult ? tc("close") : tc("cancel")}
               </Button>
               {!resetPasswordResult && (
                 <Button
@@ -678,8 +680,8 @@ export default function AdminPage() {
                   disabled={resetPasswordMutation.isPending}
                 >
                   {resetPasswordMutation.isPending
-                    ? "Resetting..."
-                    : "Reset Password"}
+                    ? t("resetDialog.resetting")
+                    : t("resetDialog.submit")}
                 </Button>
               )}
             </DialogFooter>
@@ -697,35 +699,29 @@ export default function AdminPage() {
                 <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
                   <AlertTriangle className="h-5 w-5 text-destructive" />
                 </div>
-                Delete User?
+                {t("deleteDialog.title")}
               </DialogTitle>
               <DialogDescription className="pt-2">
-                Are you sure you want to delete user{" "}
-                <span className="font-semibold text-foreground">
-                  {selectedUser?.email}
-                </span>
-                ? This action cannot be undone.
+                {t("deleteDialog.description", { email: selectedUser?.email ?? "" })}
               </DialogDescription>
             </DialogHeader>
             {selectedUser && (
               <div className="py-4 space-y-2">
                 <div className="text-sm text-muted-foreground">
-                  This will permanently delete:
+                  {t("deleteDialog.willDelete")}
                 </div>
                 <ul className="text-sm space-y-1 list-disc list-inside text-muted-foreground">
-                  <li>The user account</li>
+                  <li>{t("deleteDialog.account")}</li>
                   <li>
-                    {selectedUser._count?.notes || 0} note
-                    {(selectedUser._count?.notes || 0) !== 1 ? "s" : ""}
+                    {t("deleteDialog.noteCount", { count: selectedUser._count?.notes || 0 })}
                   </li>
                   <li>
-                    {selectedUser._count?.tags || 0} tag
-                    {(selectedUser._count?.tags || 0) !== 1 ? "s" : ""}
+                    {t("deleteDialog.tagCount", { count: selectedUser._count?.tags || 0 })}
                   </li>
                 </ul>
                 {selectedUser.isAdmin && (
                   <div className="pt-2 text-sm text-amber-600 dark:text-amber-500 font-medium">
-                    Warning: This is an admin user.
+                    {t("deleteDialog.adminWarning")}
                   </div>
                 )}
               </div>
@@ -739,7 +735,7 @@ export default function AdminPage() {
                 }}
                 disabled={deleteUserMutation.isPending}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -749,10 +745,10 @@ export default function AdminPage() {
                 {deleteUserMutation.isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Deleting...
+                    {t("deleteDialog.deleting")}
                   </>
                 ) : (
-                  "Delete User"
+                  t("deleteDialog.confirm")
                 )}
               </Button>
             </DialogFooter>
@@ -770,14 +766,10 @@ export default function AdminPage() {
                 <div className="w-10 h-10 rounded-full bg-destructive/10 flex items-center justify-center">
                   <XCircle className="h-5 w-5 text-destructive" />
                 </div>
-                Reject User?
+                {t("rejectDialog.title")}
               </DialogTitle>
               <DialogDescription className="pt-2">
-                Are you sure you want to reject the registration request for{" "}
-                <span className="font-semibold text-foreground">
-                  {selectedUser?.email}
-                </span>
-                ? This will permanently delete their account and they will need to register again.
+                {t("rejectDialog.description", { email: selectedUser?.email ?? "" })}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter className="gap-2">
@@ -789,7 +781,7 @@ export default function AdminPage() {
                 }}
                 disabled={rejectUserMutation.isPending}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 variant="destructive"
@@ -799,10 +791,10 @@ export default function AdminPage() {
                 {rejectUserMutation.isPending ? (
                   <>
                     <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                    Rejecting...
+                    {t("rejectDialog.rejecting")}
                   </>
                 ) : (
-                  "Reject User"
+                  t("rejectDialog.confirm")
                 )}
               </Button>
             </DialogFooter>

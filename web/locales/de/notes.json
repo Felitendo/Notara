@@ -1,0 +1,154 @@
+{
+  "untitled": "Unbenannt",
+  "titlePlaceholder": "Titel",
+  "contentPlaceholder": "Beginne, deine Gedanken aufzuschreiben...",
+  "loadingNote": "Notiz wird geladen...",
+  "newNote": "Neue Notiz",
+  "pinned": "Angepinnt",
+  "allNotes": "Alle Notizen",
+
+  "status": {
+    "saving": "Speichern...",
+    "unsaved": "Ungespeichert",
+    "saved": "Gespeichert",
+    "readOnly": "Schreibgeschützt",
+    "viewer": "Betrachter"
+  },
+
+  "tooltip": {
+    "backToNotes": "Zurück zu Notizen",
+    "pinNote": "Notiz anheften",
+    "unpinNote": "Notiz lösen",
+    "shareNote": "Notiz teilen",
+    "manageShares": "Freigaben verwalten",
+    "archiveNote": "Notiz archivieren",
+    "unarchiveNote": "Notiz aus Archiv holen",
+    "moveToTrash": "In den Papierkorb verschieben",
+    "restoreNote": "Notiz wiederherstellen",
+    "deleteForever": "Endgültig löschen",
+    "changeBackground": "Hintergrund ändern"
+  },
+
+  "readOnlyBanner": {
+    "trashed": "Diese Notiz befindet sich im Papierkorb und kann nicht bearbeitet werden. Stelle sie wieder her, um Änderungen vorzunehmen.",
+    "viewer": "Du hast nur Lesezugriff. Nur der Eigentümer kann diese Notiz bearbeiten."
+  },
+
+  "emptyState": {
+    "noResults": "Keine passenden Notizen gefunden",
+    "noResultsHint": "Passe deine Suchbegriffe an oder",
+    "clearSearch": "Suche zurücksetzen",
+    "title": "Beginne, deine Ideen festzuhalten",
+    "subtitle": "Erstelle deine erste Notiz, um deine Gedanken zu ordnen",
+    "createFirst": "Erste Notiz erstellen"
+  },
+
+  "bulkAction": {
+    "archiveSelected": "Ausgewählte archivieren",
+    "deleteSelected": "Ausgewählte löschen",
+    "cancelSelection": "Auswahl aufheben",
+    "movedToTrash": "{count, plural, one {# Notiz in den Papierkorb verschoben} other {# Notizen in den Papierkorb verschoben}}",
+    "archived": "{count, plural, one {# Notiz archiviert} other {# Notizen archiviert}}",
+    "failedDelete": "Notizen konnten nicht gelöscht werden",
+    "failedArchive": "Notizen konnten nicht archiviert werden",
+    "failedReorder": "Notizen konnten nicht neu sortiert werden"
+  },
+
+  "dialog": {
+    "archive": {
+      "title": "Notiz archivieren?",
+      "unarchiveTitle": "Notiz aus Archiv holen?",
+      "description": "Diese Notiz wird ins Archiv verschoben.",
+      "unarchiveDescription": "Diese Notiz wird zurück in deine Notizen verschoben.",
+      "confirm": "Archivieren",
+      "unarchiveConfirm": "Aus Archiv holen"
+    },
+    "delete": {
+      "title": "Notiz löschen?",
+      "description": "Diese Notiz wird in den Papierkorb verschoben. Du kannst sie innerhalb von 30 Tagen wiederherstellen.",
+      "confirm": "In den Papierkorb"
+    },
+    "restore": {
+      "title": "Notiz wiederherstellen?",
+      "description": "Diese Notiz wird in deine Notizen zurückverschoben.",
+      "confirm": "Wiederherstellen"
+    },
+    "permanentDelete": {
+      "title": "Endgültig löschen?",
+      "description": "Diese Aktion kann nicht rückgängig gemacht werden. Diese Notiz wird endgültig gelöscht und kann nicht wiederhergestellt werden.",
+      "confirm": "Endgültig löschen"
+    },
+    "bulkDelete": {
+      "title": "Notizen löschen",
+      "description": "Möchtest du wirklich {count, plural, one {# Notiz} other {# Notizen}} in den Papierkorb verschieben? Diese Aktion kann rückgängig gemacht werden."
+    },
+    "bulkArchive": {
+      "title": "Notizen archivieren",
+      "description": "Möchtest du wirklich {count, plural, one {# Notiz} other {# Notizen}} archivieren? Du kannst sie später wieder aus dem Archiv holen."
+    }
+  },
+
+  "share": {
+    "title": "Notiz teilen",
+    "description": "Teile diese Notiz mit anderen Benutzern. Betrachter können lesen, Bearbeiter können bearbeiten.",
+    "searchPlaceholder": "E-Mail-Adresse eingeben...",
+    "sharedWith": "Geteilt mit",
+    "noShares": "Noch keine Freigaben. Gib eine E-Mail-Adresse ein, um diese Notiz zu teilen.",
+    "share": "Teilen",
+    "viewer": "Betrachter",
+    "editor": "Bearbeiter",
+    "viewerReadOnly": "Nur Lesen",
+    "editorCanEdit": "Kann bearbeiten",
+    "success": "Notiz erfolgreich geteilt",
+    "failed": "Notiz konnte nicht geteilt werden",
+    "permissionUpdated": "Berechtigung aktualisiert",
+    "permissionFailed": "Berechtigung konnte nicht aktualisiert werden",
+    "revoked": "Freigabe widerrufen",
+    "revokeFailed": "Freigabe konnte nicht widerrufen werden"
+  },
+
+  "toast": {
+    "created": "Notiz erstellt",
+    "createFailed": "Notiz konnte nicht erstellt werden",
+    "saveFailed": "Notiz konnte nicht gespeichert werden",
+    "deleted": "Notiz in den Papierkorb verschoben",
+    "deleteFailed": "Notiz konnte nicht gelöscht werden",
+    "archived": "Notiz archiviert",
+    "archiveFailed": "Notiz konnte nicht archiviert werden",
+    "unarchived": "Notiz aus Archiv geholt",
+    "unarchiveFailed": "Notiz konnte nicht aus dem Archiv geholt werden",
+    "restored": "Notiz wiederhergestellt",
+    "restoreFailed": "Notiz konnte nicht wiederhergestellt werden",
+    "permanentlyDeleted": "Notiz endgültig gelöscht",
+    "permanentDeleteFailed": "Notiz konnte nicht gelöscht werden"
+  },
+
+  "background": {
+    "title": "Hintergrund",
+    "subtitle": "Passe deine Notiz an",
+    "color": "Farbe",
+    "pattern": "Muster",
+    "default": "Standard"
+  },
+
+  "viewSettings": {
+    "view": "Ansicht",
+    "sort": "Sortierung",
+    "masonry": "Masonry",
+    "grid": "Raster",
+    "list": "Liste",
+    "lastModified": "Zuletzt bearbeitet",
+    "dateCreated": "Erstellungsdatum",
+    "titleSort": "Titel",
+    "manual": "Manuell"
+  },
+
+  "tags": {
+    "addTag": "Tag hinzufügen",
+    "searchTags": "Tags suchen...",
+    "loadingTags": "Tags werden geladen...",
+    "allTagsAdded": "Alle vorhandenen Tags hinzugefügt",
+    "noTags": "Keine Tags gefunden",
+    "create": "\"{name}\" erstellen"
+  }
+}

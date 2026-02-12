@@ -10,8 +10,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth, getRegistrationMode } from "@/features/auth";
+import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
+  const t = useTranslations("auth.register");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,17 +31,17 @@ export default function RegisterPage() {
     setError("");
 
     if (password !== confirmPassword) {
-      setError("Passwords do not match");
+      setError(t("errorPasswordMatch"));
       return;
     }
 
     if (password.length < 8) {
-      setError("Password must be at least 8 characters");
+      setError(t("errorPasswordLength"));
       return;
     }
 
     if (!name.trim()) {
-      setError("Please enter your name");
+      setError(t("errorNameRequired"));
       return;
     }
 
@@ -73,9 +75,9 @@ export default function RegisterPage() {
             />
           </div>
           <div className="space-y-1">
-            <CardTitle className="text-3xl font-serif">Registration Disabled</CardTitle>
+            <CardTitle className="text-3xl font-serif">{t("disabledTitle")}</CardTitle>
             <CardDescription className="text-muted-foreground">
-              User sign up is currently disabled
+              {t("disabledSubtitle")}
             </CardDescription>
           </div>
         </CardHeader>
@@ -84,18 +86,18 @@ export default function RegisterPage() {
             <AlertCircle className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div className="flex-1 text-sm">
               <p className="text-muted-foreground">
-                New account registration is not available at this time. Please contact an administrator to create an account.
+                {t("disabledMessage")}
               </p>
             </div>
           </div>
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
-              Already have an account?{" "}
+              {t("hasAccount")}{" "}
               <Link
                 href="/login"
                 className="font-medium text-accent hover:text-accent/80 transition-colors"
               >
-                Sign in
+                {t("signIn")}
               </Link>
             </p>
           </div>
@@ -116,24 +118,24 @@ export default function RegisterPage() {
           />
         </div>
         <div className="space-y-1">
-          <CardTitle className="text-3xl font-serif">Create Account</CardTitle>
+          <CardTitle className="text-3xl font-serif">{t("title")}</CardTitle>
           <CardDescription className="text-muted-foreground">
             {registrationMode?.mode === "review"
-              ? "Register and wait for approval"
-              : "Start capturing your thoughts"}
+              ? t("subtitleReview")
+              : t("subtitle")}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="pt-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="name">Name</Label>
+            <Label htmlFor="name">{t("name")}</Label>
             <div className="relative">
               <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="name"
                 type="text"
-                placeholder="Your name"
+                placeholder={t("namePlaceholder")}
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 className="pl-10 h-12 bg-background/50"
@@ -143,13 +145,13 @@ export default function RegisterPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10 h-12 bg-background/50"
@@ -158,7 +160,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("password")}</Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -174,7 +176,7 @@ export default function RegisterPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="confirmPassword">Confirm Password</Label>
+            <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -200,21 +202,21 @@ export default function RegisterPage() {
             {isRegisterPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Creating account...
+                {t("submitting")}
               </>
             ) : (
-              "Create Account"
+              t("submit")
             )}
           </Button>
         </form>
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Already have an account?{" "}
+            {t("hasAccount")}{" "}
             <Link
               href="/login"
               className="font-medium text-accent hover:text-accent/80 transition-colors"
             >
-              Sign in
+              {t("signIn")}
             </Link>
           </p>
         </div>

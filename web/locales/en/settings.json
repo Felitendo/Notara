@@ -1,0 +1,54 @@
+{
+  "title": "Settings",
+  "subtitle": "Manage your account settings",
+
+  "profile": {
+    "title": "Profile",
+    "description": "Update your profile information and image",
+    "image": "Profile Image",
+    "imageHint": "JPEG, PNG, or WebP. Max 5MB.",
+    "uploadImage": "Upload Image",
+    "changeImage": "Change Image",
+    "remove": "Remove",
+    "name": "Name",
+    "namePlaceholder": "Enter your name",
+    "save": "Save Profile",
+    "saving": "Saving...",
+    "success": "Profile updated successfully",
+    "failed": "Failed to update profile. Please try again.",
+    "imageFailed": "Failed to upload profile image. Please try again.",
+    "removeImageFailed": "Failed to remove profile image. Please try again.",
+    "invalidFileType": "Please select an image file",
+    "fileTooLarge": "Image size must be less than 5MB"
+  },
+
+  "editor": {
+    "title": "Editor",
+    "description": "Customize how the note editor behaves",
+    "sortChecklist": "Sort checklist items",
+    "sortChecklistDescription": "Automatically move checked checklist items to the bottom of the list"
+  },
+
+  "password": {
+    "title": "Change Password",
+    "description": "Update your password to keep your account secure",
+    "current": "Current Password",
+    "currentPlaceholder": "Enter your current password",
+    "new": "New Password",
+    "newPlaceholder": "Enter your new password",
+    "confirm": "Confirm New Password",
+    "confirmPlaceholder": "Confirm your new password",
+    "hint": "Password must be at least 8 characters long",
+    "submit": "Change Password",
+    "submitting": "Changing password...",
+    "success": "Password changed successfully",
+    "failed": "Failed to change password",
+    "errorMatch": "Passwords do not match",
+    "errorLength": "Password must be at least 8 characters"
+  },
+
+  "language": {
+    "title": "Language",
+    "description": "Choose your preferred display language"
+  }
+}

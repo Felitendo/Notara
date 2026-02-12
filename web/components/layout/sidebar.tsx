@@ -52,10 +52,12 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { useTheme } from "next-themes";
+import { useTranslations } from "next-intl";
 import { useAuth } from "@/features/auth";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { getTags, updateTag, deleteTag, type Tag as TagType } from "@/features/tags";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 interface SidebarProps {
   className?: string;
@@ -75,6 +77,8 @@ export function Sidebar({
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const { logout, user } = useAuth();
+  const t = useTranslations("sidebar");
+  const tc = useTranslations("common");
   const queryClient = useQueryClient();
 
   const [renameDialogOpen, setRenameDialogOpen] = useState(false);
@@ -99,7 +103,7 @@ export function Sidebar({
       setRenameError(null);
     },
     onError: (error: Error) => {
-      setRenameError(error.message || "Failed to rename tag");
+      setRenameError(error.message || t("tagDialog.renameFailed"));
     },
   });
 
@@ -155,17 +159,17 @@ export function Sidebar({
   const navItems = [
     {
       href: "/notes",
-      label: "All Notes",
+      label: t("nav.allNotes"),
       icon: FileText,
     },
     {
       href: "/archive",
-      label: "Archive",
+      label: t("nav.archive"),
       icon: Archive,
     },
     {
       href: "/trash",
-      label: "Trash",
+      label: t("nav.trash"),
       icon: Trash2,
     },
   ];
@@ -186,7 +190,7 @@ export function Sidebar({
 
   const ThemeIcon = theme === "dark" ? Moon : theme === "light" ? Sun : Monitor;
   const themeLabel =
-    theme === "dark" ? "Dark" : theme === "light" ? "Light" : "System";
+    theme === "dark" ? t("theme.dark") : theme === "light" ? t("theme.light") : t("theme.system");
 
   return (
     <TooltipProvider delayDuration={0}>
@@ -230,7 +234,7 @@ export function Sidebar({
                   <ChevronLeft className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Collapse sidebar</TooltipContent>
+              <TooltipContent side="right">{t("nav.collapseSidebar")}</TooltipContent>
             </Tooltip>
           )}
         </div>
@@ -249,7 +253,7 @@ export function Sidebar({
                   <ChevronRight className="h-4 w-4" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">Expand sidebar</TooltipContent>
+              <TooltipContent side="right">{t("nav.expandSidebar")}</TooltipContent>
             </Tooltip>
           </div>
         )}
@@ -279,7 +283,7 @@ export function Sidebar({
                   <Plus className="h-6 w-6 transition-transform duration-300 group-hover:rotate-180" strokeWidth={2} />
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">New Note</TooltipContent>
+              <TooltipContent side="right">{t("nav.newNote")}</TooltipContent>
             </Tooltip>
           ) : (
             <Link
@@ -300,7 +304,7 @@ export function Sidebar({
               )}
             >
               <Plus className="h-5 w-5 transition-transform duration-300 group-hover:rotate-180" strokeWidth={2} />
-              <span>New Note</span>
+              <span>{t("nav.newNote")}</span>
             </Link>
           )}
         </div>
@@ -396,7 +400,7 @@ export function Sidebar({
                   <div className="space-y-1 px-3 py-2">
                     <div className="flex w-full items-center gap-2 px-3 py-2 text-xs font-semibold uppercase tracking-wider text-sidebar-foreground/50">
                       <Tag className="h-3 w-3" />
-                      <span>Tags</span>
+                      <span>{t("tags.title")}</span>
                     </div>
                     <div className="space-y-1">
                       {tags.map((tag) => {
@@ -452,7 +456,7 @@ export function Sidebar({
                                   }}
                                 >
                                   <Pencil className="h-4 w-4" />
-                                  <span>Rename tag</span>
+                                  <span>{t("tags.renameTag")}</span>
                                 </DropdownMenuItem>
                                 <DropdownMenuItem
                                   variant="destructive"
@@ -463,7 +467,7 @@ export function Sidebar({
                                   }}
                                 >
                                   <Trash2 className="h-4 w-4" />
-                                  <span>Delete tag</span>
+                                  <span>{t("tags.deleteTag")}</span>
                                 </DropdownMenuItem>
                               </DropdownMenuContent>
                             </DropdownMenu>
@@ -497,7 +501,7 @@ export function Sidebar({
                   <ThemeIcon className="h-4 w-4 flex-shrink-0" />
                 </Button>
               </TooltipTrigger>
-              <TooltipContent side="right">{themeLabel} theme</TooltipContent>
+              <TooltipContent side="right">{t("theme.tooltip", { theme: themeLabel })}</TooltipContent>
             </Tooltip>
           ) : (
             <Button
@@ -508,6 +512,20 @@ export function Sidebar({
               <ThemeIcon className="h-4 w-4 flex-shrink-0" />
               {themeLabel}
             </Button>
+          )}
+
+          {/* Language switcher */}
+          {isCollapsed ? (
+            <LanguageSwitcher
+              className="w-10 h-10 rounded-xl text-sidebar-foreground/70 bg-transparent
+              hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+            />
+          ) : (
+            <LanguageSwitcher
+              variant="full"
+              className="w-full h-10 justify-start gap-3 rounded-xl text-sidebar-foreground/70 bg-transparent border-0 shadow-none
+              hover:text-sidebar-foreground hover:bg-sidebar-accent/50"
+            />
           )}
 
           {/* User Profile */}
@@ -533,7 +551,7 @@ export function Sidebar({
                       </Button>
                     </DropdownMenuTrigger>
                   </TooltipTrigger>
-                  <TooltipContent side="right">Profile</TooltipContent>
+                  <TooltipContent side="right">{t("user.profile")}</TooltipContent>
                 </Tooltip>
               ) : (
                 <DropdownMenuTrigger asChild>
@@ -572,7 +590,7 @@ export function Sidebar({
                       className="focus:bg-sidebar-accent/50 focus:text-sidebar-foreground"
                     >
                       <UserCog className="h-4 w-4" />
-                      <span>Admin</span>
+                      <span>{t("user.admin")}</span>
                     </DropdownMenuItem>
                     <DropdownMenuSeparator />
                   </>
@@ -585,7 +603,7 @@ export function Sidebar({
                   className="focus:bg-sidebar-accent/50 focus:text-sidebar-foreground"
                 >
                   <Settings className="h-4 w-4" />
-                  <span>Settings</span>
+                  <span>{t("user.settings")}</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem
@@ -595,7 +613,7 @@ export function Sidebar({
                   className="text-destructive focus:text-destructive focus:bg-destructive/10"
                 >
                   <LogOut className="h-4 w-4" />
-                  <span>Sign Out</span>
+                  <span>{t("user.signOut")}</span>
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -606,16 +624,16 @@ export function Sidebar({
         <Dialog open={renameDialogOpen} onOpenChange={setRenameDialogOpen}>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Rename Tag</DialogTitle>
+              <DialogTitle>{t("tagDialog.renameTitle")}</DialogTitle>
               <DialogDescription>
-                Enter a new name for this tag.
+                {t("tagDialog.renameDescription")}
               </DialogDescription>
             </DialogHeader>
             <div className="py-4 space-y-2">
               <Input
                 value={renameValue}
                 onChange={handleRenameValueChange}
-                placeholder="Tag name"
+                placeholder={t("tagDialog.renamePlaceholder")}
                 onKeyDown={(e) => {
                   if (e.key === "Enter") {
                     handleRenameSubmit();
@@ -642,14 +660,14 @@ export function Sidebar({
                   setRenameError(null);
                 }}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 onClick={handleRenameSubmit}
                 variant={renameError ? "destructive" : "default"}
                 disabled={!renameValue.trim() || renameValue.trim() === selectedTag?.name || updateTagMutation.isPending}
               >
-                {updateTagMutation.isPending ? "Renaming..." : "Rename"}
+                {updateTagMutation.isPending ? t("tagDialog.renaming") : t("tagDialog.rename")}
               </Button>
             </DialogFooter>
           </DialogContent>
@@ -663,10 +681,10 @@ export function Sidebar({
                 <div className="p-2 rounded-full bg-destructive/10">
                   <AlertTriangle className="h-5 w-5 text-destructive" />
                 </div>
-                <DialogTitle>Delete Tag</DialogTitle>
+                <DialogTitle>{t("tagDialog.deleteTitle")}</DialogTitle>
               </div>
               <DialogDescription>
-                Delete <span className="font-semibold">{selectedTag?.name}</span>? This will remove it from all notes. This action cannot be undone.
+                {t("tagDialog.deleteDescription", { name: selectedTag?.name ?? "" })}
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
@@ -677,14 +695,14 @@ export function Sidebar({
                   setSelectedTag(null);
                 }}
               >
-                Cancel
+                {tc("cancel")}
               </Button>
               <Button
                 variant="destructive"
                 onClick={handleDeleteSubmit}
                 disabled={deleteTagMutation.isPending}
               >
-                {deleteTagMutation.isPending ? "Deleting..." : "Delete"}
+                {deleteTagMutation.isPending ? t("tagDialog.deleting") : tc("delete")}
               </Button>
             </DialogFooter>
           </DialogContent>

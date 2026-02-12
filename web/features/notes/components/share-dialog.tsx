@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Search, UserPlus, X, Loader2, Edit, Eye, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -39,6 +40,8 @@ interface ShareDialogProps {
 }
 
 export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
+  const t = useTranslations("notes");
+  const tc = useTranslations("common");
   const queryClient = useQueryClient();
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
@@ -94,10 +97,10 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
       setSearchQuery("");
       setSelectedUserId(null);
       setSelectedPermission("viewer");
-      toast.success("Note shared successfully");
+      toast.success(t("share.success"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to share note");
+      toast.error(error.message || t("share.failed"));
     },
   });
 
@@ -112,10 +115,10 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["note-shares", noteId] });
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      toast.success("Permission updated");
+      toast.success(t("share.permissionUpdated"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to update permission");
+      toast.error(error.message || t("share.permissionFailed"));
     },
   });
 
@@ -124,10 +127,10 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["note-shares", noteId] });
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      toast.success("Share revoked");
+      toast.success(t("share.revoked"));
     },
     onError: (error: Error) => {
-      toast.error(error.message || "Failed to revoke share");
+      toast.error(error.message || t("share.revokeFailed"));
     },
   });
 
@@ -161,10 +164,10 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
             <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
               <UserPlus className="h-5 w-5 text-primary" />
             </div>
-            Share Note
+            {t("share.title")}
           </DialogTitle>
           <DialogDescription className="pt-2">
-            Share this note with other users. Viewers can read, editors can edit.
+            {t("share.description")}
           </DialogDescription>
         </DialogHeader>
 
@@ -174,7 +177,7 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
               <Input
-                placeholder="Enter email address..."
+                placeholder={t("share.searchPlaceholder")}
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-9"
@@ -225,12 +228,12 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                         {selectedPermission === "viewer" ? (
                           <>
                             <Eye className="h-4 w-4" />
-                            <span>Viewer - Read only</span>
+                            <span>{t("share.viewer")} - {t("share.viewerReadOnly")}</span>
                           </>
                         ) : (
                           <>
                             <Edit className="h-4 w-4" />
-                            <span>Editor - Can edit</span>
+                            <span>{t("share.editor")} - {t("share.editorCanEdit")}</span>
                           </>
                         )}
                       </div>
@@ -244,9 +247,9 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                     >
                       <Eye className="h-4 w-4 mr-2" />
                       <div className="flex flex-col">
-                        <span>Viewer</span>
+                        <span>{t("share.viewer")}</span>
                         <span className="text-xs text-muted-foreground">
-                          Read only
+                          {t("share.viewerReadOnly")}
                         </span>
                       </div>
                     </DropdownMenuItem>
@@ -256,9 +259,9 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                     >
                       <Edit className="h-4 w-4 mr-2" />
                       <div className="flex flex-col">
-                        <span>Editor</span>
+                        <span>{t("share.editor")}</span>
                         <span className="text-xs text-muted-foreground">
-                          Can edit
+                          {t("share.editorCanEdit")}
                         </span>
                       </div>
                     </DropdownMenuItem>
@@ -271,7 +274,7 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                   {shareMutation.isPending ? (
                     <Loader2 className="h-4 w-4 animate-spin" />
                   ) : (
-                    "Share"
+                    t("share.share")
                   )}
                 </Button>
               </div>
@@ -282,14 +285,14 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
 
           {/* Current Shares */}
           <div className="space-y-3">
-            <div className="text-sm font-medium">Shared with</div>
+            <div className="text-sm font-medium">{t("share.sharedWith")}</div>
             {sharesLoading ? (
               <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-5 w-5 animate-spin text-muted-foreground" />
               </div>
             ) : shares.length === 0 ? (
               <div className="text-sm text-muted-foreground py-8 text-center border border-dashed rounded-md">
-                No shares yet. Enter an email address to share this note.
+                {t("share.noShares")}
               </div>
             ) : (
               <div className="border rounded-md divide-y">
@@ -332,12 +335,12 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                               {share.permission === "viewer" ? (
                                 <>
                                   <Eye className="h-3.5 w-3.5" />
-                                  <span>Viewer</span>
+                                  <span>{t("share.viewer")}</span>
                                 </>
                               ) : (
                                 <>
                                   <Edit className="h-3.5 w-3.5" />
-                                  <span>Editor</span>
+                                  <span>{t("share.editor")}</span>
                                 </>
                               )}
                             </div>
@@ -353,9 +356,9 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                           >
                             <Eye className="h-4 w-4 mr-2" />
                             <div className="flex flex-col">
-                              <span>Viewer</span>
+                              <span>{t("share.viewer")}</span>
                               <span className="text-xs text-muted-foreground">
-                                Read only
+                                {t("share.viewerReadOnly")}
                               </span>
                             </div>
                           </DropdownMenuItem>
@@ -367,9 +370,9 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
                           >
                             <Edit className="h-4 w-4 mr-2" />
                             <div className="flex flex-col">
-                              <span>Editor</span>
+                              <span>{t("share.editor")}</span>
                               <span className="text-xs text-muted-foreground">
-                                Can edit
+                                {t("share.editorCanEdit")}
                               </span>
                             </div>
                           </DropdownMenuItem>
@@ -398,7 +401,7 @@ export function ShareDialog({ open, onOpenChange, noteId }: ShareDialogProps) {
 
         <DialogFooter className="gap-2 sm:gap-0">
           <Button variant="ghost" onClick={() => onOpenChange(false)}>
-            Close
+            {tc("close")}
           </Button>
         </DialogFooter>
       </DialogContent>

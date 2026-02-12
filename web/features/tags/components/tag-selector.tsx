@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useMemo } from "react";
+import { useTranslations } from "next-intl";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { Plus, X, Loader2, Search, Tag as TagIcon, Hash } from "lucide-react";
 import { getTags, createTag, generateRandomTagColor } from "@/features/tags";
@@ -23,6 +24,7 @@ export function TagSelector({
   onTagsChange,
   readOnly = false,
 }: TagSelectorProps) {
+  const t = useTranslations("notes");
   const [open, setOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
@@ -121,7 +123,7 @@ export function TagSelector({
               className="h-7 px-2.5 text-xs text-muted-foreground hover:text-foreground hover:bg-muted/50 border border-transparent hover:border-border/40 rounded-full transition-all duration-200"
             >
               <Plus className="h-3.5 w-3.5 mr-1.5" />
-              Add tag
+              {t("tags.addTag")}
             </Button>
           </PopoverTrigger>
           <PopoverContent
@@ -136,7 +138,7 @@ export function TagSelector({
                 <Search className="h-4 w-4 text-muted-foreground shrink-0 mr-2" />
                 <input
                   className="flex-1 bg-transparent border-none outline-none text-sm placeholder:text-muted-foreground/70"
-                  placeholder="Search tags..."
+                  placeholder={t("tags.searchTags")}
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   autoFocus
@@ -148,7 +150,7 @@ export function TagSelector({
                 {isLoading ? (
                   <div className="flex flex-col items-center justify-center py-8 gap-2 text-muted-foreground">
                     <Loader2 className="h-5 w-5 animate-spin" />
-                    <span className="text-xs">Loading tags...</span>
+                    <span className="text-xs">{t("tags.loadingTags")}</span>
                   </div>
                 ) : (
                   <>
@@ -186,7 +188,7 @@ export function TagSelector({
                               <Plus className="h-3 w-3" />
                             )}
                           </div>
-                          <span className="truncate">Create "{searchQuery}"</span>
+                          <span className="truncate">{t("tags.create", { name: searchQuery })}</span>
                         </button>
                       </div>
                     )}
@@ -195,7 +197,7 @@ export function TagSelector({
                       <div className="py-8 text-center px-4">
                         <TagIcon className="h-8 w-8 text-muted-foreground/20 mx-auto mb-2" />
                         <p className="text-xs text-muted-foreground">
-                          {tags.length > 0 ? "All existing tags added" : "No tags found"}
+                          {tags.length > 0 ? t("tags.allTagsAdded") : t("tags.noTags")}
                         </p>
                       </div>
                     )}

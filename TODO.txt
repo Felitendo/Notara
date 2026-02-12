@@ -1,0 +1,24 @@
+GitHub Secrets you need to configure:
+  Secret: IOS_CERTIFICATE_BASE64
+  Description: Base64-encoded .p12 distribution certificate
+  ────────────────────────────────────────
+  Secret: IOS_CERTIFICATE_PASSWORD
+  Description: Password for the .p12 file
+  ────────────────────────────────────────
+  Secret: IOS_PROVISION_PROFILE_BASE64
+  Description: Base64-encoded .mobileprovision file
+  ────────────────────────────────────────
+  Secret: IOS_PROVISION_PROFILE_NAME
+  Description: Name of the provisioning profile (as shown in Apple Developer portal)
+  ────────────────────────────────────────
+  Secret: IOS_TEAM_ID
+  Description: Your Apple Developer Team ID
+  ────────────────────────────────────────
+  Secret: IOS_BUNDLE_ID
+  Description: App bundle identifier (e.g. com.zhfahim.anchor)
+  ────────────────────────────────────────
+  Secret: IOS_EXPORT_METHOD
+  Description: Export method: app-store, ad-hoc, development, or enterprise
+  To encode your files as base64:
+  base64 -i certificate.p12 | pbcopy        # copies to clipboard
+  base64 -i profile.mobileprovision | pbcopy

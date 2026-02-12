@@ -15,8 +15,12 @@ import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import packageJson from "../../../package.json";
+import { useTranslations } from "next-intl";
+import { LanguageSwitcher } from "@/components/ui/language-switcher";
 
 export default function SettingsPage() {
+  const t = useTranslations("settings");
+  const tc = useTranslations("common");
   const { user, setUser } = useAuthStore();
   const { editor: editorPrefs, setEditorPreference } = usePreferencesStore();
   const queryClient = useQueryClient();
@@ -62,11 +66,11 @@ export default function SettingsPage() {
     onSuccess: async (updatedUser) => {
       setUser(updatedUser);
       await queryClient.invalidateQueries({ queryKey: ["user"] });
-      toast.success("Profile updated successfully");
+      toast.success(t("profile.success"));
     },
     onError: (error: Error) => {
       const errorMessage =
-        error.message || "Failed to update profile. Please try again.";
+        error.message || t("profile.failed");
       toast.error(errorMessage);
     },
   });
@@ -86,7 +90,7 @@ export default function SettingsPage() {
     },
     onError: (error: Error) => {
       const errorMessage =
-        error.message || "Failed to upload profile image. Please try again.";
+        error.message || t("profile.imageFailed");
       toast.error(errorMessage);
     },
   });
@@ -107,7 +111,7 @@ export default function SettingsPage() {
     },
     onError: (error: Error) => {
       const errorMessage =
-        error.message || "Failed to remove profile image. Please try again.";
+        error.message || t("profile.removeImageFailed");
       toast.error(errorMessage);
     },
   });
@@ -117,12 +121,12 @@ export default function SettingsPage() {
     if (file) {
       // Validate file type
       if (!file.type.startsWith("image/")) {
-        toast.error("Please select an image file");
+        toast.error(t("profile.invalidFileType"));
         return;
       }
       // Validate file size (5MB)
       if (file.size > 5 * 1024 * 1024) {
-        toast.error("Image size must be less than 5MB");
+        toast.error(t("profile.fileTooLarge"));
         return;
       }
       setSelectedFile(file);
@@ -167,7 +171,7 @@ export default function SettingsPage() {
     // Only make API calls if there are changes
     if (promises.length > 0) {
       await Promise.all(promises);
-      toast.success("Profile updated successfully");
+      toast.success(t("profile.success"));
       // Reset flags after successful save
       setShouldRemoveImage(false);
       setSelectedFile(null);
@@ -177,7 +181,7 @@ export default function SettingsPage() {
   const changePasswordMutation = useMutation({
     mutationFn: changePassword,
     onSuccess: () => {
-      toast.success("Password changed successfully");
+      toast.success(t("password.success"));
       setCurrentPassword("");
       setNewPassword("");
       setConfirmPassword("");
@@ -186,7 +190,7 @@ export default function SettingsPage() {
       setConfirmPasswordError("");
     },
     onError: (error: Error) => {
-      const errorMessage = error.message || "Failed to change password";
+      const errorMessage = error.message || t("password.failed");
 
       // Map API errors to appropriate fields
       if (errorMessage.toLowerCase().includes("current password") ||
@@ -213,13 +217,13 @@ export default function SettingsPage() {
 
     // Validate passwords match
     if (newPassword !== confirmPassword) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError(t("password.errorMatch"));
       return;
     }
 
     // Validate password length
     if (newPassword.length < 8) {
-      setNewPasswordError("Password must be at least 8 characters");
+      setNewPasswordError(t("password.errorLength"));
       return;
     }
 
@@ -248,7 +252,7 @@ export default function SettingsPage() {
 
   const handleNewPasswordBlur = () => {
     if (newPassword && newPassword.length < 8) {
-      setNewPasswordError("Password must be at least 8 characters");
+      setNewPasswordError(t("password.errorLength"));
     }
   };
 
@@ -261,9 +265,9 @@ export default function SettingsPage() {
 
   const handleConfirmPasswordBlur = () => {
     if (confirmPassword && confirmPassword.length < 8) {
-      setConfirmPasswordError("Password must be at least 8 characters");
+      setConfirmPasswordError(t("password.errorLength"));
     } else if (confirmPassword && newPassword && confirmPassword !== newPassword) {
-      setConfirmPasswordError("Passwords do not match");
+      setConfirmPasswordError(t("password.errorMatch"));
     }
   };
 
@@ -282,23 +286,23 @@ export default function SettingsPage() {
   return (
     <div className="container max-w-2xl mx-auto p-6">
       <div className="mb-6">
-        <h1 className="text-3xl font-serif font-bold mb-2">Settings</h1>
-        <p className="text-muted-foreground">Manage your account settings</p>
+        <h1 className="text-3xl font-serif font-bold mb-2">{t("title")}</h1>
+        <p className="text-muted-foreground">{t("subtitle")}</p>
       </div>
 
       {/* Profile Section */}
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">
         <CardHeader className="space-y-1 pb-4">
-          <CardTitle className="text-2xl">Profile</CardTitle>
+          <CardTitle className="text-2xl">{t("profile.title")}</CardTitle>
           <CardDescription>
-            Update your profile information and image
+            {t("profile.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleProfileSubmit} className="space-y-6">
             {/* Profile Image */}
             <div className="space-y-2">
-              <Label>Profile Image</Label>
+              <Label>{t("profile.image")}</Label>
               <div className="flex items-center gap-4">
                 <Avatar className="h-20 w-20">
                   <AvatarImage src={profileImagePreview || undefined} alt={user?.name ?? user?.email ?? ""} />
@@ -321,7 +325,7 @@ export default function SettingsPage() {
                       className="flex items-center gap-2"
                     >
                       <Upload className="h-4 w-4" />
-                      {selectedFile ? "Change Image" : "Upload Image"}
+                      {selectedFile ? t("profile.changeImage") : t("profile.uploadImage")}
                     </Button>
                     {(profileImagePreview || shouldRemoveImage) && (
                       <Button
@@ -331,12 +335,12 @@ export default function SettingsPage() {
                         className="flex items-center gap-2"
                       >
                         <X className="h-4 w-4" />
-                        Remove
+                        {t("profile.remove")}
                       </Button>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground">
-                    JPEG, PNG, or WebP. Max 5MB.
+                    {t("profile.imageHint")}
                   </p>
                 </div>
               </div>
@@ -344,13 +348,13 @@ export default function SettingsPage() {
 
             {/* Name Input */}
             <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">{t("profile.name")}</Label>
               <div className="relative">
                 <User className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="name"
                   type="text"
-                  placeholder="Enter your name"
+                  placeholder={t("profile.namePlaceholder")}
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   className="pl-10 h-12 bg-background/50"
@@ -367,10 +371,10 @@ export default function SettingsPage() {
               {updateProfileMutation.isPending || uploadImageMutation.isPending || removeImageMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Saving...
+                  {t("profile.saving")}
                 </>
               ) : (
-                "Save Profile"
+                t("profile.save")
               )}
             </Button>
           </form>
@@ -380,9 +384,9 @@ export default function SettingsPage() {
       {/* Editor Settings Section */}
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">
         <CardHeader className="space-y-1 pb-4">
-          <CardTitle className="text-2xl">Editor</CardTitle>
+          <CardTitle className="text-2xl">{t("editor.title")}</CardTitle>
           <CardDescription>
-            Customize how the note editor behaves
+            {t("editor.description")}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-6">
@@ -390,10 +394,10 @@ export default function SettingsPage() {
           <div className="flex items-center justify-between">
             <div className="space-y-1">
               <Label htmlFor="move-checked" className="text-base font-medium">
-                Sort checklist items
+                {t("editor.sortChecklist")}
               </Label>
               <p className="text-sm text-muted-foreground">
-                Automatically move checked checklist items to the bottom of the list
+                {t("editor.sortChecklistDescription")}
               </p>
             </div>
             <Switch
@@ -410,21 +414,21 @@ export default function SettingsPage() {
       {/* Change Password Section */}
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">
         <CardHeader className="space-y-1 pb-4">
-          <CardTitle className="text-2xl">Change Password</CardTitle>
+          <CardTitle className="text-2xl">{t("password.title")}</CardTitle>
           <CardDescription>
-            Update your password to keep your account secure
+            {t("password.description")}
           </CardDescription>
         </CardHeader>
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="currentPassword">Current Password</Label>
+              <Label htmlFor="currentPassword">{t("password.current")}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="currentPassword"
                   type={isCurrentPasswordVisible ? "text" : "password"}
-                  placeholder="Enter your current password"
+                  placeholder={t("password.currentPlaceholder")}
                   value={currentPassword}
                   onChange={handleCurrentPasswordChange}
                   className={cn(
@@ -455,13 +459,13 @@ export default function SettingsPage() {
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="newPassword">New Password</Label>
+              <Label htmlFor="newPassword">{t("password.new")}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="newPassword"
                   type={isNewPasswordVisible ? "text" : "password"}
-                  placeholder="Enter your new password"
+                  placeholder={t("password.newPlaceholder")}
                   value={newPassword}
                   onChange={handleNewPasswordChange}
                   onBlur={handleNewPasswordBlur}
@@ -492,18 +496,18 @@ export default function SettingsPage() {
                 </p>
               ) : (
                 <p className="text-xs text-muted-foreground">
-                  Password must be at least 8 characters long
+                  {t("password.hint")}
                 </p>
               )}
             </div>
             <div className="space-y-2">
-              <Label htmlFor="confirmPassword">Confirm New Password</Label>
+              <Label htmlFor="confirmPassword">{t("password.confirm")}</Label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                 <Input
                   id="confirmPassword"
                   type={isConfirmPasswordVisible ? "text" : "password"}
-                  placeholder="Confirm your new password"
+                  placeholder={t("password.confirmPlaceholder")}
                   value={confirmPassword}
                   onChange={handleConfirmPasswordChange}
                   onBlur={handleConfirmPasswordBlur}
@@ -542,13 +546,26 @@ export default function SettingsPage() {
               {changePasswordMutation.isPending ? (
                 <>
                   <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Changing password...
+                  {t("password.submitting")}
                 </>
               ) : (
-                "Change Password"
+                t("password.submit")
               )}
             </Button>
           </form>
+        </CardContent>
+      </Card>
+
+      {/* Language Section */}
+      <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">
+        <CardHeader className="space-y-1 pb-4">
+          <CardTitle className="text-2xl">{t("language.title")}</CardTitle>
+          <CardDescription>
+            {t("language.description")}
+          </CardDescription>
+        </CardHeader>
+        <CardContent>
+          <LanguageSwitcher variant="full" />
         </CardContent>
       </Card>
 
@@ -557,7 +574,7 @@ export default function SettingsPage() {
         <div className="flex flex-col items-center gap-1.5 text-xs text-muted-foreground">
           <div className="flex items-center gap-2">
             <Info className="h-3.5 w-3.5" />
-            <span>Version {packageJson.version}</span>
+            <span>{tc("version", { version: packageJson.version })}</span>
           </div>
         </div>
       </div>

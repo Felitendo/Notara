@@ -1,0 +1,54 @@
+{
+  "title": "Einstellungen",
+  "subtitle": "Verwalte deine Kontoeinstellungen",
+
+  "profile": {
+    "title": "Profil",
+    "description": "Aktualisiere deine Profilinformationen und dein Bild",
+    "image": "Profilbild",
+    "imageHint": "JPEG, PNG oder WebP. Max. 5 MB.",
+    "uploadImage": "Bild hochladen",
+    "changeImage": "Bild ändern",
+    "remove": "Entfernen",
+    "name": "Name",
+    "namePlaceholder": "Gib deinen Namen ein",
+    "save": "Profil speichern",
+    "saving": "Speichern...",
+    "success": "Profil erfolgreich aktualisiert",
+    "failed": "Profil konnte nicht aktualisiert werden. Bitte versuche es erneut.",
+    "imageFailed": "Profilbild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+    "removeImageFailed": "Profilbild konnte nicht entfernt werden. Bitte versuche es erneut.",
+    "invalidFileType": "Bitte wähle eine Bilddatei aus",
+    "fileTooLarge": "Die Bildgröße darf 5 MB nicht überschreiten"
+  },
+
+  "editor": {
+    "title": "Editor",
+    "description": "Passe das Verhalten des Notiz-Editors an",
+    "sortChecklist": "Checklisten-Elemente sortieren",
+    "sortChecklistDescription": "Abgehakte Checklisten-Elemente automatisch ans Ende der Liste verschieben"
+  },
+
+  "password": {
+    "title": "Passwort ändern",
+    "description": "Aktualisiere dein Passwort, um dein Konto zu schützen",
+    "current": "Aktuelles Passwort",
+    "currentPlaceholder": "Gib dein aktuelles Passwort ein",
+    "new": "Neues Passwort",
+    "newPlaceholder": "Gib dein neues Passwort ein",
+    "confirm": "Neues Passwort bestätigen",
+    "confirmPlaceholder": "Bestätige dein neues Passwort",
+    "hint": "Das Passwort muss mindestens 8 Zeichen lang sein",
+    "submit": "Passwort ändern",
+    "submitting": "Passwort wird geändert...",
+    "success": "Passwort erfolgreich geändert",
+    "failed": "Passwort konnte nicht geändert werden",
+    "errorMatch": "Passwörter stimmen nicht überein",
+    "errorLength": "Passwort muss mindestens 8 Zeichen lang sein"
+  },
+
+  "language": {
+    "title": "Sprache",
+    "description": "Wähle deine bevorzugte Anzeigesprache"
+  }
+}

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { format } from "date-fns";
+import { useTranslations, useFormatter } from "next-intl";
 import { Pin } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -32,6 +32,8 @@ export function NoteCard({
   onSelectChange,
 }: NoteCardProps) {
   const router = useRouter();
+  const t = useTranslations("notes");
+  const format = useFormatter();
 
   // Handle note click - store note in sessionStorage and navigate
   const handleNoteClick = (e: React.MouseEvent) => {
@@ -121,7 +123,7 @@ export function NoteCard({
                 <div className="flex-1 min-w-0">
                   {/* Title */}
                   <h3 className="font-semibold text-base leading-tight mb-1.5 line-clamp-1 group-hover:text-accent transition-colors duration-200">
-                    {note.title || "Untitled"}
+                    {note.title || t("untitled")}
                   </h3>
 
                   {/* Content Preview */}
@@ -162,7 +164,7 @@ export function NoteCard({
                     )}
                     <SharedNoteIndicator note={note} />
                     <span className="text-xs text-muted-foreground font-medium">
-                      {format(new Date(note.updatedAt), "MMM d, yyyy")}
+                      {format.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" })}
                     </span>
                   </div>
                 </div>
@@ -232,7 +234,7 @@ export function NoteCard({
                 viewMode === "grid" ? "text-base" : "text-lg"
               )}
             >
-              {note.title || "Untitled"}
+              {note.title || t("untitled")}
             </h3>
 
             {/* Content Preview */}
@@ -279,7 +281,7 @@ export function NoteCard({
               <div className="flex items-center gap-2 flex-wrap">
                 <SharedNoteIndicator note={note} />
                 <span className="font-medium">
-                  {format(new Date(note.updatedAt), "MMM d, yyyy")}
+                  {format.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" })}
                 </span>
               </div>
             </div>

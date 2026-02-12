@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger, SheetTitle } from "@/components/ui/sheet";
 import { Sidebar } from "./sidebar";
 import { cn } from "@/lib/utils";
+import { useTranslations } from "next-intl";
 
 interface HeaderProps {
   searchQuery: string;
@@ -13,6 +14,7 @@ interface HeaderProps {
 }
 
 export function Header({ searchQuery, onSearchChange }: HeaderProps) {
+  const t = useTranslations("sidebar");
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [isSearchFocused, setIsSearchFocused] = useState(false);
   const isMac = typeof window !== "undefined" && navigator.userAgent.toLowerCase().includes("mac");
@@ -57,13 +59,13 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
               "hover:bg-accent/80",
               "transition-all duration-200"
             )}
-            aria-label="Open menu"
+            aria-label={t("nav.openMenu")}
           >
             <Menu className="h-5 w-5" />
           </Button>
         </SheetTrigger>
         <SheetContent side="left" className="w-72 p-0">
-          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <SheetTitle className="sr-only">{t("nav.navigationMenu")}</SheetTitle>
           <Sidebar onNavigate={() => setSidebarOpen(false)} />
         </SheetContent>
       </Sheet>
@@ -94,7 +96,7 @@ export function Header({ searchQuery, onSearchChange }: HeaderProps) {
             <input
               ref={searchInputRef}
               type="text"
-              placeholder="Search notes..."
+              placeholder={t("search.placeholder")}
               value={searchQuery}
               onChange={(e) => onSearchChange(e.target.value)}
               onFocus={() => setIsSearchFocused(true)}

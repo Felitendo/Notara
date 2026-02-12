@@ -9,8 +9,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { useAuth } from "@/features/auth";
+import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
+  const t = useTranslations("auth.login");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLoginPending } = useAuth();
@@ -32,22 +34,22 @@ export default function LoginPage() {
           />
         </div>
         <div className="space-y-1">
-          <CardTitle className="text-3xl font-serif">Welcome Back</CardTitle>
+          <CardTitle className="text-3xl font-serif">{t("title")}</CardTitle>
           <CardDescription className="text-muted-foreground">
-            Sign in to continue to Notara
+            {t("subtitle")}
           </CardDescription>
         </div>
       </CardHeader>
       <CardContent className="pt-4">
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="email">{t("email")}</Label>
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
                 id="email"
                 type="email"
-                placeholder="you@example.com"
+                placeholder={t("emailPlaceholder")}
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 className="pl-10 h-12 bg-background/50"
@@ -56,7 +58,7 @@ export default function LoginPage() {
             </div>
           </div>
           <div className="space-y-2">
-            <Label htmlFor="password">Password</Label>
+            <Label htmlFor="password">{t("password")}</Label>
             <div className="relative">
               <Lock className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
@@ -78,21 +80,21 @@ export default function LoginPage() {
             {isLoginPending ? (
               <>
                 <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                Signing in...
+                {t("submitting")}
               </>
             ) : (
-              "Sign In"
+              t("submit")
             )}
           </Button>
         </form>
         <div className="mt-6 text-center">
           <p className="text-sm text-muted-foreground">
-            Don&apos;t have an account?{" "}
+            {t("noAccount")}{" "}
             <Link
               href="/register"
               className="font-medium text-accent hover:text-accent/80 transition-colors"
             >
-              Create one
+              {t("createOne")}
             </Link>
           </p>
         </div>

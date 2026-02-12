@@ -1,0 +1,154 @@
+{
+  "untitled": "Untitled",
+  "titlePlaceholder": "Title",
+  "contentPlaceholder": "Start typing your thoughts...",
+  "loadingNote": "Loading note...",
+  "newNote": "New Note",
+  "pinned": "Pinned",
+  "allNotes": "All Notes",
+
+  "status": {
+    "saving": "Saving...",
+    "unsaved": "Unsaved",
+    "saved": "Saved",
+    "readOnly": "Read-only",
+    "viewer": "Viewer"
+  },
+
+  "tooltip": {
+    "backToNotes": "Back to notes",
+    "pinNote": "Pin note",
+    "unpinNote": "Unpin note",
+    "shareNote": "Share note",
+    "manageShares": "Manage shares",
+    "archiveNote": "Archive note",
+    "unarchiveNote": "Unarchive note",
+    "moveToTrash": "Move to trash",
+    "restoreNote": "Restore note",
+    "deleteForever": "Delete forever",
+    "changeBackground": "Change background"
+  },
+
+  "readOnlyBanner": {
+    "trashed": "This note is in trash and cannot be edited. Restore it to make changes.",
+    "viewer": "You have viewer access. Only the owner can edit this note."
+  },
+
+  "emptyState": {
+    "noResults": "No matching notes found",
+    "noResultsHint": "Try adjusting your search terms or",
+    "clearSearch": "clear the search",
+    "title": "Start capturing your ideas",
+    "subtitle": "Create your first note to begin organizing your thoughts",
+    "createFirst": "Create Your First Note"
+  },
+
+  "bulkAction": {
+    "archiveSelected": "Archive selected",
+    "deleteSelected": "Delete selected",
+    "cancelSelection": "Cancel selection",
+    "movedToTrash": "{count, plural, one {# note moved to trash} other {# notes moved to trash}}",
+    "archived": "{count, plural, one {# note archived} other {# notes archived}}",
+    "failedDelete": "Failed to delete notes",
+    "failedArchive": "Failed to archive notes",
+    "failedReorder": "Failed to reorder notes"
+  },
+
+  "dialog": {
+    "archive": {
+      "title": "Archive note?",
+      "unarchiveTitle": "Unarchive note?",
+      "description": "This note will be moved to archive.",
+      "unarchiveDescription": "This note will be moved back to your notes.",
+      "confirm": "Archive",
+      "unarchiveConfirm": "Unarchive"
+    },
+    "delete": {
+      "title": "Delete note?",
+      "description": "This note will be moved to trash. You can restore it within 30 days.",
+      "confirm": "Move to Trash"
+    },
+    "restore": {
+      "title": "Restore note?",
+      "description": "This note will be restored to your notes.",
+      "confirm": "Restore"
+    },
+    "permanentDelete": {
+      "title": "Delete permanently?",
+      "description": "This action cannot be undone. This note will be permanently deleted and cannot be recovered.",
+      "confirm": "Delete Forever"
+    },
+    "bulkDelete": {
+      "title": "Delete Notes",
+      "description": "Are you sure you want to move {count, plural, one {# note} other {# notes}} to trash? This action can be undone."
+    },
+    "bulkArchive": {
+      "title": "Archive Notes",
+      "description": "Are you sure you want to archive {count, plural, one {# note} other {# notes}}? You can unarchive them later."
+    }
+  },
+
+  "share": {
+    "title": "Share Note",
+    "description": "Share this note with other users. Viewers can read, editors can edit.",
+    "searchPlaceholder": "Enter email address...",
+    "sharedWith": "Shared with",
+    "noShares": "No shares yet. Enter an email address to share this note.",
+    "share": "Share",
+    "viewer": "Viewer",
+    "editor": "Editor",
+    "viewerReadOnly": "Read only",
+    "editorCanEdit": "Can edit",
+    "success": "Note shared successfully",
+    "failed": "Failed to share note",
+    "permissionUpdated": "Permission updated",
+    "permissionFailed": "Failed to update permission",
+    "revoked": "Share revoked",
+    "revokeFailed": "Failed to revoke share"
+  },
+
+  "toast": {
+    "created": "Note created",
+    "createFailed": "Failed to create note",
+    "saveFailed": "Failed to save note",
+    "deleted": "Note moved to trash",
+    "deleteFailed": "Failed to delete note",
+    "archived": "Note archived",
+    "archiveFailed": "Failed to archive note",
+    "unarchived": "Note unarchived",
+    "unarchiveFailed": "Failed to unarchive note",
+    "restored": "Note restored",
+    "restoreFailed": "Failed to restore note",
+    "permanentlyDeleted": "Note permanently deleted",
+    "permanentDeleteFailed": "Failed to delete note"
+  },
+
+  "background": {
+    "title": "Background",
+    "subtitle": "Customize your note",
+    "color": "Color",
+    "pattern": "Pattern",
+    "default": "Default"
+  },
+
+  "viewSettings": {
+    "view": "View",
+    "sort": "Sort",
+    "masonry": "Masonry",
+    "grid": "Grid",
+    "list": "List",
+    "lastModified": "Last Modified",
+    "dateCreated": "Date Created",
+    "titleSort": "Title",
+    "manual": "Manual"
+  },
+
+  "tags": {
+    "addTag": "Add tag",
+    "searchTags": "Search tags...",
+    "loadingTags": "Loading tags...",
+    "allTagsAdded": "All existing tags added",
+    "noTags": "No tags found",
+    "create": "Create \"{name}\""
+  }
+}

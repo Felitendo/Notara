@@ -22,7 +22,7 @@ import { useMemo } from "react";
 import { useRouter } from "next/navigation";
 import Masonry from "react-masonry-css";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { useFormatter } from "next-intl";
 import { toast } from "sonner";
 import { useState } from "react";
 import * as React from "react";
@@ -32,6 +32,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
 const masonryBreakpoints = {
   default: 4,
@@ -43,6 +44,8 @@ const masonryBreakpoints = {
 };
 
 export default function TrashPage() {
+  const t = useTranslations("admin.trash");
+  const tn = useTranslations("notes");
   const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -74,10 +77,10 @@ export default function TrashPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       queryClient.invalidateQueries({ queryKey: ["tags"] });
-      toast.success("Note restored");
+      toast.success(tn("toast.restored"));
     },
     onError: () => {
-      toast.error("Failed to restore note");
+      toast.error(tn("toast.restoreFailed"));
     },
   });
 
@@ -86,10 +89,10 @@ export default function TrashPage() {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["notes", "trash"] });
       queryClient.invalidateQueries({ queryKey: ["tags"] });
-      toast.success("Note permanently deleted");
+      toast.success(tn("toast.permanentlyDeleted"));
     },
     onError: () => {
-      toast.error("Failed to delete note");
+      toast.error(tn("toast.permanentDeleteFailed"));
     },
   });
 
@@ -116,9 +119,9 @@ export default function TrashPage() {
 
       <div className="flex-1 p-4 lg:p-6">
         <div className="mb-6">
-          <h1 className="font-serif text-2xl font-bold">Trash</h1>
+          <h1 className="font-serif text-2xl font-bold">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Notes in trash will be permanently deleted after 30 days
+            {t("subtitle")}
           </p>
         </div>
 
@@ -132,10 +135,10 @@ export default function TrashPage() {
               <Trash2 className="h-10 w-10 text-muted-foreground/50" />
             </div>
             <h3 className="text-xl font-medium text-foreground">
-              Trash is empty
+              {t("empty")}
             </h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Deleted notes will appear here
+              {t("emptyHint")}
             </p>
           </div>
         ) : (
@@ -180,6 +183,9 @@ function TrashNoteCard({
   isRestoring,
   isDeleting,
 }: TrashNoteCardProps) {
+  const t = useTranslations("admin.trash");
+  const tn = useTranslations("notes");
+  const formatter = useFormatter();
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [restoreDialogOpen, setRestoreDialogOpen] = useState(false);
   const [restoreTooltipOpen, setRestoreTooltipOpen] = useState(false);
@@ -269,7 +275,7 @@ function TrashNoteCard({
               "text-lg"
             )}
           >
-            {note.title || "Untitled"}
+            {note.title || tn("untitled")}
           </h3>
 
           {/* Content Preview */}
@@ -311,7 +317,7 @@ function TrashNoteCard({
           {/* Footer */}
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="font-medium">
-              Deleted {format(new Date(note.updatedAt), "MMM d, yyyy")}
+              {t("date", { date: formatter.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" }) })}
             </span>
             <TooltipProvider>
               <div className="flex items-center gap-2">
@@ -327,7 +333,7 @@ function TrashNoteCard({
                       <RotateCcw className="h-3.5 w-3.5" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="top">Restore</TooltipContent>
+                  <TooltipContent side="top">{t("restore")}</TooltipContent>
                 </Tooltip>
                 <Tooltip open={deleteTooltipOpen && !deleteDialogOpen} onOpenChange={setDeleteTooltipOpen}>
                   <TooltipTrigger asChild>
@@ -340,7 +346,7 @@ function TrashNoteCard({
                       <Trash2 className="h-3.5 w-3.5" />
                     </Button>
                   </TooltipTrigger>
-                  <TooltipContent side="top">Delete Forever</TooltipContent>
+                  <TooltipContent side="top">{t("deleteForever")}</TooltipContent>
                 </Tooltip>
               </div>
             </TooltipProvider>

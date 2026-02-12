@@ -53,8 +53,11 @@ import Link from "next/link";
 import { usePreferencesStore } from "@/features/preferences";
 import { calculateNewPositions } from "@/features/notes/utils/position-calculator";
 import type { Note } from "@/features/notes";
+import { useTranslations } from "next-intl";
 
 export default function NotesPage() {
+  const t = useTranslations("notes");
+  const tc = useTranslations("common");
   const router = useRouter();
   const searchParams = useSearchParams();
   const queryClient = useQueryClient();
@@ -219,13 +222,13 @@ export default function NotesPage() {
     onSuccess: (_, noteIds) => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       queryClient.invalidateQueries({ queryKey: ["tags"] });
-      toast.success(`${noteIds.length} note${noteIds.length > 1 ? "s" : ""} moved to trash`);
+      toast.success(t("bulkAction.movedToTrash", { count: noteIds.length }));
       setSelectedNoteIds(new Set());
       setIsSelectionMode(false);
       setDeleteDialogOpen(false);
     },
     onError: () => {
-      toast.error("Failed to delete notes");
+      toast.error(t("bulkAction.failedDelete"));
     },
   });
 
@@ -235,13 +238,13 @@ export default function NotesPage() {
     onSuccess: (_, noteIds) => {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       queryClient.invalidateQueries({ queryKey: ["tags"] });
-      toast.success(`${noteIds.length} note${noteIds.length > 1 ? "s" : ""} archived`);
+      toast.success(t("bulkAction.archived", { count: noteIds.length }));
       setSelectedNoteIds(new Set());
       setIsSelectionMode(false);
       setArchiveDialogOpen(false);
     },
     onError: () => {
-      toast.error("Failed to archive notes");
+      toast.error(t("bulkAction.failedArchive"));
     },
   });
 
@@ -304,7 +307,7 @@ export default function NotesPage() {
     reorderNotes({ positions: newPositions }).catch(() => {
       // Revert on error
       queryClient.invalidateQueries({ queryKey: ["notes"] });
-      toast.error("Failed to reorder notes");
+      toast.error(t("bulkAction.failedReorder"));
     });
   };
 
@@ -403,12 +406,9 @@ export default function NotesPage() {
                     !allSelected && !someSelected && "text-muted-foreground"
                   )}>
                     {selectedNoteIds.size > 0 ? (
-                      <>
-                        <span className="font-semibold">{selectedNoteIds.size}</span>{" "}
-                        <span className="text-muted-foreground">selected</span>
-                      </>
+                      tc("selected", { count: selectedNoteIds.size })
                     ) : (
-                      "Select all"
+                      tc("selectAll")
                     )}
                   </span>
                 </button>
@@ -428,7 +428,7 @@ export default function NotesPage() {
                               <Archive className="h-4 w-4" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Archive selected</TooltipContent>
+                          <TooltipContent>{t("bulkAction.archiveSelected")}</TooltipContent>
                         </Tooltip>
                         <Tooltip>
                           <TooltipTrigger asChild>
@@ -442,7 +442,7 @@ export default function NotesPage() {
                               <Trash2 className="h-4 w-4" />
                             </Button>
                           </TooltipTrigger>
-                          <TooltipContent>Delete selected</TooltipContent>
+                          <TooltipContent>{t("bulkAction.deleteSelected")}</TooltipContent>
                         </Tooltip>
                       </>
                     )}
@@ -460,7 +460,7 @@ export default function NotesPage() {
                           <X className="h-4 w-4" />
                         </Button>
                       </TooltipTrigger>
-                      <TooltipContent>Cancel selection</TooltipContent>
+                      <TooltipContent>{t("bulkAction.cancelSelection")}</TooltipContent>
                     </Tooltip>
                   </TooltipProvider>
                 </div>
@@ -474,7 +474,7 @@ export default function NotesPage() {
               {/* Tag filter indicator */}
               {selectedTag && (
                 <div className="inline-flex items-center gap-2 px-4 py-2 rounded-xl bg-muted/50 border border-border/40 w-fit">
-                  <span className="text-sm text-muted-foreground">Filtering by</span>
+                  <span className="text-sm text-muted-foreground">{tc("filteringBy")}</span>
                   <Badge
                     variant="secondary"
                     className="gap-1.5"
@@ -519,7 +519,7 @@ export default function NotesPage() {
                     className="h-8 px-3 gap-2 border-border/60 hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-all shadow-none rounded-full"
                   >
                     <CheckCircle2 className="h-4 w-4" />
-                    <span className="text-xs font-medium">Select</span>
+                    <span className="text-xs font-medium">{tc("select")}</span>
                   </Button>
                 </div>
               )}
@@ -544,15 +544,15 @@ export default function NotesPage() {
                     </div>
                   </div>
                   <h3 className="text-2xl font-semibold text-foreground mb-2">
-                    No matching notes found
+                    {t("emptyState.noResults")}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Try adjusting your search terms or{" "}
+                    {t("emptyState.noResultsHint")}{" "}
                     <button
                       onClick={() => setSearchQuery("")}
                       className="text-accent hover:underline"
                     >
-                      clear the search
+                      {t("emptyState.clearSearch")}
                     </button>
                   </p>
                 </>
@@ -567,10 +567,10 @@ export default function NotesPage() {
                     </div>
                   </div>
                   <h3 className="text-2xl font-semibold text-foreground mb-2">
-                    Start capturing your ideas
+                    {t("emptyState.title")}
                   </h3>
                   <p className="text-sm text-muted-foreground mb-6">
-                    Create your first note to begin organizing your thoughts
+                    {t("emptyState.subtitle")}
                   </p>
                   <Button
                     onClick={() => {
@@ -583,7 +583,7 @@ export default function NotesPage() {
                     className="gap-2"
                   >
                     <Plus className="h-4 w-4" />
-                    Create Your First Note
+                    {t("emptyState.createFirst")}
                   </Button>
                 </>
               )}
@@ -603,7 +603,7 @@ export default function NotesPage() {
                       <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
                       <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/40">
                         <Pin className="h-3 w-3" />
-                        <span>Pinned</span>
+                        <span>{t("pinned")}</span>
                         <span className="text-muted-foreground/60">
                           ({sortedPinnedNotes.length})
                         </span>
@@ -621,7 +621,7 @@ export default function NotesPage() {
                       <div className="flex items-center gap-3">
                         <div className="h-px flex-1 bg-gradient-to-r from-transparent via-border to-transparent" />
                         <h2 className="text-xs font-semibold uppercase tracking-wider text-muted-foreground flex items-center gap-2 px-3 py-1.5 rounded-full bg-muted/30 border border-border/40">
-                          <span>All Notes</span>
+                          <span>{t("allNotes")}</span>
                           <span className="text-muted-foreground/60">
                             ({sortedUnpinnedNotes.length})
                           </span>

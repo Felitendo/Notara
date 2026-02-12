@@ -19,7 +19,7 @@ import { Badge } from "@/components/ui/badge";
 import { Pin } from "lucide-react";
 import { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { format } from "date-fns";
+import { useFormatter } from "next-intl";
 import { toast } from "sonner";
 import { useState } from "react";
 import * as React from "react";
@@ -31,6 +31,7 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+import { useTranslations } from "next-intl";
 
 const masonryBreakpoints = {
   default: 4,
@@ -42,6 +43,8 @@ const masonryBreakpoints = {
 };
 
 export default function ArchivePage() {
+  const t = useTranslations("admin.archive");
+  const tn = useTranslations("notes");
   const [searchQuery, setSearchQuery] = useState("");
   const queryClient = useQueryClient();
   const router = useRouter();
@@ -74,10 +77,10 @@ export default function ArchivePage() {
       queryClient.invalidateQueries({ queryKey: ["notes"] });
       queryClient.invalidateQueries({ queryKey: ["notes", "archive"] });
       queryClient.invalidateQueries({ queryKey: ["tags"] });
-      toast.success("Note unarchived");
+      toast.success(tn("toast.unarchived"));
     },
     onError: () => {
-      toast.error("Failed to unarchive note");
+      toast.error(tn("toast.unarchiveFailed"));
     },
   });
 
@@ -104,9 +107,9 @@ export default function ArchivePage() {
 
       <div className="flex-1 p-4 lg:p-6">
         <div className="mb-6">
-          <h1 className="font-serif text-2xl font-bold">Archive</h1>
+          <h1 className="font-serif text-2xl font-bold">{t("title")}</h1>
           <p className="text-sm text-muted-foreground mt-1">
-            Archived notes are hidden from your main notes list
+            {t("subtitle")}
           </p>
         </div>
 
@@ -120,10 +123,10 @@ export default function ArchivePage() {
               <Archive className="h-10 w-10 text-muted-foreground/50" />
             </div>
             <h3 className="text-xl font-medium text-foreground">
-              Archive is empty
+              {t("empty")}
             </h3>
             <p className="text-sm text-muted-foreground mt-1">
-              Archived notes will appear here
+              {t("emptyHint")}
             </p>
           </div>
         ) : (
@@ -162,6 +165,9 @@ function ArchiveNoteCard({
   onClick,
   isUnarchiving,
 }: ArchiveNoteCardProps) {
+  const t = useTranslations("admin.archive");
+  const tn = useTranslations("notes");
+  const formatter = useFormatter();
   const [dialogOpen, setDialogOpen] = useState(false);
   const [tooltipOpen, setTooltipOpen] = useState(false);
   const dialogJustClosedRef = React.useRef(false);
@@ -226,7 +232,7 @@ function ArchiveNoteCard({
               "text-lg"
             )}
           >
-            {note.title || "Untitled"}
+            {note.title || tn("untitled")}
           </h3>
 
           {/* Content Preview */}
@@ -268,7 +274,7 @@ function ArchiveNoteCard({
           {/* Footer */}
           <div className="flex items-center justify-between text-xs text-muted-foreground">
             <span className="font-medium">
-              Archived {format(new Date(note.updatedAt), "MMM d, yyyy")}
+              {t("date", { date: formatter.dateTime(new Date(note.updatedAt), { month: "short", day: "numeric", year: "numeric" }) })}
             </span>
             <TooltipProvider>
               <Tooltip open={tooltipOpen && !dialogOpen} onOpenChange={setTooltipOpen}>
@@ -282,7 +288,7 @@ function ArchiveNoteCard({
                     <ArchiveRestore className="h-3.5 w-3.5" />
                   </Button>
                 </TooltipTrigger>
-                <TooltipContent side="top">Unarchive</TooltipContent>
+                <TooltipContent side="top">{t("unarchive")}</TooltipContent>
               </Tooltip>
             </TooltipProvider>
             <ArchiveDialog

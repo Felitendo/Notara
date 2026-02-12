@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "allNotes": "Alle Notizen",
+    "archive": "Archiv",
+    "trash": "Papierkorb",
+    "newNote": "Neue Notiz",
+    "collapseSidebar": "Seitenleiste einklappen",
+    "expandSidebar": "Seitenleiste ausklappen",
+    "navigationMenu": "Navigationsmenü",
+    "openMenu": "Menü öffnen"
+  },
+  "tags": {
+    "title": "Tags",
+    "renameTag": "Tag umbenennen",
+    "deleteTag": "Tag löschen"
+  },
+  "tagDialog": {
+    "renameTitle": "Tag umbenennen",
+    "renameDescription": "Gib einen neuen Namen für diesen Tag ein.",
+    "renamePlaceholder": "Tag-Name",
+    "renaming": "Umbenennen...",
+    "rename": "Umbenennen",
+    "renameFailed": "Tag konnte nicht umbenannt werden",
+    "deleteTitle": "Tag löschen",
+    "deleteDescription": "{name} löschen? Dies entfernt den Tag von allen Notizen. Diese Aktion kann nicht rückgängig gemacht werden.",
+    "deleting": "Löschen..."
+  },
+  "theme": {
+    "dark": "Dunkel",
+    "light": "Hell",
+    "system": "System",
+    "tooltip": "{theme}-Design"
+  },
+  "user": {
+    "profile": "Profil",
+    "admin": "Admin",
+    "settings": "Einstellungen",
+    "signOut": "Abmelden"
+  },
+  "search": {
+    "placeholder": "Notizen suchen...",
+    "clearSearch": "Suche löschen"
+  }
+}

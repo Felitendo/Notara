@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import {
   ArrowLeft,
   Trash2,
@@ -74,6 +75,8 @@ export function NoteEditorHeader({
   restorePending = false,
   permanentDeletePending = false,
 }: NoteEditorHeaderProps) {
+  const t = useTranslations("notes");
+
   return (
     <TooltipProvider delayDuration={0}>
       <header
@@ -94,7 +97,7 @@ export function NoteEditorHeader({
               <ArrowLeft className="h-5 w-5" />
             </Button>
           </TooltipTrigger>
-          <TooltipContent side="bottom">Back to notes</TooltipContent>
+          <TooltipContent side="bottom">{t("tooltip.backToNotes")}</TooltipContent>
         </Tooltip>
 
         <div className="flex items-center gap-2">
@@ -114,17 +117,17 @@ export function NoteEditorHeader({
               {isSaving ? (
                 <>
                   <Loader2 className="h-3 w-3 animate-spin" />
-                  <span>Saving...</span>
+                  <span>{t("status.saving")}</span>
                 </>
               ) : hasUnsavedChanges ? (
                 <>
                   <div className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
-                  <span>Unsaved</span>
+                  <span>{t("status.unsaved")}</span>
                 </>
               ) : isSaved ? (
                 <>
                   <Check className="h-3 w-3" />
-                  <span>Saved</span>
+                  <span>{t("status.saved")}</span>
                 </>
               ) : null}
             </div>
@@ -135,7 +138,7 @@ export function NoteEditorHeader({
             <div className="flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-medium backdrop-blur-sm bg-muted/80 text-muted-foreground">
               <Eye className="h-3 w-3" />
               <span>
-                {isReadOnly ? "Read-only" : permission === "viewer" ? "Viewer" : "Read-only"}
+                {isReadOnly ? t("status.readOnly") : permission === "viewer" ? t("status.viewer") : t("status.readOnly")}
               </span>
             </div>
           )}
@@ -172,7 +175,7 @@ export function NoteEditorHeader({
                   </Button>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                  {isPinned ? "Unpin note" : "Pin note"}
+                  {isPinned ? t("tooltip.unpinNote") : t("tooltip.pinNote")}
                 </TooltipContent>
               </Tooltip>
             </>
@@ -194,7 +197,7 @@ export function NoteEditorHeader({
                 </Button>
               </TooltipTrigger>
               <TooltipContent side="bottom">
-                {hasShares ? "Manage shares" : "Share note"}
+                {hasShares ? t("tooltip.manageShares") : t("tooltip.shareNote")}
               </TooltipContent>
             </Tooltip>
           )}
@@ -219,7 +222,7 @@ export function NoteEditorHeader({
                         <RotateCcw className="h-4 w-4" />
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">Restore note</TooltipContent>
+                    <TooltipContent side="bottom">{t("tooltip.restoreNote")}</TooltipContent>
                   </Tooltip>
 
                   {/* Permanent Delete button (only for trashed notes) */}
@@ -239,7 +242,7 @@ export function NoteEditorHeader({
                         )}
                       </Button>
                     </TooltipTrigger>
-                    <TooltipContent side="bottom">Delete forever</TooltipContent>
+                    <TooltipContent side="bottom">{t("tooltip.deleteForever")}</TooltipContent>
                   </Tooltip>
                 </>
               ) : (
@@ -266,7 +269,7 @@ export function NoteEditorHeader({
                           </Button>
                         </TooltipTrigger>
                         <TooltipContent side="bottom">
-                          {isArchived ? "Unarchive note" : "Archive note"}
+                          {isArchived ? t("tooltip.unarchiveNote") : t("tooltip.archiveNote")}
                         </TooltipContent>
                       </Tooltip>
 
@@ -281,7 +284,7 @@ export function NoteEditorHeader({
                             <Trash2 className="h-4 w-4" />
                           </Button>
                         </TooltipTrigger>
-                        <TooltipContent side="bottom">Move to trash</TooltipContent>
+                        <TooltipContent side="bottom">{t("tooltip.moveToTrash")}</TooltipContent>
                       </Tooltip>
                     </>
                   )}

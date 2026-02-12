@@ -1,0 +1,132 @@
+{
+  "title": "Admin-Einstellungen",
+  "subtitle": "Benutzer verwalten und Statistiken einsehen",
+
+  "stats": {
+    "totalUsers": "Benutzer gesamt",
+    "totalNotes": "Notizen gesamt",
+    "totalTags": "Tags gesamt"
+  },
+
+  "registration": {
+    "title": "Registrierungseinstellungen",
+    "mode": "Registrierungsmodus",
+    "envHint": "Gesteuert durch die Umgebungsvariable {code}. Entferne sie, um über die Oberfläche zu verwalten.",
+    "envCode": "USER_SIGNUP",
+    "enabled": "Aktiviert",
+    "review": "Überprüfung erforderlich",
+    "disabled": "Deaktiviert",
+    "enabledDescription": "Benutzer können sich sofort ohne Genehmigung registrieren.",
+    "reviewDescription": "Benutzer können sich registrieren, benötigen aber eine Admin-Genehmigung, bevor sie sich anmelden können.",
+    "disabledDescription": "Registrierung ist deaktiviert. Nur Admins können Benutzer erstellen.",
+    "modeUpdated": "Registrierungsmodus erfolgreich aktualisiert",
+    "modeFailed": "Registrierungsmodus konnte nicht aktualisiert werden"
+  },
+
+  "pending": {
+    "title": "Ausstehende Benutzergenehmigungen",
+    "description": "Benutzer, die auf Zugang zum System warten",
+    "count": "{count} ausstehend",
+    "approve": "Genehmigen",
+    "reject": "Ablehnen",
+    "approved": "Benutzer erfolgreich genehmigt",
+    "approveFailed": "Benutzer konnte nicht genehmigt werden",
+    "rejected": "Benutzer erfolgreich abgelehnt",
+    "rejectFailed": "Benutzer konnte nicht abgelehnt werden"
+  },
+
+  "users": {
+    "title": "Benutzer",
+    "description": "Alle Benutzer im System verwalten",
+    "createUser": "Benutzer erstellen",
+    "name": "Name",
+    "email": "E-Mail",
+    "role": "Rolle",
+    "status": "Status",
+    "notes": "Notizen",
+    "tags": "Tags",
+    "created": "Erstellt",
+    "actions": "Aktionen",
+    "admin": "Admin",
+    "user": "Benutzer",
+    "pending": "Ausstehend",
+    "active": "Aktiv",
+    "edit": "Bearbeiten",
+    "resetPassword": "Passwort zurücksetzen",
+    "delete": "Löschen"
+  },
+
+  "userDialog": {
+    "createTitle": "Benutzer erstellen",
+    "editTitle": "Benutzer bearbeiten",
+    "createDescription": "Ein neues Benutzerkonto erstellen",
+    "editDescription": "Benutzerinformationen aktualisieren",
+    "name": "Name",
+    "namePlaceholder": "Benutzername",
+    "email": "E-Mail",
+    "emailPlaceholder": "benutzer@beispiel.de",
+    "password": "Passwort",
+    "passwordPlaceholder": "Mindestens 8 Zeichen",
+    "create": "Erstellen",
+    "update": "Aktualisieren",
+    "createSuccess": "Benutzer erfolgreich erstellt",
+    "createFailed": "Benutzer konnte nicht erstellt werden",
+    "updateSuccess": "Benutzer erfolgreich aktualisiert",
+    "updateFailed": "Benutzer konnte nicht aktualisiert werden",
+    "passwordRequired": "Passwort ist erforderlich"
+  },
+
+  "resetDialog": {
+    "title": "Passwort zurücksetzen",
+    "description": "Passwort zurücksetzen für {email}",
+    "newPassword": "Neues Passwort",
+    "copy": "Kopieren",
+    "copied": "Passwort in die Zwischenablage kopiert",
+    "hint": "Bitte kopiere dieses Passwort und teile es sicher mit dem Benutzer.",
+    "generateHint": "Ein neues zufälliges Passwort wird für diesen Benutzer generiert.",
+    "resetting": "Zurücksetzen...",
+    "submit": "Passwort zurücksetzen",
+    "success": "Passwort erfolgreich zurückgesetzt",
+    "failed": "Passwort konnte nicht zurückgesetzt werden"
+  },
+
+  "deleteDialog": {
+    "title": "Benutzer löschen?",
+    "description": "Möchtest du den Benutzer {email} wirklich löschen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "willDelete": "Folgendes wird endgültig gelöscht:",
+    "account": "Das Benutzerkonto",
+    "noteCount": "{count, plural, one {# Notiz} other {# Notizen}}",
+    "tagCount": "{count, plural, one {# Tag} other {# Tags}}",
+    "adminWarning": "Warnung: Dies ist ein Admin-Benutzer.",
+    "deleting": "Löschen...",
+    "confirm": "Benutzer löschen",
+    "success": "Benutzer erfolgreich gelöscht",
+    "failed": "Benutzer konnte nicht gelöscht werden"
+  },
+
+  "rejectDialog": {
+    "title": "Benutzer ablehnen?",
+    "description": "Möchtest du die Registrierungsanfrage von {email} wirklich ablehnen? Das Konto wird endgültig gelöscht und eine erneute Registrierung ist erforderlich.",
+    "rejecting": "Ablehnen...",
+    "confirm": "Benutzer ablehnen"
+  },
+
+  "archive": {
+    "title": "Archiv",
+    "subtitle": "Archivierte Notizen werden in deiner Hauptliste ausgeblendet",
+    "empty": "Archiv ist leer",
+    "emptyHint": "Archivierte Notizen werden hier angezeigt",
+    "date": "Archiviert {date}",
+    "unarchive": "Aus Archiv holen"
+  },
+
+  "trash": {
+    "title": "Papierkorb",
+    "subtitle": "Notizen im Papierkorb werden nach 30 Tagen endgültig gelöscht",
+    "empty": "Papierkorb ist leer",
+    "emptyHint": "Gelöschte Notizen werden hier angezeigt",
+    "date": "Gelöscht {date}",
+    "restore": "Wiederherstellen",
+    "deleteForever": "Endgültig löschen"
+  }
+}

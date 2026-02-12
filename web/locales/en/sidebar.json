@@ -1,0 +1,44 @@
+{
+  "nav": {
+    "allNotes": "All Notes",
+    "archive": "Archive",
+    "trash": "Trash",
+    "newNote": "New Note",
+    "collapseSidebar": "Collapse sidebar",
+    "expandSidebar": "Expand sidebar",
+    "navigationMenu": "Navigation Menu",
+    "openMenu": "Open menu"
+  },
+  "tags": {
+    "title": "Tags",
+    "renameTag": "Rename tag",
+    "deleteTag": "Delete tag"
+  },
+  "tagDialog": {
+    "renameTitle": "Rename Tag",
+    "renameDescription": "Enter a new name for this tag.",
+    "renamePlaceholder": "Tag name",
+    "renaming": "Renaming...",
+    "rename": "Rename",
+    "renameFailed": "Failed to rename tag",
+    "deleteTitle": "Delete Tag",
+    "deleteDescription": "Delete {name}? This will remove it from all notes. This action cannot be undone.",
+    "deleting": "Deleting..."
+  },
+  "theme": {
+    "dark": "Dark",
+    "light": "Light",
+    "system": "System",
+    "tooltip": "{theme} theme"
+  },
+  "user": {
+    "profile": "Profile",
+    "admin": "Admin",
+    "settings": "Settings",
+    "signOut": "Sign Out"
+  },
+  "search": {
+    "placeholder": "Search notes...",
+    "clearSearch": "Clear search"
+  }
+}

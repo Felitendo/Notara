@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Archive } from "lucide-react";
 import { ConfirmationDialog } from "@/components/ui/confirmation-dialog";
 
@@ -18,6 +19,8 @@ export function BulkArchiveDialog({
   count,
   isPending = false,
 }: BulkArchiveDialogProps) {
+  const t = useTranslations("notes");
+
   return (
     <ConfirmationDialog
       open={open}
@@ -28,11 +31,11 @@ export function BulkArchiveDialog({
           <div className="w-10 h-10 rounded-full bg-primary/10 flex items-center justify-center">
             <Archive className="h-5 w-5 text-primary" />
           </div>
-          Archive Notes
+          {t("dialog.bulkArchive.title")}
         </div>
       }
-      description={`Are you sure you want to archive ${count} note${count > 1 ? "s" : ""}? You can unarchive them later.`}
-      confirmLabel="Archive"
+      description={t("dialog.bulkArchive.description", { count })}
+      confirmLabel={t("dialog.archive.confirm")}
       variant="default"
       isPending={isPending}
     />

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   LayoutGrid,
   Grid3x3,
@@ -32,17 +33,17 @@ interface ViewSettingsProps {
   onSortOrderChange: (order: SortOrder) => void;
 }
 
-const viewModes: { value: ViewMode; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { value: "masonry", label: "Masonry", icon: LayoutGrid },
-  { value: "grid", label: "Grid", icon: Grid3x3 },
-  { value: "list", label: "List", icon: List },
+const viewModes: { value: ViewMode; labelKey: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { value: "masonry", labelKey: "viewSettings.masonry", icon: LayoutGrid },
+  { value: "grid", labelKey: "viewSettings.grid", icon: Grid3x3 },
+  { value: "list", labelKey: "viewSettings.list", icon: List },
 ];
 
-const sortOptions: { value: SortBy; label: string; icon: React.ComponentType<{ className?: string }> }[] = [
-  { value: "updatedAt", label: "Last Modified", icon: Calendar },
-  { value: "createdAt", label: "Date Created", icon: Calendar },
-  { value: "title", label: "Title", icon: FileText },
-  { value: "manual", label: "Manual", icon: GripVertical },
+const sortOptions: { value: SortBy; labelKey: string; icon: React.ComponentType<{ className?: string }> }[] = [
+  { value: "updatedAt", labelKey: "viewSettings.lastModified", icon: Calendar },
+  { value: "createdAt", labelKey: "viewSettings.dateCreated", icon: Calendar },
+  { value: "title", labelKey: "viewSettings.titleSort", icon: FileText },
+  { value: "manual", labelKey: "viewSettings.manual", icon: GripVertical },
 ];
 
 export function ViewSettings({
@@ -53,6 +54,7 @@ export function ViewSettings({
   sortOrder,
   onSortOrderChange,
 }: ViewSettingsProps) {
+  const t = useTranslations("notes");
   const [open, setOpen] = useState(false);
 
   const SortIcon = sortOrder === "asc" ? ArrowUp : ArrowDown;
@@ -66,7 +68,7 @@ export function ViewSettings({
           className="h-8 px-3 gap-2 border-border/60 hover:border-primary/50 hover:bg-primary/5 hover:text-primary transition-all shadow-none rounded-full"
         >
           <Settings2 className="h-4 w-4" />
-          <span className="text-xs font-medium">View</span>
+          <span className="text-xs font-medium">{t("viewSettings.view")}</span>
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-56 p-2" align="end">
@@ -75,7 +77,7 @@ export function ViewSettings({
           <div className="space-y-0.5">
             <div className="px-2 py-1.5">
               <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
-                Sort
+                {t("viewSettings.sort")}
               </span>
             </div>
             <div className="space-y-0.5">
@@ -98,7 +100,7 @@ export function ViewSettings({
                         "h-3.5 w-3.5 transition-colors",
                         isSelected ? "text-primary" : "text-muted-foreground/60"
                       )} />
-                      <span className="flex-1 text-left">{option.label}</span>
+                      <span className="flex-1 text-left">{t(option.labelKey)}</span>
                       {isSelected && (
                         <Check className="h-3 w-3 text-primary" />
                       )}
@@ -132,7 +134,7 @@ export function ViewSettings({
           <div className="space-y-0.5">
             <div className="px-2 py-1.5">
               <span className="text-[10px] font-medium text-muted-foreground/70 uppercase tracking-wider">
-                View
+                {t("viewSettings.view")}
               </span>
             </div>
             <div className="grid grid-cols-3 gap-1">
@@ -158,7 +160,7 @@ export function ViewSettings({
                       "h-3.5 w-3.5 transition-colors",
                       isSelected ? "text-primary" : "text-muted-foreground/60"
                     )} />
-                    <span>{mode.label}</span>
+                    <span>{t(mode.labelKey)}</span>
                   </button>
                 );
               })}

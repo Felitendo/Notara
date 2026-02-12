@@ -1,0 +1,13 @@
+{
+  "cancel": "Abbrechen",
+  "close": "Schließen",
+  "delete": "Löschen",
+  "save": "Speichern",
+  "loading": "Laden...",
+  "search": "Suchen",
+  "select": "Auswählen",
+  "selectAll": "Alle auswählen",
+  "selected": "{count} ausgewählt",
+  "filteringBy": "Gefiltert nach",
+  "version": "Version {version}"
+}

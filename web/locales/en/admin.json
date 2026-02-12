@@ -1,0 +1,132 @@
+{
+  "title": "Admin Settings",
+  "subtitle": "Manage users and view statistics",
+
+  "stats": {
+    "totalUsers": "Total Users",
+    "totalNotes": "Total Notes",
+    "totalTags": "Total Tags"
+  },
+
+  "registration": {
+    "title": "Registration Settings",
+    "mode": "Registration Mode",
+    "envHint": "Controlled by {code} env variable. Remove it to manage from UI.",
+    "envCode": "USER_SIGNUP",
+    "enabled": "Enabled",
+    "review": "Require Review",
+    "disabled": "Disabled",
+    "enabledDescription": "Users can register immediately without approval.",
+    "reviewDescription": "Users can register but require admin approval before they can log in.",
+    "disabledDescription": "Registration is disabled. Only admins can create users.",
+    "modeUpdated": "Registration mode updated successfully",
+    "modeFailed": "Failed to update registration mode"
+  },
+
+  "pending": {
+    "title": "Pending User Approvals",
+    "description": "Users awaiting approval to access the system",
+    "count": "{count} pending",
+    "approve": "Approve",
+    "reject": "Reject",
+    "approved": "User approved successfully",
+    "approveFailed": "Failed to approve user",
+    "rejected": "User rejected successfully",
+    "rejectFailed": "Failed to reject user"
+  },
+
+  "users": {
+    "title": "Users",
+    "description": "Manage all users in the system",
+    "createUser": "Create User",
+    "name": "Name",
+    "email": "Email",
+    "role": "Role",
+    "status": "Status",
+    "notes": "Notes",
+    "tags": "Tags",
+    "created": "Created",
+    "actions": "Actions",
+    "admin": "Admin",
+    "user": "User",
+    "pending": "Pending",
+    "active": "Active",
+    "edit": "Edit",
+    "resetPassword": "Reset Password",
+    "delete": "Delete"
+  },
+
+  "userDialog": {
+    "createTitle": "Create User",
+    "editTitle": "Edit User",
+    "createDescription": "Create a new user account",
+    "editDescription": "Update user information",
+    "name": "Name",
+    "namePlaceholder": "User name",
+    "email": "Email",
+    "emailPlaceholder": "user@example.com",
+    "password": "Password",
+    "passwordPlaceholder": "Minimum 8 characters",
+    "create": "Create",
+    "update": "Update",
+    "createSuccess": "User created successfully",
+    "createFailed": "Failed to create user",
+    "updateSuccess": "User updated successfully",
+    "updateFailed": "Failed to update user",
+    "passwordRequired": "Password is required"
+  },
+
+  "resetDialog": {
+    "title": "Reset Password",
+    "description": "Reset password for {email}",
+    "newPassword": "New Password",
+    "copy": "Copy",
+    "copied": "Password copied to clipboard",
+    "hint": "Please copy this password and share it securely with the user.",
+    "generateHint": "A new random password will be generated for this user.",
+    "resetting": "Resetting...",
+    "submit": "Reset Password",
+    "success": "Password reset successfully",
+    "failed": "Failed to reset password"
+  },
+
+  "deleteDialog": {
+    "title": "Delete User?",
+    "description": "Are you sure you want to delete user {email}? This action cannot be undone.",
+    "willDelete": "This will permanently delete:",
+    "account": "The user account",
+    "noteCount": "{count, plural, one {# note} other {# notes}}",
+    "tagCount": "{count, plural, one {# tag} other {# tags}}",
+    "adminWarning": "Warning: This is an admin user.",
+    "deleting": "Deleting...",
+    "confirm": "Delete User",
+    "success": "User deleted successfully",
+    "failed": "Failed to delete user"
+  },
+
+  "rejectDialog": {
+    "title": "Reject User?",
+    "description": "Are you sure you want to reject the registration request for {email}? This will permanently delete their account and they will need to register again.",
+    "rejecting": "Rejecting...",
+    "confirm": "Reject User"
+  },
+
+  "archive": {
+    "title": "Archive",
+    "subtitle": "Archived notes are hidden from your main notes list",
+    "empty": "Archive is empty",
+    "emptyHint": "Archived notes will appear here",
+    "date": "Archived {date}",
+    "unarchive": "Unarchive"
+  },
+
+  "trash": {
+    "title": "Trash",
+    "subtitle": "Notes in trash will be permanently deleted after 30 days",
+    "empty": "Trash is empty",
+    "emptyHint": "Deleted notes will appear here",
+    "date": "Deleted {date}",
+    "restore": "Restore",
+    "deleteForever": "Delete Forever"
+  }
+}

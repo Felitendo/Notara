@@ -1,5 +1,6 @@
 "use client";
 
+import { useTranslations } from "next-intl";
 import { Input } from "@/components/ui/input";
 import { RichTextEditor } from "@/features/notes";
 import { TagSelector } from "@/features/tags";
@@ -26,6 +27,8 @@ export function NoteEditorContent({
   onContentChange,
   onTagsChange,
 }: NoteEditorContentProps) {
+  const t = useTranslations("notes");
+
   return (
     <div className="flex-1 relative">
       <div className="relative max-w-3xl mx-auto w-full px-4 lg:px-6 py-8">
@@ -33,7 +36,7 @@ export function NoteEditorContent({
         <Input
           value={title}
           onChange={(e) => !isReadOnly && onTitleChange(e.target.value)}
-          placeholder="Title"
+          placeholder={t("titlePlaceholder")}
           disabled={isTrashed}
           readOnly={isReadOnly}
           className={cn(
@@ -60,7 +63,7 @@ export function NoteEditorContent({
         <RichTextEditor
           value={content}
           onChange={onContentChange}
-          placeholder="Start typing your thoughts..."
+          placeholder={t("contentPlaceholder")}
           readOnly={isReadOnly}
           className={cn("w-full", "min-h-[calc(100vh-320px)]")}
         />
