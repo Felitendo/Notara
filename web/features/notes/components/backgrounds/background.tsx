@@ -12,8 +12,6 @@ import {
   LinesPattern,
   WavesPattern,
   IconPattern,
-  ICON_PATTERN_ICONS,
-  ICON_PATTERN_ROTATIONS,
 } from "./patterns";
 
 interface NoteBackgroundProps {
@@ -75,9 +73,7 @@ function renderPattern(patternId: string, color: string) {
     case "pattern_music":
     case "pattern_travel":
     case "pattern_code":
-      const Icon = ICON_PATTERN_ICONS[patternId as keyof typeof ICON_PATTERN_ICONS];
-      const rotation = ICON_PATTERN_ROTATIONS[patternId as keyof typeof ICON_PATTERN_ROTATIONS] ?? 0;
-      return <IconPattern icon={Icon} color={color} rotation={rotation} />;
+      return <IconPattern patternId={patternId} color={color} />;
     default:
       return null;
   }

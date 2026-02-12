@@ -9,14 +9,12 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { cn } from "@/lib/utils";
 import {
   SOLID_COLORS,
   PATTERNS,
 } from "@/features/notes/backgrounds";
 import { useTheme } from "next-themes";
-import { NoteBackground } from "./background";
 
 interface NoteBackgroundPickerProps {
   selectedBackground: string | null | undefined;
@@ -75,7 +73,7 @@ export function NoteBackgroundPicker({
             </div>
           </div>
 
-          <ScrollArea className="max-h-[500px]">
+          <div className="max-h-[500px] overflow-y-auto">
             <div className="p-4 space-y-6">
               {/* Colors Section */}
               <div>
@@ -152,6 +150,10 @@ export function NoteBackgroundPicker({
                 <div className="flex items-center gap-3 flex-wrap">
                   {PATTERNS.map((style) => {
                     const isSelected = selectedBackground === style.id;
+                    const backgroundColor = isDark ? style.darkColor : style.lightColor;
+                    const patternColor = isDark
+                      ? "rgba(255, 255, 255, 0.1)"
+                      : "rgba(0, 0, 0, 0.05)";
                     return (
                       <button
                         key={style.id}
@@ -169,10 +171,15 @@ export function NoteBackgroundPicker({
                           .replace("pattern_", "")
                           .replace("_", " ")}
                       >
-                        <NoteBackground
-                          styleId={style.id}
+                        <div
                           className="absolute inset-0"
-                        />
+                          style={{ backgroundColor }}
+                        >
+                          <PatternPreview
+                            patternId={style.id}
+                            color={patternColor}
+                          />
+                        </div>
                         {isSelected && (
                           <div className="relative z-10 w-5 h-5 rounded-full bg-white/80 flex items-center justify-center">
                             <Check className="h-3 w-3 text-black" />
@@ -184,12 +191,117 @@ export function NoteBackgroundPicker({
                 </div>
               </div>
             </div>
-          </ScrollArea>
+          </div>
         </div>
       </PopoverContent>
     </Popover>
   );
 }
+
+// Lightweight inline pattern previews — no useTheme, no NoteBackground wrapper
+function PatternPreview({
+  patternId,
+  color,
+}: {
+  patternId: string;
+  color: string;
+}) {
+  switch (patternId) {
+    case "pattern_dots":
+      return (
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id="pp-dots" width="20" height="20" patternUnits="userSpaceOnUse">
+              <circle cx="0" cy="0" r="2" fill={color} />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#pp-dots)" />
+        </svg>
+      );
+    case "pattern_grid":
+      return (
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id="pp-grid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="24" stroke={color} strokeWidth="1" />
+              <line x1="0" y1="0" x2="24" y2="0" stroke={color} strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#pp-grid)" />
+        </svg>
+      );
+    case "pattern_lines":
+      return (
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id="pp-lines" width="24" height="24" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="24" x2="24" y2="24" stroke={color} strokeWidth="1" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#pp-lines)" />
+        </svg>
+      );
+    case "pattern_waves":
+      return (
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id="pp-waves" width="40" height="40" patternUnits="userSpaceOnUse">
+              <path d="M 0 20 Q 10 10 20 20 Q 30 30 40 20" fill="none" stroke={color} strokeWidth="2" />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#pp-waves)" />
+        </svg>
+      );
+    case "pattern_groceries":
+    case "pattern_music":
+    case "pattern_travel":
+    case "pattern_code": {
+      const svgPath = ICON_PREVIEW_PATHS[patternId];
+      if (!svgPath) return null;
+      const svgId = `pp-${patternId}`;
+      return (
+        <svg className="w-full h-full">
+          <defs>
+            <pattern id={svgId} width="60" height="120" patternUnits="userSpaceOnUse">
+              <g
+                transform="translate(8, 8)"
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                dangerouslySetInnerHTML={{ __html: svgPath }}
+              />
+              <g
+                transform="translate(38, 68)"
+                fill="none"
+                stroke={color}
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                dangerouslySetInnerHTML={{ __html: svgPath }}
+              />
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill={`url(#${svgId})`} />
+        </svg>
+      );
+    }
+    default:
+      return null;
+  }
+}
+
+const ICON_PREVIEW_PATHS: Record<string, string> = {
+  pattern_groceries:
+    '<path d="M16 10a4 4 0 0 1-8 0"/><path d="M3.103 6.034h17.794"/><path d="M3.4 5.467a2 2 0 0 0-.4 1.2V20a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6.667a2 2 0 0 0-.4-1.2l-2-2.667A2 2 0 0 0 17 2H7a2 2 0 0 0-1.6.8z"/>',
+  pattern_music:
+    '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>',
+  pattern_travel:
+    '<path d="M17.8 19.2 16 11l3.5-3.5C21 6 21.5 4 21 3c-1-.5-3 0-4.5 1.5L13 8 4.8 6.2c-.5-.1-.9.1-1.1.5l-.3.5c-.2.5-.1 1 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.5 5.3c.3.4.8.5 1.3.3l.5-.2c.4-.3.6-.7.5-1.2z"/>',
+  pattern_code:
+    '<path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/>',
+};
 
 // Helper function to calculate luminance
 function getLuminance(hex: string): number {

@@ -43,7 +43,11 @@ export function I18nProvider({ children }: I18nProviderProps) {
   if (!messages) return null;
 
   return (
-    <NextIntlClientProvider locale={activeLocale} messages={messages}>
+    <NextIntlClientProvider
+      locale={activeLocale}
+      messages={messages}
+      timeZone={Intl.DateTimeFormat().resolvedOptions().timeZone}
+    >
       {children}
     </NextIntlClientProvider>
   );
