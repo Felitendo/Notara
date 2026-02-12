@@ -17,6 +17,7 @@ import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import packageJson from "../../../package.json";
 import { useTranslations } from "next-intl";
 import { LanguageSwitcher } from "@/components/ui/language-switcher";
+import { MobileNav } from "@/components/layout";
 
 export default function SettingsPage() {
   const t = useTranslations("settings");
@@ -284,7 +285,9 @@ export default function SettingsPage() {
   };
 
   return (
-    <div className="container max-w-2xl mx-auto p-6">
+    <>
+      <MobileNav />
+      <div className="container max-w-2xl mx-auto p-6">
       <div className="mb-6">
         <h1 className="text-3xl font-serif font-bold mb-2">{t("title")}</h1>
         <p className="text-muted-foreground">{t("subtitle")}</p>
@@ -579,5 +582,6 @@ export default function SettingsPage() {
         </div>
       </div>
     </div>
+    </>
   );
 }

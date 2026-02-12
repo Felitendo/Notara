@@ -215,6 +215,7 @@ export function Sidebar({
               alt="Notara"
               width={36}
               height={36}
+              className="rounded-[18%]"
             />
             {!isCollapsed && (
               <span className="font-serif text-xl font-bold text-sidebar-foreground">

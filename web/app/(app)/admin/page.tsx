@@ -64,6 +64,7 @@ import {
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
 import { toast } from "sonner";
 import { useTranslations, useFormatter } from "next-intl";
+import { MobileNav } from "@/components/layout";
 
 export default function AdminPage() {
   const t = useTranslations("admin");
@@ -273,6 +274,7 @@ export default function AdminPage() {
 
   return (
     <AdminGuard>
+      <MobileNav />
       <div className="container mx-auto p-6 space-y-6">
         <div className="flex items-center justify-between">
           <div>
