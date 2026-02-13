@@ -4,29 +4,31 @@
 
 <h1>Notara</h1>
 
-**An offline first, self hostable note taking application**
+**An offline-first, self-hostable note-taking application**
 
 [![Version](https://img.shields.io/github/v/release/Felitendo/Notara?label=version)](https://github.com/Felitendo/Notara/releases)
 [![License: AGPL v3](https://img.shields.io/badge/License-AGPL%20v3-blue.svg)](LICENSE)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED.svg?logo=docker)](https://github.com/Felitendo/Notara)
 
-Notara focuses on speed, privacy, simplicity, and reliability across mobile and web. Notes are stored locally, editable offline, and synced across devices when online.
+Notara focuses on speed, privacy, and reliability across web and mobile. Notes stay available offline, are synced automatically when online, and can be self-hosted with full control over your data.
 
 </div>
 
 
 ## Features
 
-- **Rich Text Editor** - Create and edit notes with powerful formatting (bold, italic, underline, headings, lists, checkboxes)
-- **Note Sharing** - Share notes with other users (viewer or editor)
-- **Tags System** - Organize notes with custom tags and colors
-- **Note Backgrounds** - Customize notes with solid colors and patterns
-- **Pin Notes** - Pin important notes for quick access
-- **Archive Notes** - Archive notes for later reference
-- **Search** - Search notes locally by title or content
-- **Trash** - Soft delete notes with recovery period
 - **Offline-First** - All edits work offline with local storage
 - **Automatic Sync** - Sync changes across devices when online
+- **Rich Text Editor** - Create and edit notes with formatting like headings, lists, checkboxes, and inline styles
+- **Reminders and Notifications** - Set note reminders and get alerts on web and mobile
+- **Note Sharing** - Share notes with other users (viewer or editor permissions)
+- **OIDC / SSO Authentication** - Sign in with your identity provider, with optional auto-redirect and password disable
+- **Tags System** - Organize notes with custom tags and colors
+- **Note Backgrounds** - Customize notes with solid colors and patterns
+- **Pin Notes** - Keep important notes at the top
+- **Archive Notes** - Store notes for later without deleting them
+- **Trash** - Soft-delete notes with a recovery window
+- **Search** - Search notes by title or content
 - **Admin Panel** - User management, registration control, and system statistics
 
 
@@ -47,7 +49,7 @@ Notara focuses on speed, privacy, simplicity, and reliability across mobile and 
 </div>
 
 
-## Self Hosting With Docker
+## Self-Hosting with Docker
 
 ### Option 1: Using Pre-built Image (Recommended)
 
@@ -68,7 +70,7 @@ Notara focuses on speed, privacy, simplicity, and reliability across mobile and 
    ```
 
 2. **(Optional) Configure environment:**
-   Add environment variables to the `environment` section. Most users can skip this step - defaults work out of the box.
+   Add environment variables to the `environment` section. Most users can skip this step because defaults work out of the box.
 
    Available options:
    | Variable | Default | Description |
@@ -88,7 +90,7 @@ Notara focuses on speed, privacy, simplicity, and reliability across mobile and 
    ```
 
 4. **Access the app:**
-   Open http://localhost:3000
+   Open `http://localhost:3000`
 
 ### Option 2: Building from Source
 
@@ -110,13 +112,13 @@ If you want to build from source or customize the image:
 
 ## Mobile App
 
-Download the Android mobile app.
+Download the Android app from GitHub Releases.
 
 1. **Visit the releases page:**
    Go to [GitHub Releases](https://github.com/Felitendo/Notara/releases).
 
 2. **Download the latest release:**
-   Multiple APK files are available:
+   Multiple APK files are published:
    - **Universal APK** (`notara-{version}.apk`) - Recommended for most users, works on all devices
    - **Architecture-specific APKs** - Smaller file sizes for specific CPU architectures
 
@@ -125,10 +127,8 @@ Download the Android mobile app.
 
 Future planned features:
 
-- OIDC authentication
 - Media attachments (images, PDFs, recordings)
 - Real-time collaboration
-- Reminders and notifications
 
 
 ## Tech Stack
