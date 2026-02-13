@@ -4,8 +4,9 @@ import { useCallback, useEffect } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useAuthStore, hasAccessToken } from "../store";
-import { login as loginApi, register as registerApi, getMe } from "../api";
+import { login as loginApi, register as registerApi, getMe, getOidcConfig } from "../api";
 import type { LoginCredentials, RegisterCredentials } from "../types";
+import { getLoggedOutRedirectTarget } from "../redirect-policy";
 import { toast } from "sonner";
 import { useTranslations } from "next-intl";
 
@@ -43,7 +44,24 @@ export function useAuth() {
   useEffect(() => {
     const handleUnauthorized = () => {
       clearAuth();
-      router.push("/login");
+      void (async () => {
+        try {
+          const oidcConfig = await getOidcConfig();
+          const destination = getLoggedOutRedirectTarget(
+            oidcConfig,
+            new URLSearchParams(window.location.search),
+          );
+
+          if (destination === "/api/auth/oidc/authorize") {
+            window.location.href = destination;
+            return;
+          }
+
+          router.push(destination);
+        } catch {
+          router.push("/login");
+        }
+      })();
     };
 
     window.addEventListener("auth:unauthorized", handleUnauthorized);
@@ -87,7 +105,24 @@ export function useAuth() {
 
   const logout = useCallback(() => {
     clearAuth();
-    router.push("/login");
+    void (async () => {
+      try {
+        const oidcConfig = await getOidcConfig();
+        const destination = getLoggedOutRedirectTarget(
+          oidcConfig,
+          new URLSearchParams(window.location.search),
+        );
+
+        if (destination === "/api/auth/oidc/authorize") {
+          window.location.href = destination;
+          return;
+        }
+
+        router.push(destination);
+      } catch {
+        router.push("/login");
+      }
+    })();
   }, [clearAuth, router]);
 
   return {

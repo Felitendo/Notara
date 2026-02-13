@@ -5,16 +5,18 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail, Lock, Loader2, AlertCircle, User, LogIn } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth, getRegistrationMode, getOidcConfig } from "@/features/auth";
+import { useAuth, getRegistrationMode, getOidcConfig, shouldAutoRedirectToOidc } from "@/features/auth";
 import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
   const t = useTranslations("auth.register");
   const to = useTranslations("auth.oidc");
+  const searchParams = useSearchParams();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,6 +36,12 @@ export default function RegisterPage() {
 
   const showOidc = oidcConfig?.oidcEnabled;
   const passwordDisabled = oidcConfig?.passwordAuthDisabled;
+  const autoRedirectActive = shouldAutoRedirectToOidc(oidcConfig, searchParams);
+
+  useEffect(() => {
+    if (!autoRedirectActive) return;
+    window.location.href = "/api/auth/oidc/authorize";
+  }, [autoRedirectActive]);
 
   const handleOidcLogin = () => {
     window.location.href = "/api/auth/oidc/authorize";
@@ -62,7 +70,7 @@ export default function RegisterPage() {
   };
 
   // Show loading state while checking registration mode
-  if (modeLoading) {
+  if (modeLoading || autoRedirectActive) {
     return (
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm">
         <CardContent className="pt-6">
@@ -252,4 +260,3 @@ export default function RegisterPage() {
     </Card>
   );
 }
-

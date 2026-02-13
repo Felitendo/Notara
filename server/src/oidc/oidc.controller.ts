@@ -24,18 +24,19 @@ export class OidcController {
    */
   @Get('config')
   async getConfig() {
-    const [oidcEnabled, providerName, passwordAuthDisabled] = await Promise.all(
-      [
+    const [oidcEnabled, providerName, passwordAuthDisabled, autoRedirect] =
+      await Promise.all([
         this.settingsService.getOidcEnabled(),
         this.settingsService.getOidcProviderName(),
         this.settingsService.getPasswordAuthDisabled(),
-      ],
-    );
+        this.settingsService.getOidcAutoRedirect(),
+      ]);
 
     return {
       oidcEnabled,
       providerName,
       passwordAuthDisabled,
+      autoRedirect,
     };
   }
 

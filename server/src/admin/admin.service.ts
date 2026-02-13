@@ -301,6 +301,7 @@ export class AdminService {
       ['oidc_account_linking', dto.accountLinking],
       ['oidc_admin_group', dto.adminGroup],
       ['disable_password_auth', dto.disablePasswordAuth],
+      ['oidc_auto_redirect', dto.autoRedirect],
     ];
 
     for (const [key, value] of settingsMap) {

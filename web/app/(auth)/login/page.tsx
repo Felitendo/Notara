@@ -1,20 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Mail, Lock, Loader2, LogIn } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
+import { useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth, getOidcConfig } from "@/features/auth";
+import { useAuth, getOidcConfig, shouldAutoRedirectToOidc } from "@/features/auth";
 import { useTranslations } from "next-intl";
 
 export default function LoginPage() {
   const t = useTranslations("auth.login");
   const to = useTranslations("auth.oidc");
+  const searchParams = useSearchParams();
+  const redirectedRef = useRef(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const { login, isLoginPending } = useAuth();
@@ -27,6 +30,13 @@ export default function LoginPage() {
   const showOidc = oidcConfig?.oidcEnabled;
   const showPasswordForm = !oidcConfig?.passwordAuthDisabled;
   const showBoth = showOidc && showPasswordForm;
+  const autoRedirectActive = shouldAutoRedirectToOidc(oidcConfig, searchParams);
+
+  useEffect(() => {
+    if (!autoRedirectActive || redirectedRef.current) return;
+    redirectedRef.current = true;
+    window.location.href = "/api/auth/oidc/authorize";
+  }, [autoRedirectActive]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,6 +46,18 @@ export default function LoginPage() {
   const handleOidcLogin = () => {
     window.location.href = "/api/auth/oidc/authorize";
   };
+
+  if (autoRedirectActive) {
+    return (
+      <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm">
+        <CardContent className="pt-6">
+          <div className="flex items-center justify-center py-8">
+            <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
+          </div>
+        </CardContent>
+      </Card>
+    );
+  }
 
   return (
     <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm">
@@ -152,4 +174,3 @@ export default function LoginPage() {
     </Card>
   );
 }
-

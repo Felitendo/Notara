@@ -67,6 +67,7 @@ export interface OidcSettings {
   accountLinking: OidcSettingValue;
   adminGroup: OidcSettingValue;
   disablePasswordAuth: OidcSettingValue;
+  autoRedirect: OidcSettingValue;
 }
 
 export interface UpdateOidcSettingsDto {
@@ -78,6 +79,7 @@ export interface UpdateOidcSettingsDto {
   accountLinking?: boolean;
   adminGroup?: string;
   disablePasswordAuth?: boolean;
+  autoRedirect?: boolean;
 }
 
 export interface OidcTestResult {

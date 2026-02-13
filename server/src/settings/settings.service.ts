@@ -18,6 +18,7 @@ export interface OidcSettings {
   accountLinking: OidcSettingValue;
   adminGroup: OidcSettingValue;
   disablePasswordAuth: OidcSettingValue;
+  autoRedirect: OidcSettingValue;
 }
 
 @Injectable()
@@ -226,6 +227,15 @@ export class SettingsService {
     return setting.value;
   }
 
+  async getOidcAutoRedirect(): Promise<boolean> {
+    const setting = await this.getSettingWithPriority(
+      'OIDC_AUTO_REDIRECT',
+      'oidc_auto_redirect',
+      'false',
+    );
+    return setting.value === 'true';
+  }
+
   async getOidcSettings(): Promise<OidcSettings> {
     const [
       oidcEnabled,
@@ -236,6 +246,7 @@ export class SettingsService {
       accountLinking,
       adminGroup,
       disablePasswordAuth,
+      autoRedirect,
     ] = await Promise.all([
       this.getSettingWithPriority('OIDC_ENABLED', 'oidc_enabled', 'false'),
       this.getSettingWithPriority(
@@ -265,6 +276,11 @@ export class SettingsService {
         'disable_password_auth',
         'false',
       ),
+      this.getSettingWithPriority(
+        'OIDC_AUTO_REDIRECT',
+        'oidc_auto_redirect',
+        'false',
+      ),
     ]);
 
     // Never expose the actual client secret value — only whether it's set
@@ -280,6 +296,7 @@ export class SettingsService {
       accountLinking,
       adminGroup,
       disablePasswordAuth,
+      autoRedirect,
     };
   }
 
@@ -293,6 +310,7 @@ export class SettingsService {
       oidc_account_linking: 'OIDC_ACCOUNT_LINKING',
       oidc_admin_group: 'OIDC_ADMIN_GROUP',
       disable_password_auth: 'DISABLE_PASSWORD_AUTH',
+      oidc_auto_redirect: 'OIDC_AUTO_REDIRECT',
     };
 
     const envKey = envKeyMap[key];

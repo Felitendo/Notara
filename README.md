@@ -80,6 +80,7 @@ Notara focuses on speed, privacy, simplicity, and reliability across mobile and 
    | `PG_PASSWORD` | `password` | Postgres password |
    | `PG_DATABASE` | `notara` | Database name |
    | `USER_SIGNUP` | (not set) | Sign up mode: `disabled`, `enabled`, or `review`. If not set, admins can control it via the admin panel |
+   | `OIDC_AUTO_REDIRECT` | (not set) | Auto-redirect logged-out web users to OIDC provider. If not set, admins can control it via the admin panel |
 
 3. **Start the container:**
    ```bash

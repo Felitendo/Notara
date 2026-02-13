@@ -32,4 +32,8 @@ export class UpdateOidcSettingsDto {
   @IsOptional()
   @IsBoolean()
   disablePasswordAuth?: boolean;
+
+  @IsOptional()
+  @IsBoolean()
+  autoRedirect?: boolean;
 }

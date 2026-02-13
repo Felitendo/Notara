@@ -22,7 +22,6 @@ import {
   type CreateUserDto,
   type UpdateUserDto,
   type RegistrationMode,
-  type OidcSettings,
 } from "@/features/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -641,6 +640,76 @@ export default function AdminPage() {
                     }
                   />
                 </div>
+
+                {/* Auto Redirect */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm font-medium">{t("oidc.autoRedirect")}</Label>
+                      {oidcSettings.autoRedirect.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t("oidc.autoRedirectHint")}</p>
+                  </div>
+                  <Switch
+                    checked={oidcSettings.autoRedirect.value === "true"}
+                    disabled={oidcSettings.autoRedirect.isLocked || updateOidcSettingsMutation.isPending}
+                    onCheckedChange={(checked) =>
+                      updateOidcSettingsMutation.mutate({ autoRedirect: checked })
+                    }
+                  />
+                </div>
+
+                {oidcSettings.autoRedirect.value === "true" && (
+                  <div className="space-y-3 rounded-lg border bg-muted/40 p-3">
+                    <div className="flex items-start gap-2">
+                      <Info className="h-4 w-4 mt-0.5 text-muted-foreground shrink-0" />
+                      <div className="space-y-1">
+                        <p className="text-sm font-medium">{t("oidc.manualBypassTitle")}</p>
+                        <p className="text-xs text-muted-foreground">{t("oidc.manualBypassHint")}</p>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">{t("oidc.manualLoginUrl")}</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          readOnly
+                          value={typeof window !== "undefined" ? `${window.location.origin}/login?manual=1` : ""}
+                          className="bg-background text-sm font-mono"
+                        />
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/login?manual=1`);
+                            toast.success(t("oidc.manualBypassCopied"));
+                          }}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                    <div className="space-y-2">
+                      <Label className="text-xs text-muted-foreground">{t("oidc.manualRegisterUrl")}</Label>
+                      <div className="flex gap-2">
+                        <Input
+                          readOnly
+                          value={typeof window !== "undefined" ? `${window.location.origin}/register?manual=1` : ""}
+                          className="bg-background text-sm font-mono"
+                        />
+                        <Button
+                          variant="outline"
+                          size="icon"
+                          onClick={() => {
+                            navigator.clipboard.writeText(`${window.location.origin}/register?manual=1`);
+                            toast.success(t("oidc.manualBypassCopied"));
+                          }}
+                        >
+                          <Copy className="h-4 w-4" />
+                        </Button>
+                      </div>
+                    </div>
+                  </div>
+                )}
 
                 {/* Test Connection */}
                 <Button

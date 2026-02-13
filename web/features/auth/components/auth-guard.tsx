@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, type ReactNode } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/features/auth";
+import { useEffect, useRef, type ReactNode } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import { useAuth, getOidcConfig, getLoggedOutRedirectTarget } from "@/features/auth";
 
 interface AuthGuardProps {
   children: ReactNode;
@@ -10,20 +11,38 @@ interface AuthGuardProps {
 
 export function AuthGuard({ children }: AuthGuardProps) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { isAuthenticated, isInitialized, initialize } = useAuth();
+  const hasRedirectedRef = useRef(false);
+
+  const { data: oidcConfig, isLoading: oidcConfigLoading } = useQuery({
+    queryKey: ["oidc-config"],
+    queryFn: getOidcConfig,
+    enabled: isInitialized && !isAuthenticated,
+  });
 
   useEffect(() => {
     initialize();
   }, [initialize]);
 
   useEffect(() => {
-    if (isInitialized && !isAuthenticated) {
-      router.push("/login");
+    if (!isInitialized || isAuthenticated || oidcConfigLoading || hasRedirectedRef.current) {
+      return;
     }
-  }, [isInitialized, isAuthenticated, router]);
+
+    hasRedirectedRef.current = true;
+    const destination = getLoggedOutRedirectTarget(oidcConfig, searchParams);
+
+    if (destination === "/api/auth/oidc/authorize") {
+      window.location.href = destination;
+      return;
+    }
+
+    router.push(destination);
+  }, [isInitialized, isAuthenticated, oidcConfig, oidcConfigLoading, searchParams, router]);
 
   // Show loading state while initializing
-  if (!isInitialized) {
+  if (!isInitialized || (!isAuthenticated && oidcConfigLoading)) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-background">
         <div className="w-8 h-8 border-2 border-accent border-t-transparent rounded-full animate-spin" />
@@ -38,4 +57,3 @@ export function AuthGuard({ children }: AuthGuardProps) {
 
   return <>{children}</>;
 }
-

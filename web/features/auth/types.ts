@@ -13,6 +13,7 @@ export interface OidcConfig {
   oidcEnabled: boolean;
   providerName: string;
   passwordAuthDisabled: boolean;
+  autoRedirect: boolean;
 }
 
 export interface AuthResponse {
