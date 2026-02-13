@@ -27,11 +27,13 @@ enum NoteSharePermission {
 model User {
   id                String         @id @default(uuid())
   email             String         @unique
-  password          String
+  password          String?
   name              String
   profileImage      String?
   isAdmin           Boolean        @default(false)
   status            UserStatus     @default(active)
+  oidcId            String?
+  oidcProvider      String?
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
   notes             Note[]
@@ -39,6 +41,8 @@ model User {
   sharedNotes       NoteShare[]    @relation("SharedBy")
   notesSharedWithMe NoteShare[]    @relation("SharedWith")
   refreshTokens     RefreshToken[]
+
+  @@unique([oidcId, oidcProvider])
 }
 
 model Settings {
@@ -109,4 +113,21 @@ model RefreshToken {
 
   @@index([userId])
   @@index([token])
+}
+
+model OidcState {
+  id           String   @id @default(uuid())
+  state        String   @unique
+  nonce        String
+  codeVerifier String?
+  exchangeCode String?  @unique
+  userId       String?
+  accessToken  String?
+  refreshToken String?
+  expiresAt    DateTime
+  createdAt    DateTime @default(now())
+
+  @@index([state])
+  @@index([exchangeCode])
+  @@index([expiresAt])
 }

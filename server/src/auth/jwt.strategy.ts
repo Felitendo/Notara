@@ -24,6 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         id: true,
         email: true,
         name: true,
+        password: true,
         profileImage: true,
         isAdmin: true,
         status: true,
@@ -41,6 +42,10 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       throw new UnauthorizedException('Account pending approval');
     }
 
-    return user;
+    const { password, ...userWithoutPassword } = user;
+    return {
+      ...userWithoutPassword,
+      hasPassword: !!password,
+    };
   }
 }

@@ -6,8 +6,10 @@ import {
 } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { SettingsService } from '../settings/settings.service';
+import { OidcService } from '../oidc/oidc.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { UpdateOidcSettingsDto } from './dto/update-oidc-settings.dto';
 import { NoteState } from 'src/generated/prisma/enums';
 import { UserStatus } from 'src/generated/prisma/enums';
 import * as bcrypt from 'bcrypt';
@@ -18,6 +20,7 @@ export class AdminService {
   constructor(
     private prisma: PrismaService,
     private settingsService: SettingsService,
+    private oidcService: OidcService,
   ) {}
 
   async getStats() {
@@ -280,5 +283,38 @@ export class AdminService {
     });
 
     return { message: 'User rejected and deleted successfully' };
+  }
+
+  // --- OIDC Settings ---
+
+  async getOidcSettings() {
+    return this.settingsService.getOidcSettings();
+  }
+
+  async updateOidcSettings(dto: UpdateOidcSettingsDto) {
+    const settingsMap: [string, any][] = [
+      ['oidc_enabled', dto.oidcEnabled],
+      ['oidc_provider_name', dto.providerName],
+      ['oidc_issuer_url', dto.issuerUrl],
+      ['oidc_client_id', dto.clientId],
+      ['oidc_client_secret', dto.clientSecret],
+      ['oidc_account_linking', dto.accountLinking],
+      ['oidc_admin_group', dto.adminGroup],
+      ['disable_password_auth', dto.disablePasswordAuth],
+    ];
+
+    for (const [key, value] of settingsMap) {
+      if (value !== undefined) {
+        const strValue =
+          typeof value === 'boolean' ? String(value) : String(value);
+        await this.settingsService.setOidcSetting(key, strValue);
+      }
+    }
+
+    return this.settingsService.getOidcSettings();
+  }
+
+  async testOidcConnection() {
+    return this.oidcService.testConnection();
   }
 }

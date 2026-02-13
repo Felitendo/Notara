@@ -23,6 +23,35 @@
     "modeFailed": "Registrierungsmodus konnte nicht aktualisiert werden"
   },
 
+  "oidc": {
+    "title": "OIDC / SSO-Einstellungen",
+    "callbackUrl": "Callback-URL",
+    "callbackHint": "Füge diese URL zu den erlaubten Redirect-URIs deines Identitätsanbieters hinzu.",
+    "callbackCopied": "Callback-URL in die Zwischenablage kopiert",
+    "enabled": "OIDC aktiviert",
+    "enabledHint": "OIDC-Authentifizierung für Single Sign-On aktivieren.",
+    "providerName": "Anzeigename des Anbieters",
+    "providerNameHint": "Wird auf dem Login-Button angezeigt (z.B. \"Authelia\", \"Keycloak\").",
+    "issuerUrl": "Issuer-URL",
+    "clientId": "Client-ID",
+    "clientSecret": "Client-Secret",
+    "clientSecretHint": "Leer lassen für öffentliche Clients (PKCE wird automatisch verwendet).",
+    "secretSet": "Secret ist gesetzt",
+    "secretNotSet": "Kein Secret gesetzt (öffentlicher Client)",
+    "accountLinking": "Kontoverknüpfung",
+    "accountLinkingHint": "OIDC-Konten automatisch mit bestehenden Benutzern anhand der E-Mail verknüpfen.",
+    "adminGroup": "Admin-Gruppe",
+    "adminGroupHint": "OIDC-Gruppenanspruch, der Admin-Rechte gewährt. Benutzer in dieser Gruppe werden Admins; Benutzer außerhalb verlieren Admin-Rechte beim nächsten Login. Leer lassen für Standardverhalten (erster Benutzer ist Admin).",
+    "disablePasswordAuth": "Passwort-Authentifizierung deaktivieren",
+    "disablePasswordAuthHint": "Wenn aktiviert, ist nur OIDC-Anmeldung möglich. Stelle sicher, dass OIDC funktioniert, bevor du dies aktivierst.",
+    "testConnection": "Verbindung testen",
+    "testing": "Teste...",
+    "testSuccess": "Erfolgreich mit OIDC-Anbieter verbunden",
+    "testFailed": "Verbindung zum OIDC-Anbieter fehlgeschlagen",
+    "settingsUpdated": "OIDC-Einstellungen aktualisiert",
+    "settingsFailed": "OIDC-Einstellungen konnten nicht aktualisiert werden"
+  },
+
   "pending": {
     "title": "Ausstehende Benutzergenehmigungen",
     "description": "Benutzer, die auf Zugang zum System warten",

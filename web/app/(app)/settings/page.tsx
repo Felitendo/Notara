@@ -415,6 +415,7 @@ export default function SettingsPage() {
       </Card>
 
       {/* Change Password Section */}
+      {user?.hasPassword !== false && (
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">
         <CardHeader className="space-y-1 pb-4">
           <CardTitle className="text-2xl">{t("password.title")}</CardTitle>
@@ -558,6 +559,7 @@ export default function SettingsPage() {
           </form>
         </CardContent>
       </Card>
+      )}
 
       {/* Language Section */}
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm mb-6">

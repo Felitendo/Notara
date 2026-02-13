@@ -33,6 +33,15 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
+    // Block registration if password auth is disabled
+    const passwordAuthDisabled =
+      await this.settingsService.getPasswordAuthDisabled();
+    if (passwordAuthDisabled) {
+      throw new ForbiddenException(
+        'Password-based registration is disabled. Use OIDC to sign in.',
+      );
+    }
+
     const registrationMode = await this.settingsService.getRegistrationMode();
 
     if (registrationMode === 'disabled') {
@@ -95,6 +104,15 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto) {
+    // Block login if password auth is disabled
+    const passwordAuthDisabled =
+      await this.settingsService.getPasswordAuthDisabled();
+    if (passwordAuthDisabled) {
+      throw new ForbiddenException(
+        'Password-based login is disabled. Use OIDC to sign in.',
+      );
+    }
+
     const user = await this.prisma.user.findUnique({
       where: { email: loginDto.email },
       select: {
@@ -111,6 +129,11 @@ export class AuthService {
     });
 
     if (!user) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // OIDC-only users have no password
+    if (!user.password) {
       throw new UnauthorizedException('Invalid credentials');
     }
 
@@ -187,6 +210,13 @@ export class AuthService {
 
     if (!user) {
       throw new ForbiddenException('User not found');
+    }
+
+    // OIDC-only users cannot change password
+    if (!user.password) {
+      throw new ForbiddenException(
+        'Cannot change password for an OIDC-only account',
+      );
     }
 
     // Verify current password
@@ -388,6 +418,16 @@ export class AuthService {
         error,
       );
     }
+  }
+
+  /**
+   * Public wrapper for generating token pairs (used by OIDC module).
+   */
+  async generateTokenPairPublic(
+    userId: string,
+    email: string,
+  ): Promise<{ access_token: string; refresh_token: string }> {
+    return this.generateTokenPair(userId, email);
   }
 
   // Generate a secure random refresh token

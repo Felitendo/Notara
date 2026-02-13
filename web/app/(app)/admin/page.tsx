@@ -15,10 +15,14 @@ import {
   getPendingUsers,
   approveUser,
   rejectUser,
+  getOidcSettings,
+  updateOidcSettings,
+  testOidcConnection,
   type AdminUser,
   type CreateUserDto,
   type UpdateUserDto,
   type RegistrationMode,
+  type OidcSettings,
 } from "@/features/admin";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -60,8 +64,12 @@ import {
   CheckCircle,
   XCircle,
   Info,
+  Copy,
+  ShieldCheck,
+  Plug,
 } from "lucide-react";
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group";
+import { Switch } from "@/components/ui/switch";
 import { toast } from "sonner";
 import { useTranslations, useFormatter } from "next-intl";
 import { MobileNav } from "@/components/layout";
@@ -104,6 +112,11 @@ export default function AdminPage() {
     queryFn: () => getUsers(),
   });
 
+  const { data: oidcSettings, isLoading: oidcSettingsLoading } = useQuery({
+    queryKey: ["admin", "settings", "oidc"],
+    queryFn: getOidcSettings,
+  });
+
   const updateRegistrationModeMutation = useMutation({
     mutationFn: updateRegistrationMode,
     onSuccess: () => {
@@ -113,6 +126,31 @@ export default function AdminPage() {
     },
     onError: (error: Error) => {
       toast.error(error.message || t("registration.modeFailed"));
+    },
+  });
+
+  const updateOidcSettingsMutation = useMutation({
+    mutationFn: updateOidcSettings,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["admin", "settings", "oidc"] });
+      toast.success(t("oidc.settingsUpdated"));
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("oidc.settingsFailed"));
+    },
+  });
+
+  const testOidcConnectionMutation = useMutation({
+    mutationFn: testOidcConnection,
+    onSuccess: (data) => {
+      if (data.success) {
+        toast.success(t("oidc.testSuccess"));
+      } else {
+        toast.error(data.error || t("oidc.testFailed"));
+      }
+    },
+    onError: (error: Error) => {
+      toast.error(error.message || t("oidc.testFailed"));
     },
   });
 
@@ -380,6 +418,249 @@ export default function AdminPage() {
                     {registrationSettings.mode === "review" && t("registration.reviewDescription")}
                   </p>
                 </div>
+              </>
+            ) : null}
+          </CardContent>
+        </Card>
+
+        {/* OIDC Settings */}
+        <Card>
+          <CardHeader>
+            <div className="flex items-center gap-2">
+              <ShieldCheck className="h-5 w-5" />
+              <CardTitle>{t("oidc.title")}</CardTitle>
+            </div>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            {oidcSettingsLoading ? (
+              <div className="flex items-center justify-center py-4">
+                <Loader2 className="h-4 w-4 animate-spin" />
+              </div>
+            ) : oidcSettings ? (
+              <>
+                {/* OIDC Enabled */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm font-medium">{t("oidc.enabled")}</Label>
+                      {oidcSettings.oidcEnabled.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t("oidc.enabledHint")}</p>
+                  </div>
+                  <Switch
+                    checked={oidcSettings.oidcEnabled.value === "true"}
+                    disabled={oidcSettings.oidcEnabled.isLocked || updateOidcSettingsMutation.isPending}
+                    onCheckedChange={(checked) =>
+                      updateOidcSettingsMutation.mutate({ oidcEnabled: checked })
+                    }
+                  />
+                </div>
+
+                {/* Callback URL */}
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium">{t("oidc.callbackUrl")}</Label>
+                  <div className="flex gap-2">
+                    <Input
+                      readOnly
+                      value={typeof window !== "undefined" ? `${window.location.origin}/api/auth/oidc/callback` : ""}
+                      className="bg-muted/50 text-sm font-mono"
+                    />
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() => {
+                        navigator.clipboard.writeText(`${window.location.origin}/api/auth/oidc/callback`);
+                        toast.success(t("oidc.callbackCopied"));
+                      }}
+                    >
+                      <Copy className="h-4 w-4" />
+                    </Button>
+                  </div>
+                  <p className="text-xs text-muted-foreground">{t("oidc.callbackHint")}</p>
+                </div>
+
+                {/* Provider Name */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium">{t("oidc.providerName")}</Label>
+                    {oidcSettings.providerName.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </div>
+                  <Input
+                    key={`provider-${oidcSettings.providerName.value}`}
+                    defaultValue={oidcSettings.providerName.value}
+                    disabled={oidcSettings.providerName.isLocked}
+                    placeholder="OIDC"
+                    onBlur={(e) => {
+                      if (e.target.value !== oidcSettings.providerName.value) {
+                        updateOidcSettingsMutation.mutate({ providerName: e.target.value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    className="bg-background/50"
+                  />
+                  <p className="text-xs text-muted-foreground">{t("oidc.providerNameHint")}</p>
+                </div>
+
+                {/* Issuer URL */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium">{t("oidc.issuerUrl")}</Label>
+                    {oidcSettings.issuerUrl.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </div>
+                  <Input
+                    defaultValue={oidcSettings.issuerUrl.value}
+                    disabled={oidcSettings.issuerUrl.isLocked}
+                    placeholder="https://auth.example.com"
+                    onBlur={(e) => {
+                      if (e.target.value !== oidcSettings.issuerUrl.value) {
+                        updateOidcSettingsMutation.mutate({ issuerUrl: e.target.value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    className="bg-background/50 font-mono text-sm"
+                  />
+                </div>
+
+                {/* Client ID */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium">{t("oidc.clientId")}</Label>
+                    {oidcSettings.clientId.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </div>
+                  <Input
+                    defaultValue={oidcSettings.clientId.value}
+                    disabled={oidcSettings.clientId.isLocked}
+                    placeholder="notara"
+                    onBlur={(e) => {
+                      if (e.target.value !== oidcSettings.clientId.value) {
+                        updateOidcSettingsMutation.mutate({ clientId: e.target.value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    className="bg-background/50 font-mono text-sm"
+                  />
+                </div>
+
+                {/* Client Secret */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium">{t("oidc.clientSecret")}</Label>
+                    {oidcSettings.clientSecret.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </div>
+                  <Input
+                    type="password"
+                    defaultValue=""
+                    disabled={oidcSettings.clientSecret.isLocked}
+                    placeholder={oidcSettings.clientSecret.value ? t("oidc.secretSet") : t("oidc.secretNotSet")}
+                    onBlur={(e) => {
+                      if (e.target.value) {
+                        updateOidcSettingsMutation.mutate({ clientSecret: e.target.value });
+                        e.target.value = "";
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    className="bg-background/50"
+                  />
+                  <p className="text-xs text-muted-foreground">{t("oidc.clientSecretHint")}</p>
+                </div>
+
+                {/* Account Linking */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm font-medium">{t("oidc.accountLinking")}</Label>
+                      {oidcSettings.accountLinking.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t("oidc.accountLinkingHint")}</p>
+                  </div>
+                  <Switch
+                    checked={oidcSettings.accountLinking.value === "true"}
+                    disabled={oidcSettings.accountLinking.isLocked || updateOidcSettingsMutation.isPending}
+                    onCheckedChange={(checked) =>
+                      updateOidcSettingsMutation.mutate({ accountLinking: checked })
+                    }
+                  />
+                </div>
+
+                {/* Admin Group */}
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <Label className="text-sm font-medium">{t("oidc.adminGroup")}</Label>
+                    {oidcSettings.adminGroup?.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                  </div>
+                  <Input
+                    key={`admin-group-${oidcSettings.adminGroup?.value ?? ""}`}
+                    defaultValue={oidcSettings.adminGroup?.value ?? ""}
+                    disabled={oidcSettings.adminGroup?.isLocked}
+                    placeholder="notara-admins"
+                    onBlur={(e) => {
+                      if (e.target.value !== (oidcSettings.adminGroup?.value ?? "")) {
+                        updateOidcSettingsMutation.mutate({ adminGroup: e.target.value });
+                      }
+                    }}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        (e.target as HTMLInputElement).blur();
+                      }
+                    }}
+                    className="bg-background/50"
+                  />
+                  <p className="text-xs text-muted-foreground">{t("oidc.adminGroupHint")}</p>
+                </div>
+
+                {/* Disable Password Auth */}
+                <div className="flex items-center justify-between">
+                  <div className="space-y-1">
+                    <div className="flex items-center gap-2">
+                      <Label className="text-sm font-medium">{t("oidc.disablePasswordAuth")}</Label>
+                      {oidcSettings.disablePasswordAuth.isLocked && <Lock className="h-3.5 w-3.5 text-muted-foreground" />}
+                    </div>
+                    <p className="text-xs text-muted-foreground">{t("oidc.disablePasswordAuthHint")}</p>
+                  </div>
+                  <Switch
+                    checked={oidcSettings.disablePasswordAuth.value === "true"}
+                    disabled={oidcSettings.disablePasswordAuth.isLocked || updateOidcSettingsMutation.isPending}
+                    onCheckedChange={(checked) =>
+                      updateOidcSettingsMutation.mutate({ disablePasswordAuth: checked })
+                    }
+                  />
+                </div>
+
+                {/* Test Connection */}
+                <Button
+                  variant="outline"
+                  onClick={() => testOidcConnectionMutation.mutate()}
+                  disabled={testOidcConnectionMutation.isPending}
+                  className="w-full"
+                >
+                  {testOidcConnectionMutation.isPending ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      {t("oidc.testing")}
+                    </>
+                  ) : (
+                    <>
+                      <Plug className="mr-2 h-4 w-4" />
+                      {t("oidc.testConnection")}
+                    </>
+                  )}
+                </Button>
               </>
             ) : null}
           </CardContent>

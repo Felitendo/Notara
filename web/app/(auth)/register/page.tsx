@@ -3,17 +3,18 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Mail, Lock, Loader2, AlertCircle, User } from "lucide-react";
+import { Mail, Lock, Loader2, AlertCircle, User, LogIn } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { useAuth, getRegistrationMode } from "@/features/auth";
+import { useAuth, getRegistrationMode, getOidcConfig } from "@/features/auth";
 import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
   const t = useTranslations("auth.register");
+  const to = useTranslations("auth.oidc");
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -25,6 +26,18 @@ export default function RegisterPage() {
     queryKey: ["registration-mode"],
     queryFn: getRegistrationMode,
   });
+
+  const { data: oidcConfig } = useQuery({
+    queryKey: ["oidc-config"],
+    queryFn: getOidcConfig,
+  });
+
+  const showOidc = oidcConfig?.oidcEnabled;
+  const passwordDisabled = oidcConfig?.passwordAuthDisabled;
+
+  const handleOidcLogin = () => {
+    window.location.href = "/api/auth/oidc/authorize";
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -61,8 +74,8 @@ export default function RegisterPage() {
     );
   }
 
-  // Show disabled message if registration is disabled
-  if (registrationMode?.mode === "disabled") {
+  // Show disabled message if registration is disabled or password auth is off
+  if (registrationMode?.mode === "disabled" || passwordDisabled) {
     return (
       <Card className="border-0 shadow-xl bg-card/80 backdrop-blur-sm">
         <CardHeader className="space-y-4 text-center pb-2">
@@ -87,10 +100,23 @@ export default function RegisterPage() {
             <AlertCircle className="h-5 w-5 mt-0.5 text-muted-foreground" />
             <div className="flex-1 text-sm">
               <p className="text-muted-foreground">
-                {t("disabledMessage")}
+                {passwordDisabled ? to("passwordDisabledHint") : t("disabledMessage")}
               </p>
             </div>
           </div>
+          {showOidc && (
+            <div className="mt-4">
+              <Button
+                type="button"
+                variant="outline"
+                className="w-full h-12 font-medium"
+                onClick={handleOidcLogin}
+              >
+                <LogIn className="mr-2 h-4 w-4" />
+                {to("loginWith", { provider: oidcConfig.providerName })}
+              </Button>
+            </div>
+          )}
           <div className="mt-6 text-center">
             <p className="text-sm text-muted-foreground">
               {t("hasAccount")}{" "}

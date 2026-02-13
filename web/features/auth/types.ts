@@ -4,8 +4,15 @@ export interface User {
   name: string;
   profileImage?: string;
   isAdmin?: boolean;
+  hasPassword?: boolean;
   createdAt?: string;
   updatedAt?: string;
+}
+
+export interface OidcConfig {
+  oidcEnabled: boolean;
+  providerName: string;
+  passwordAuthDisabled: boolean;
 }
 
 export interface AuthResponse {

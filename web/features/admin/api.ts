@@ -8,6 +8,9 @@ import type {
   ResetPasswordResponse,
   RegistrationSettings,
   UpdateRegistrationModeDto,
+  OidcSettings,
+  UpdateOidcSettingsDto,
+  OidcTestResult,
 } from "./types";
 
 export async function getAdminStats(): Promise<AdminStats> {
@@ -77,4 +80,20 @@ export async function approveUser(id: string): Promise<AdminUser> {
 
 export async function rejectUser(id: string): Promise<{ message: string }> {
   return api.post(`api/admin/users/${id}/reject`).json<{ message: string }>();
+}
+
+export async function getOidcSettings(): Promise<OidcSettings> {
+  return api.get("api/admin/settings/oidc").json<OidcSettings>();
+}
+
+export async function updateOidcSettings(
+  data: UpdateOidcSettingsDto,
+): Promise<OidcSettings> {
+  return api
+    .patch("api/admin/settings/oidc", { json: data })
+    .json<OidcSettings>();
+}
+
+export async function testOidcConnection(): Promise<OidcTestResult> {
+  return api.post("api/admin/settings/oidc/test").json<OidcTestResult>();
 }

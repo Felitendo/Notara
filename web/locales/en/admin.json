@@ -23,6 +23,35 @@
     "modeFailed": "Failed to update registration mode"
   },
 
+  "oidc": {
+    "title": "OIDC / SSO Settings",
+    "callbackUrl": "Callback URL",
+    "callbackHint": "Add this URL to your identity provider's allowed redirect URIs.",
+    "callbackCopied": "Callback URL copied to clipboard",
+    "enabled": "OIDC Enabled",
+    "enabledHint": "Enable OIDC authentication for single sign-on.",
+    "providerName": "Provider Display Name",
+    "providerNameHint": "Shown on the login button (e.g. \"Authelia\", \"Keycloak\").",
+    "issuerUrl": "Issuer URL",
+    "clientId": "Client ID",
+    "clientSecret": "Client Secret",
+    "clientSecretHint": "Leave empty for public clients (PKCE will be used automatically).",
+    "secretSet": "Secret is set",
+    "secretNotSet": "No secret set (public client)",
+    "accountLinking": "Account Linking",
+    "accountLinkingHint": "Automatically link OIDC accounts with existing users by email.",
+    "adminGroup": "Admin Group",
+    "adminGroupHint": "OIDC group claim value that grants admin rights. Users in this group become admins; users not in this group lose admin on next login. Leave empty to use default behavior (first user is admin).",
+    "disablePasswordAuth": "Disable Password Authentication",
+    "disablePasswordAuthHint": "When enabled, only OIDC login is allowed. Make sure OIDC is working before enabling this.",
+    "testConnection": "Test Connection",
+    "testing": "Testing...",
+    "testSuccess": "Successfully connected to OIDC provider",
+    "testFailed": "Failed to connect to OIDC provider",
+    "settingsUpdated": "OIDC settings updated",
+    "settingsFailed": "Failed to update OIDC settings"
+  },
+
   "pending": {
     "title": "Pending User Approvals",
     "description": "Users awaiting approval to access the system",

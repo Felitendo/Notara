@@ -52,3 +52,37 @@ export interface RegistrationSettings {
 export interface UpdateRegistrationModeDto {
   mode: RegistrationMode;
 }
+
+export interface OidcSettingValue {
+  value: string;
+  isLocked: boolean;
+}
+
+export interface OidcSettings {
+  oidcEnabled: OidcSettingValue;
+  providerName: OidcSettingValue;
+  issuerUrl: OidcSettingValue;
+  clientId: OidcSettingValue;
+  clientSecret: OidcSettingValue;
+  accountLinking: OidcSettingValue;
+  adminGroup: OidcSettingValue;
+  disablePasswordAuth: OidcSettingValue;
+}
+
+export interface UpdateOidcSettingsDto {
+  oidcEnabled?: boolean;
+  providerName?: string;
+  issuerUrl?: string;
+  clientId?: string;
+  clientSecret?: string;
+  accountLinking?: boolean;
+  adminGroup?: string;
+  disablePasswordAuth?: boolean;
+}
+
+export interface OidcTestResult {
+  success: boolean;
+  issuer?: string;
+  endpoints?: Record<string, string>;
+  error?: string;
+}
